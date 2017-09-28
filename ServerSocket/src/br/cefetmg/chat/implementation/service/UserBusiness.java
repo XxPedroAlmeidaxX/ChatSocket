@@ -19,8 +19,8 @@ public class UserBusiness implements IUserBusiness{
         if(u==null){
             throw new BusinessException("Usuario não pode ser nulo");
         }
-        if(u.getIdUser()==null){
-            throw new BusinessException("Id do usuário não pode ser nulo");
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
         }
         if(u.getNameUser()==null){
             throw new BusinessException("Nome do usuário não pode ser nulo");
@@ -52,8 +52,8 @@ public class UserBusiness implements IUserBusiness{
         if(u==null){
             throw new BusinessException("Usuario não pode ser nulo");
         }
-        if(u.getIdUser()==null){
-            throw new BusinessException("Id do usuário não pode ser nulo");
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
         }
         if(u.getNameUser()==null){
             throw new BusinessException("Nome do usuário não pode ser nulo");

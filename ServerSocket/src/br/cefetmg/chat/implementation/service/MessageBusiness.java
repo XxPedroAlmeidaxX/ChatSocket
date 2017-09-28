@@ -87,8 +87,8 @@ public class MessageBusiness implements IMessageBusiness{
         if(u==null){
             throw new BusinessException("Usuário não pode ser nulo");
         }
-        if(u.getIdUser()==null){
-            throw new BusinessException("Id do usuário não pode ser nulo");
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
         }
         return dao.getMessagesByUser(u);
     }

@@ -68,24 +68,7 @@ public class RoomBusiness implements IRoomBusiness{
         }
         return dao.updateRoomById(id, r);
     }
-
-    @Override
-    public List<User> getUsersByRoom(Room r) throws BusinessException, PersistenceException {
-        if(r==null){
-            throw new BusinessException("Sala não pode ser nula");
-        }
-        if(r.getStateRoom()==null){
-            throw new BusinessException("Estado da sala não pode ser nulo");
-        }
-        if(r.getIdRoom()==null){
-            throw new BusinessException("Id da sala não pode ser nulo");
-        }
-        if(r.getNameRoom()==null){
-            throw new BusinessException("Nome da sala não pode ser nulo");
-        }
-        return dao.getUsersByRoom(r);
-    }
-
+    
     @Override
     public List<Room> getAllRoom() throws BusinessException, PersistenceException {
         return dao.getAllRoom();

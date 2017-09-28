@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class PostgresqlConnection implements ConnectionFactory {
 
     private final static String dbDriver = "org.postgresql.Driver";
-    private final static String dbURL = "jdbc:postgresql://localhost:5432/cadlivros";
+    private final static String dbURL = "jdbc:postgresql://localhost:5432/chat";
     private final static String user = "postgres";
     private final static String pass = "123456";
 
