@@ -1,16 +1,20 @@
 package br.cefetmg.chat.domain;
 
+import java.util.List;
+
 public class Room {
     private Long idRoom;
     private String nameRoom;
     private String password;
     private Boolean stateRoom;
-
-    public Room(Long idRoom, String nameRoom, Boolean stateRoom, String password) {
+    private List<User> usuarios;
+    
+    public Room(Long idRoom, String nameRoom, Boolean stateRoom, String password, List<User> usuarios) {
         this.idRoom = idRoom;
         this.nameRoom = nameRoom;
         this.stateRoom = stateRoom;
         this.password = password;
+        this.usuarios=usuarios;
     }
 
     public Room() {}
@@ -46,4 +50,12 @@ public class Room {
     public void setPassword(String password) {
         this.password = password;
     }   
+
+    public List<User> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<User> usuarios) {
+        this.usuarios = usuarios;
+    }
 }

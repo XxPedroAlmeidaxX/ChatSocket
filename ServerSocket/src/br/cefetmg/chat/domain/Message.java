@@ -1,6 +1,7 @@
 package br.cefetmg.chat.domain;
 
 public class Message {
+    private Long idMessage;
     private User user;
     private Room room;
     private String textMessage;
@@ -9,7 +10,8 @@ public class Message {
 
     public Message() {}
 
-    public Message(User user, Room room, String textMessage, Boolean stateMessage, User targetMessage) {
+    public Message(Long idMessage, User user, Room room, String textMessage, Boolean stateMessage, User targetMessage) {
+        this.idMessage=idMessage;
         this.user = user;
         this.room = room;
         this.textMessage = textMessage;
@@ -17,11 +19,20 @@ public class Message {
         this.targetMessage = targetMessage;
     }
 
-    public Message(User user, Room room, String textMessage, Boolean stateMessage) {
+    public Message(Long idMessage, User user, Room room, String textMessage, Boolean stateMessage) {
+        this.idMessage=idMessage;
         this.user = user;
         this.room = room;
         this.textMessage = textMessage;
         this.stateMessage = stateMessage;
+    }
+
+    public Long getIdMessage() {
+        return idMessage;
+    }
+
+    public void setIdMessage(Long idMessage) {
+        this.idMessage = idMessage;
     }
     
     public User getUser() {
