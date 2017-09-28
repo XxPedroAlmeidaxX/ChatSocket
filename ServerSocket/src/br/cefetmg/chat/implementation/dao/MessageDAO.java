@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.chat.implementation.dao;
 
 import br.cefetmg.chat.interfaces.dao.IMessageDAO;
@@ -12,10 +7,6 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.PersistenceException;
 import java.util.List;
 
-/**
- *
- * @author aluno
- */
 public class MessageDAO implements IMessageDAO{
 
     @Override
