@@ -10,16 +10,22 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 
 public class Connection implements IConnection{
     
-    private Socket p;
+    private Socket pDados;
+    private Socket pMensagens;
     private static ServerSocket s;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private ObjectOutputStream outDados;
+    private ObjectInputStream inDados;
+    private ObjectOutputStream outMensagens;
+    private ObjectInputStream inMensagens;
     
     public Connection() throws ConnectionException {
         try {
-            p = s.accept();
-            out = new ObjectOutputStream(p.getOutputStream());
-            in = new ObjectInputStream (p.getInputStream());
+            pDados = s.accept();
+            pMensagens = s.accept();
+            outDados = new ObjectOutputStream(pDados.getOutputStream());
+            inDados = new ObjectInputStream (pDados.getInputStream());
+            outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
+            inMensagens = new ObjectInputStream (pMensagens.getInputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -28,17 +34,18 @@ public class Connection implements IConnection{
     @Override
     public void disconnect() throws ConnectionException {
         try {
-            p.close();
+            pDados.close();
+            pMensagens.close();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao desconectar do Cliente: " + ex);
         }          
     }
 
     @Override
-    public void send(Object obj) throws ConnectionException {
+    public void sendDados(Object obj) throws ConnectionException {
         try {            
-            out.writeObject(obj);
-            out.flush();
+            outDados.writeObject(obj);
+            outDados.flush();
         }
         catch (IOException ex) {
             throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
@@ -46,13 +53,24 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public Object receive() throws ConnectionException {
+    public Object receiveDados() throws ConnectionException {
         try {
-            return in.readObject();
+            return inDados.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
         } 
+    }
+    
+    @Override
+    public void sendMensagens(Object obj) throws ConnectionException {
+        try {            
+            outMensagens.writeObject(obj);
+            outMensagens.flush();
+        }
+        catch (IOException ex) {
+            throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
+        }
     }
     
     public static void setServer(int port) throws ConnectionException {

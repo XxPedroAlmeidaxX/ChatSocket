@@ -18,14 +18,14 @@ public class Connection implements IConnection{
     private ArrayList<Object> msgData;
     private ArrayList<Object> serverResponse;
     
-    public Connection(String ip, int porta1, int porta2) throws ConnectionException {
+    public Connection(String ip, int porta) throws ConnectionException {
         msgData = new ArrayList<>();
         serverResponse = new ArrayList<>();
         try {
-            pDados = new Socket(ip, porta1);  
+            pDados = new Socket(ip, porta);  
             outDados = new ObjectOutputStream(pDados.getOutputStream());
             inDados = new ObjectInputStream (pDados.getInputStream());
-            pMensagens = new Socket(ip, porta2);  
+            pMensagens = new Socket(ip, porta);  
             outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
             inMensagens = new ObjectInputStream (pMensagens.getInputStream());
         } catch (IOException ex) {

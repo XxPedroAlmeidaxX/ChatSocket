@@ -21,7 +21,7 @@ public class SocketConnection implements ConnectionFactory{
     
     public SocketConnection(){
         try {
-            c = new Connection("localhost", 2222, 2223);
+            c = new Connection("localhost", 2222);
         } catch (ConnectionException ex) {
             throw new RuntimeException("Erro ao criar conexão: " + ex.getMessage());
         }
