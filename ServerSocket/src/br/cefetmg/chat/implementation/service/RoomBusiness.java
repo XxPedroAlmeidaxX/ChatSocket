@@ -10,7 +10,7 @@ import br.cefetmg.chat.exception.PersistenceException;
 import java.util.List;
 
 public class RoomBusiness implements IRoomBusiness{
-    private IRoomDAO dao;
+    private final IRoomDAO dao;
     
     public RoomBusiness(RoomDAO dao){
         this.dao=dao;

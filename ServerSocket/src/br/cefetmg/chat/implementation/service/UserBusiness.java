@@ -8,7 +8,7 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 
 public class UserBusiness implements IUserBusiness{
-    private IUserDAO dao;
+    private final IUserDAO dao;
     
     public UserBusiness(UserDAO dao){
         this.dao=dao;
