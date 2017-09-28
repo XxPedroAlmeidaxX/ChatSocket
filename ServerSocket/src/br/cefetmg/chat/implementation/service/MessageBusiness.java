@@ -11,7 +11,7 @@ import br.cefetmg.chat.exception.PersistenceException;
 import java.util.List;
 
 public class MessageBusiness implements IMessageBusiness{
-    private IMessageDAO dao;
+    private final IMessageDAO dao;
     
     public MessageBusiness(MessageDAO dao){
        this.dao=dao;
