@@ -1,27 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.chat.view;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-import javafx.fxml.Initializable;
+import br.cefetmg.chat.domain.Room;
+import java.util.ArrayList;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
-/**
- * FXML Controller class
- *
- * @author Adalbs
- */
-public class RoomMakerController implements Initializable {
+public class RoomMakerController {
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        // TODO
-    }    
-    
+    private MainView mv;
+
+    public void setMainView(MainView mv) {
+        this.mv = mv;
+    }
+
+    @FXML
+    TextField txtNome;
+
+    @FXML
+    PasswordField pswSenha;
+
+    @FXML
+    CheckBox chkPrivado;
+
+    @FXML
+    private void cancelar() {
+        mv.showHome();
+    }
+
+    @FXML
+    private void criar() {
+        Room r = new Room();
+        r.setIdRoom(Long.MIN_VALUE);
+        r.setNameRoom(txtNome.getText());
+        r.setStateRoom(chkPrivado.isSelected());
+        r.setPassword(pswSenha.getText());
+        r.setUsuarios(new ArrayList<>());
+        mv.showHome();
+    }
 }
