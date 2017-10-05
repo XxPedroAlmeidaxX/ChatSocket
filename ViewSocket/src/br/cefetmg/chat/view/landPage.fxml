@@ -22,7 +22,7 @@
                            <font>
                               <Font size="15.0" />
                            </font></Label>
-                        <Button id="Entrar" fx:id="btnEntrar" layoutX="249.0" layoutY="194.0" mnemonicParsing="false" onAction="#entrar" prefHeight="40.0" prefWidth="109.0" style="-fx-background-color: #660000;" text="Entrar" textFill="WHITE">
+                        <Button id="Entrar" fx:id="btnEntrar" layoutX="249.0" layoutY="194.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="109.0" style="-fx-background-color: #660000;" text="Entrar" textFill="WHITE">
                            <font>
                               <Font size="26.0" />
                            </font></Button>
@@ -35,7 +35,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <TextField fx:id="userName" layoutX="28.0" layoutY="125.0" onAction="#entrar" prefHeight="25.0" prefWidth="336.0" />
+                        <TextField layoutX="28.0" layoutY="125.0" prefHeight="25.0" prefWidth="336.0" />
                      </children>
                      <effect>
                         <DropShadow />
