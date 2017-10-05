@@ -17,11 +17,11 @@ public class SocketConnection implements ConnectionFactory{
     
     private Connection c;
     
-    public SocketConnection(){
+    public SocketConnection() throws ConnectionException{
         try {
             c = new Connection("localhost", 2223);
         } catch (ConnectionException ex) {
-            throw new RuntimeException("Erro ao criar conexão: " + ex.getMessage());
+            throw new ConnectionException("Erro ao criar conexão: " + ex.getMessage());
         }
     }
     

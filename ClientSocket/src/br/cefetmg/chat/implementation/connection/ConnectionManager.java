@@ -8,11 +8,11 @@ public class ConnectionManager {
     private static ConnectionManager conexao;
     private static ConnectionFactory cf;
 
-    private ConnectionManager() {
+    private ConnectionManager() throws ConnectionException {
          ConnectionManager.cf = new SocketConnection();
     }
 
-    public static ConnectionManager getInstance() {
+    public static ConnectionManager getInstance() throws ConnectionException {
         if(conexao == null)
             conexao = new ConnectionManager();
         return conexao;

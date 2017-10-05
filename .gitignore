@@ -5,3 +5,6 @@
 /JavaFX-Front-Preloader/dist/
 /JavaFX-Front-Preloader/build/
 /JavaFX-Front/dist/
+/ClientSocket/build/
+/ClientSocket/dist/
+/ViewSocket/dist/

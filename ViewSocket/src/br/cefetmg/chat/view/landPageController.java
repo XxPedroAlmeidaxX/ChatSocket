@@ -12,14 +12,17 @@ import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
 /**
  *
  * @author Adalbs
  */
-public class landPageController {
+public class landPageController implements Initializable{
     @FXML
     private TextField userName;
     
@@ -32,21 +35,25 @@ public class landPageController {
     @FXML
     private void entrar(){
         try {
-            IConnection conn = ConnectionManager.getInstance().getConnection();
-            Long ip = conn.getIp();
+            Long ip = main.conn.getIp();
             System.out.println(ip);
             IUserBusiness user = new UserBusiness();
             User u = user.getUserById(ip);
             if(u.getIpUser()==null){            
                 u.setNameUser(userName.getText());
-                u.setIpUser(conn.getIp());
+                u.setIpUser(main.conn.getIp());
                 user.insertUser(u);
             }else{
                 main.setLogado(u);
                 main.showHome();
             }
-        } catch (BusinessException | ConnectionException ex) {
+        } catch (BusinessException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        
     }
 }
