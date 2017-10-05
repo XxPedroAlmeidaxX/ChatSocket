@@ -21,7 +21,9 @@ public class Connection implements IConnection{
     public Connection() throws ConnectionException {
         try {
             pDados = s.accept();
+            System.out.println("Aceita conexão de dados: " + pDados.toString());
             pMensagens = s.accept();
+            System.out.println("Aceita conexão de mensagens: " + pMensagens.toString());
             outDados = new ObjectOutputStream(pDados.getOutputStream());
             inDados = new ObjectInputStream (pDados.getInputStream());
             outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());

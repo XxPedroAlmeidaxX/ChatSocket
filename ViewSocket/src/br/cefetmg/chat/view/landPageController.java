@@ -8,16 +8,11 @@ package br.cefetmg.chat.view;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 /**
@@ -37,9 +32,11 @@ public class landPageController {
     @FXML
     private void entrar(){
         try {
+            System.out.println("oi1");
             IConnection conn = ConnectionManager.getInstance().getConnection();
+            System.out.println("oi2");
             Long ip = conn.getIp();
-            userName.setText(ip.toString());
+            System.out.println(ip);
             IUserBusiness user = new UserBusiness();
             user.getUserById(ip);
             User u = new User();

@@ -26,7 +26,7 @@ public class Connection implements IConnection{
             pDados = new Socket(ip, porta);  
             outDados = new ObjectOutputStream(pDados.getOutputStream());
             inDados = new ObjectInputStream (pDados.getInputStream());
-            pMensagens = new Socket(ip, porta);  
+            pMensagens = new Socket(ip, porta);
             outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
             inMensagens = new ObjectInputStream (pMensagens.getInputStream());
         } catch (IOException ex) {
