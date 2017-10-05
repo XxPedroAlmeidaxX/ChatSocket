@@ -50,6 +50,21 @@ public class MainView extends Application {
         
     }
 
+    public void showRoomMaker() {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(MainView.class.getResource("RoomMaker.fxml"));
+            rootLayout = (VBox) loader.load();
+            Scene scene = new Scene(rootLayout);
+            primaryStage.setScene(scene);
+            RoomMakerController rmc = loader.getController();
+            rmc.setMainView(this);
+            primaryStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * @param args the command line arguments
      */
