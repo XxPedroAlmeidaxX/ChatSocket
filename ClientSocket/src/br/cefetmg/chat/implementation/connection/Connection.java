@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 
 public class Connection implements IConnection{
@@ -73,6 +74,15 @@ public class Connection implements IConnection{
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Servidor: " + ex);
         } 
+    }
+
+    @Override
+    public Long getIp() {
+        Long result = new Long(0);
+        for (byte b: ((InetSocketAddress)pDados.getRemoteSocketAddress()).getAddress().getAddress()){  
+            result = result << 8 | (b & 0xFF);  
+        }
+        return result;
     }
     
 }

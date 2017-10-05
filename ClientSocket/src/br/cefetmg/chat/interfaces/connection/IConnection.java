@@ -7,4 +7,5 @@ public interface IConnection {
     public void sendDados(Object obj) throws ConnectionException;
     public Object receiveDados() throws ConnectionException;
     public Object receiveMensagens() throws ConnectionException;
+    public Long getIp();
 }

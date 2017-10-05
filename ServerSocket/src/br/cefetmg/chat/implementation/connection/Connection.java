@@ -80,4 +80,13 @@ public class Connection implements IConnection{
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
     }
+
+    @Override
+    public Long getIp() {
+        Long result = new Long(0);
+        for (byte b: pDados.getInetAddress().getAddress()){  
+            result = result << 8 | (b & 0xFF);  
+        }
+        return result;
+    }
 }
