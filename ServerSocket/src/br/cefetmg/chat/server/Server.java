@@ -6,7 +6,7 @@ import br.cefetmg.chat.implementation.connection.Connection;
 public class Server {
     public static void main(String[] args) {
         try {
-            Connection.setServer(2223);
+            Connection.setServer(2222);
         } catch (ConnectionException ex) {
             System.out.println("\nErro ao definir a porta do servidor: " + ex);
             System.exit(0);

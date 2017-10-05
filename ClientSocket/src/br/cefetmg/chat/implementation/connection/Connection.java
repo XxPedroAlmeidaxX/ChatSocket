@@ -79,7 +79,7 @@ public class Connection implements IConnection{
     @Override
     public Long getIp() {
         Long result = new Long(0);
-        for (byte b: ((InetSocketAddress)pDados.getRemoteSocketAddress()).getAddress().getAddress()){  
+        for (byte b:((InetSocketAddress)pDados.getRemoteSocketAddress()).getAddress().getAddress()){  
             result = result << 8 | (b & 0xFF);  
         }
         return result;
