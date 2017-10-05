@@ -17,12 +17,8 @@ public class NewMessagesThread implements Runnable{
     private IConnection c;
     public static boolean esperando;
     
-    public NewMessagesThread(){
-        try {
-            c = ConnectionManager.getInstance().getConnection();
-        } catch (ConnectionException ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
+    public NewMessagesThread(Connection c){
+        this.c = c;
     }
     
     @Override

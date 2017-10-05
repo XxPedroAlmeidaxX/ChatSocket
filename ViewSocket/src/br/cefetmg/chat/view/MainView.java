@@ -5,6 +5,7 @@
  */
 package br.cefetmg.chat.view;
 
+import br.cefetmg.chat.domain.User;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ public class MainView extends Application {
     
     private Stage primaryStage;
     private Pane rootLayout;
+    private User logado;
     
     @Override
     public void start(Stage primaryStage) {
@@ -29,7 +31,7 @@ public class MainView extends Application {
         showLogin();
     }
     
-    private void showLogin(){
+    public void showLogin(){
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainView.class.getResource("landPage.fxml"));
@@ -43,6 +45,10 @@ public class MainView extends Application {
             e.printStackTrace();
         }
     }
+    
+    public void showHome(){
+        
+    }
 
     /**
      * @param args the command line arguments
@@ -54,5 +60,14 @@ public class MainView extends Application {
     public Stage getPrimaryStage(){
         return primaryStage;
     }
+
+    public User getLogado() {
+        return logado;
+    }
+
+    public void setLogado(User logado) {
+        this.logado = logado;
+    }
+    
     
 }

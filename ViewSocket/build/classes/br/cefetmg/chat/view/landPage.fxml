@@ -35,7 +35,7 @@
                               </Label>
                            </children>
                         </Pane>
-                        <TextField fx:id="userName" layoutX="28.0" layoutY="125.0" onAction="#entrar" prefHeight="25.0" prefWidth="336.0" />
+                        <TextField layoutX="28.0" layoutY="125.0" prefHeight="25.0" prefWidth="336.0" />
                      </children>
                      <effect>
                         <DropShadow />

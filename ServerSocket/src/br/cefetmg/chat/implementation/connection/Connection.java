@@ -7,11 +7,13 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import java.util.HashMap;
 
 public class Connection implements IConnection{
     
     private Socket pDados;
     private Socket pMensagens;
+    private HashMap<Long, Socket> mapasMsg;
     private static ServerSocket s;
     private ObjectOutputStream outDados;
     private ObjectInputStream inDados;
@@ -22,10 +24,15 @@ public class Connection implements IConnection{
         try {
             pDados = s.accept();
             System.out.println("Aceita conexão de dados: " + pDados.toString());
-            pMensagens = s.accept();
-            System.out.println("Aceita conexão de mensagens: " + pMensagens.toString());
             outDados = new ObjectOutputStream(pDados.getOutputStream());
             inDados = new ObjectInputStream (pDados.getInputStream());
+            pMensagens = s.accept();
+            Long ipCliente = new Long(0);
+            for (byte b: pMensagens.getInetAddress().getAddress()){  
+                ipCliente = ipCliente << 8 | (b & 0xFF);  
+            }
+            mapasMsg.put(ipCliente, pMensagens);
+            System.out.println("Aceita conexão de mensagens: " + pMensagens.toString());
             outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
             inMensagens = new ObjectInputStream (pMensagens.getInputStream());
         } catch (IOException ex) {

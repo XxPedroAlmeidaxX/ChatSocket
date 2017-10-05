@@ -32,17 +32,19 @@ public class landPageController {
     @FXML
     private void entrar(){
         try {
-            System.out.println("oi1");
             IConnection conn = ConnectionManager.getInstance().getConnection();
-            System.out.println("oi2");
             Long ip = conn.getIp();
             System.out.println(ip);
             IUserBusiness user = new UserBusiness();
-            user.getUserById(ip);
-            User u = new User();
-            u.setNameUser(userName.getText());
-            u.setIpUser(conn.getIp());
-            user.insertUser(u);
+            User u = user.getUserById(ip);
+            if(u.getIpUser()==null){            
+                u.setNameUser(userName.getText());
+                u.setIpUser(conn.getIp());
+                user.insertUser(u);
+            }else{
+                main.setLogado(u);
+                main.showHome();
+            }
         } catch (BusinessException | ConnectionException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }

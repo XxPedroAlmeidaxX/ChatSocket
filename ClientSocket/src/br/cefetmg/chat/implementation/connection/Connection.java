@@ -16,12 +16,8 @@ public class Connection implements IConnection{
     private ObjectInputStream inDados;
     private ObjectOutputStream outMensagens;
     private ObjectInputStream inMensagens;
-    private ArrayList<Object> msgData;
-    private ArrayList<Object> serverResponse;
     
     public Connection(String ip, int porta) throws ConnectionException {
-        msgData = new ArrayList<>();
-        serverResponse = new ArrayList<>();
         try {
             pDados = new Socket(ip, porta);  
             outDados = new ObjectOutputStream(pDados.getOutputStream());
@@ -32,7 +28,7 @@ public class Connection implements IConnection{
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);
         }
-        new Thread(new NewMessagesThread()).start();
+        new Thread(new NewMessagesThread(this)).start();
     }
 
     @Override

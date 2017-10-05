@@ -2,8 +2,6 @@ package br.cefetmg.chat.implementation.connection;
 
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.*;
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public class ConnectionManager {
   

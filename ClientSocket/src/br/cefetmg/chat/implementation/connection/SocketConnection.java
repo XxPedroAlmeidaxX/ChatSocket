@@ -8,8 +8,6 @@ package br.cefetmg.chat.implementation.connection;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.ConnectionFactory;
 import br.cefetmg.chat.interfaces.connection.IConnection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -21,7 +19,7 @@ public class SocketConnection implements ConnectionFactory{
     
     public SocketConnection(){
         try {
-            c = new Connection("localhost", 3333);
+            c = new Connection("localhost", 2223);
         } catch (ConnectionException ex) {
             throw new RuntimeException("Erro ao criar conexão: " + ex.getMessage());
         }

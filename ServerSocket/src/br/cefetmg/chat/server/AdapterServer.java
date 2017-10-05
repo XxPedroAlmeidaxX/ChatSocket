@@ -7,8 +7,8 @@ public class AdapterServer implements Runnable{
     
     private final Connection con;
     
-    public AdapterServer() throws ConnectionException{
-        con = new Connection();
+    public AdapterServer(Connection c) throws ConnectionException{
+        con = c;
     }
     
     @Override
