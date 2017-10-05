@@ -41,8 +41,6 @@ public class MainView extends Application {
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
-            landPageController controller = loader.getController();
-            controller.setMainView(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
