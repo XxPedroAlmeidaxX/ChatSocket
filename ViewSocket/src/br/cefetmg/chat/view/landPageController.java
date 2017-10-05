@@ -5,10 +5,17 @@
  */
 package br.cefetmg.chat.view;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
 /**
  *
  * @author Adalbs
  */
 public class landPageController {
+    @FXML
+    private Button btnEntrar;
+    
+    private MainView main;
     
 }

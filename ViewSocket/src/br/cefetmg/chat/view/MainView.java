@@ -28,7 +28,6 @@ public class MainView extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-        System.out.println("comeco2");
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Logar Chat");
         showLogin();
@@ -52,6 +51,10 @@ public class MainView extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public Stage getPrimaryStage(){
+        return primaryStage;
     }
     
 }
