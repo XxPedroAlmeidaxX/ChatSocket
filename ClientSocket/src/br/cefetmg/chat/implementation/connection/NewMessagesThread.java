@@ -5,8 +5,11 @@
  */
 package br.cefetmg.chat.implementation.connection;
 
+import br.cefetmg.chat.domain.Message;
+import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -15,20 +18,27 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 public class NewMessagesThread implements Runnable{
     
     private IConnection c;
-    public static boolean esperando;
+    public Pane p;
     
-    public NewMessagesThread(Connection c){
+    public NewMessagesThread(IConnection c, Pane p){
         this.c = c;
+        this.p = p;
     }
     
     @Override
     public void run() {
         try {
-            Object mensagem = c.receiveMensagens();
+            String update = (String)c.receiveMensagens();
+            switch(update){
+                case "msg":
+                    Message m = (Message)c.receiveMensagens();
+                    
+                case "sala":
+                    Room r = (Room)c.receiveMensagens();
+            }
         } catch (ConnectionException ex) {
             throw new RuntimeException(ex.getMessage());
         }
-        //TODO
     }
     
 }

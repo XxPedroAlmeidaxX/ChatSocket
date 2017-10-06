@@ -41,7 +41,7 @@ public class HomeController implements Initializable {
     
     @FXML
     private void criarSala(){
-        
+        main.showRoomMaker();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class UserDAO implements IUserDAO{
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT ipUser, nameUser FROM Users WHERE ipUser = ?";
+            String sql = "SELECT idUser, ipUser, nameUser FROM Users WHERE idUser = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -41,6 +41,7 @@ public class UserDAO implements IUserDAO{
             if (rs.next()) {
                 us.setIpUser(rs.getLong("ipUser"));
                 us.setNameUser(rs.getString("nameUser"));
+                us.setIdUser(rs.getLong("idUser"));
             }
             rs.close();
             pstmt.close();
@@ -56,7 +57,7 @@ public class UserDAO implements IUserDAO{
         try {
             User us = this.getUserById(id);
             Connection connection = ConnectionManager.getInstance().getConnection();
-            String sql = "DELETE FROM Users WHERE ipUser = ?";
+            String sql = "DELETE FROM Users WHERE idUser = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             pstmt.executeUpdate();
@@ -72,15 +73,40 @@ public class UserDAO implements IUserDAO{
     public synchronized User updateUserById(Long id, User u) throws PersistenceException {
         try{
             Connection connection = ConnectionManager.getInstance().getConnection();
-            String sql = "UPDATE Users SET ipUser = ?, nameUser = ? WHERE ipUser = ? ";
+            String sql = "UPDATE Users SET ipUser = ?, nameUser = ? WHERE idUser = ? ";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, u.getIpUser());
             pstmt.setString(2, u.getNameUser());
-            pstmt.setLong(3, u.getIpUser());
+            pstmt.setLong(3, u.getIdUser());
             pstmt.executeUpdate();
             pstmt.close();
             connection.close();
             return u;
+        } catch (ClassNotFoundException | SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public synchronized User getUserByIpAndName(Long ip, String name) throws PersistenceException {
+        try {
+            Connection connection = ConnectionManager.getInstance().getConnection();
+
+            String sql = "SELECT idUser, ipUser, nameUser FROM Users WHERE ipUser = ?, nameUser = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, ip);
+            pstmt.setString(2, name);
+            ResultSet rs = pstmt.executeQuery();
+            User us = new User();
+            if (rs.next()) {
+                us.setIpUser(rs.getLong("ipUser"));
+                us.setNameUser(rs.getString("nameUser"));
+                us.setIdUser(rs.getLong("idUser"));
+            }
+            rs.close();
+            pstmt.close();
+            connection.close();
+            return us;
         } catch (ClassNotFoundException | SQLException e) {
             throw new PersistenceException(e.getMessage());
         }

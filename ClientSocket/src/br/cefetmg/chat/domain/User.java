@@ -3,10 +3,12 @@ package br.cefetmg.chat.domain;
 public class User {
     private Long ipUser;
     private String nameUser;
+    private Long idUser;
 
-    public User(Long ipUser, String nameUser) {
+    public User(Long ipUser, String nameUser, Long idUser) {
         this.ipUser = ipUser;
         this.nameUser = nameUser;
+        this.idUser=idUser;
     }
 
     public User() {}
@@ -26,4 +28,13 @@ public class User {
     public void setNameUser(String nameUser) {
         this.nameUser = nameUser;
     }
+
+    public Long getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(Long idUser) {
+        this.idUser = idUser;
+    }
+    
 }
