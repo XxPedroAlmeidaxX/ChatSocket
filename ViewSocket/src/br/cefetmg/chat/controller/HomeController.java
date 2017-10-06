@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.cefetmg.chat.view;
+package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
@@ -12,19 +12,22 @@ import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
+import br.cefetmg.chat.view.MainView;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextArea;
 
 /**
+ * FXML Controller class
  *
  * @author Adalbs
  */
-public class landPageController implements Initializable{
+public class HomeController implements Initializable {
+
     @FXML
-    private TextField userName;
+    private TextArea txtMsg;
     
     private MainView main;
     
@@ -33,27 +36,18 @@ public class landPageController implements Initializable{
     }
     
     @FXML
-    private void entrar(){
-        try {
-            Long ip = main.conn.getIp();
-            System.out.println(ip);
-            IUserBusiness user = new UserBusiness();
-            User u = user.getUserById(ip);
-            if(u.getIpUser()==null){            
-                u.setNameUser(userName.getText());
-                u.setIpUser(main.conn.getIp());
-                user.insertUser(u);
-            }else{
-                main.setLogado(u);
-                main.showHome();
-            }
-        } catch (BusinessException ex) {
-            System.out.println("Erro: " + ex.getMessage());
-        }
+    private void enviarMsg(){
+        
+    }
+    
+    @FXML
+    private void criarSala(){
+        main.showRoomMaker();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        
+    
     }
+    
 }
