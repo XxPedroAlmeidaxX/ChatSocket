@@ -77,6 +77,7 @@ public class NewMessagesThread implements Runnable{
                     lUsuario.setFont(Font.font ("System", 10));
                     filhasMensagens.add(lMsg);
                     filhasMensagens.add(lUsuario);
+                    break;
                 case "sala":
                     Room r = (Room)c.receiveMensagens();
                     FlowPane salasDisponiveis = (FlowPane)p.getRootLayout().lookup("#paneAddRooms");
@@ -101,6 +102,7 @@ public class NewMessagesThread implements Runnable{
                         }
                     });
                     filhas.add(b);
+                    break;
             }
         } catch (ConnectionException ex) {
             throw new RuntimeException(ex.getMessage());
