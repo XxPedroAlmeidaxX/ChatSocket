@@ -28,7 +28,7 @@ public class Connection implements IConnection{
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);
         }
-        new Thread(new NewMessagesThread(this)).start();
+        
     }
 
     @Override

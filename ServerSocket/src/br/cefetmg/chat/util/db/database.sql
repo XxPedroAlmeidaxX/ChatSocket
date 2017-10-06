@@ -11,7 +11,7 @@ Database: PostgreSQL 9.5
 -- Table Message
 
 CREATE TABLE Message(
- idMessage Integer NOT NULL,
+ idMessage Serial NOT NULL,
  textMessage Text NOT NULL,
  stateMessage Boolean NOT NULL,
  targetMessage Integer,
@@ -42,7 +42,8 @@ ALTER TABLE Message ADD CONSTRAINT Key1 PRIMARY KEY (idMessage)
 
 CREATE TABLE Users(
  ipUser Integer NOT NULL,
- nameUser Text NOT NULL
+ nameUser Text NOT NULL,
+ idUser Serial NOT NULL
 )
 ;
 
@@ -70,14 +71,13 @@ ALTER TABLE Room ADD CONSTRAINT Key3 PRIMARY KEY (idRoom)
 
 CREATE TABLE UsersRoom(
  idRoom Integer NOT NULL,
- idUser Integer NOT NULL,
- nameUser Text NOT NULL
+ idUser Integer NOT NULL
 )
 ;
 
 -- Add keys for table User-Room
 
-ALTER TABLE UsersRoom ADD CONSTRAINT Key4 PRIMARY KEY (idRoom,idUser,nameUser)
+ALTER TABLE UsersRoom ADD CONSTRAINT Key4 PRIMARY KEY (idRoom,idUser)
 ;
 -- Create relationships section ------------------------------------------------- 
 

@@ -8,6 +8,7 @@ public interface IUserBusiness {
     public User insertUser(User u) throws BusinessException, PersistenceException;
     public User getUserById(Long id) throws BusinessException, PersistenceException;
     public User deleteUserById(Long id) throws BusinessException, PersistenceException;
+    public User getUserByIpAndName(Long ip, String name) throws BusinessException, PersistenceException;
     public User updateUserById(Long id, User u) throws BusinessException, PersistenceException;
     
 }

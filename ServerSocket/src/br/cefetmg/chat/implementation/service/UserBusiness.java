@@ -60,4 +60,15 @@ public class UserBusiness implements IUserBusiness{
         }
         return dao.updateUserById(id, u);
     }  
+
+    @Override
+    public User getUserByIpAndName(Long ip, String name) throws BusinessException, PersistenceException {
+        if(ip==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(name==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        return dao.getUserByIpAndName(ip, name);
+    }
 }

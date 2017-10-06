@@ -46,7 +46,7 @@ public class UserBusiness implements IUserBusiness{
         }
         User u = null;
         try{
-            c.sendDados("User-Get");
+            c.sendDados("User-GetId");
             c.sendDados(id);
             u = (User) c.receiveDados();
         }catch(ConnectionException ex){
@@ -98,4 +98,24 @@ public class UserBusiness implements IUserBusiness{
         }
         return u;
     }  
+
+    @Override
+    public User getUserByIpAndName(Long ip, String name) throws BusinessException {
+        if(ip==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(name==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        User u = null;
+        try{
+            c.sendDados("User-GetIpName");
+            c.sendDados(ip);
+            c.sendDados(name);
+            u = (User) c.receiveDados();
+        }catch(ConnectionException ex){
+            throw new BusinessException(ex.getMessage());
+        }
+        return u;
+    }
 }

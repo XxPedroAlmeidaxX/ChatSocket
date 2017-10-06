@@ -6,6 +6,7 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.ConnectionManager;
+import br.cefetmg.chat.implementation.connection.NewMessagesThread;
 import br.cefetmg.chat.implementation.service.MessageBusiness;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
@@ -37,12 +38,14 @@ public class MainView extends Application {
     private List<Room> salas;
     public IConnection conn;
     
+    
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Logar Chat");
         try {
             conn = ConnectionManager.getInstance().getConnection();
+            new Thread(new NewMessagesThread(conn, rootLayout)).start();
         } catch (ConnectionException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
