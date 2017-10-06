@@ -7,34 +7,27 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
-import java.util.HashMap;
 
 public class Connection implements IConnection{
     
-    private Socket pDados;
-    private Socket pMensagens;
-    private HashMap<Long, Socket> mapasMsg;
+    //Canal para troca de dados entre o cliente e o servidor
+    private Socket pData;
+    //Canal para atualização das mensagens do cliente
+    //São dois canais para evitar conflitos
+    private Socket pUpdate;
     private static ServerSocket s;
-    private ObjectOutputStream outDados;
-    private ObjectInputStream inDados;
-    private ObjectOutputStream outMensagens;
-    private ObjectInputStream inMensagens;
+    private ObjectOutputStream outData;
+    private ObjectInputStream inData;
+    private ObjectOutputStream update;
     
     public Connection() throws ConnectionException {
         try {
-            pDados = s.accept();
-            System.out.println("Aceita conexão de dados: " + pDados.toString());
-            outDados = new ObjectOutputStream(pDados.getOutputStream());
-            inDados = new ObjectInputStream (pDados.getInputStream());
-            pMensagens = s.accept();
-            Long ipCliente = new Long(0);
-            for (byte b: pMensagens.getInetAddress().getAddress()){  
-                ipCliente = ipCliente << 8 | (b & 0xFF);  
-            }
-            mapasMsg.put(ipCliente, pMensagens);
-            System.out.println("Aceita conexão de mensagens: " + pMensagens.toString());
-            outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
-            inMensagens = new ObjectInputStream (pMensagens.getInputStream());
+            pData = s.accept();
+            outData = new ObjectOutputStream(pData.getOutputStream());
+            inData = new ObjectInputStream (pData.getInputStream());
+ 
+            pUpdate = s.accept();
+            update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -43,18 +36,18 @@ public class Connection implements IConnection{
     @Override
     public void disconnect() throws ConnectionException {
         try {
-            pDados.close();
-            pMensagens.close();
+            pData.close();
+            pUpdate.close();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao desconectar do Cliente: " + ex);
         }          
     }
 
     @Override
-    public void sendDados(Object obj) throws ConnectionException {
+    public void sendData(Object obj) throws ConnectionException {
         try {            
-            outDados.writeObject(obj);
-            outDados.flush();
+            outData.writeObject(obj);
+            outData.flush();
         }
         catch (IOException ex) {
             throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
@@ -62,9 +55,9 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public Object receiveDados() throws ConnectionException {
+    public Object receiveData() throws ConnectionException {
         try {
-            return inDados.readObject();
+            return inData.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
@@ -72,10 +65,10 @@ public class Connection implements IConnection{
     }
     
     @Override
-    public void sendMensagens(Object obj) throws ConnectionException {
+    public void update(Object obj) throws ConnectionException {
         try {            
-            outMensagens.writeObject(obj);
-            outMensagens.flush();
+            update.writeObject(obj);
+            update.flush();
         }
         catch (IOException ex) {
             throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
@@ -88,14 +81,5 @@ public class Connection implements IConnection{
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
-    }
-
-    @Override
-    public Long getIp() {
-        Long result = new Long(0);
-        for (byte b: pDados.getInetAddress().getAddress()){  
-            result = result << 8 | (b & 0xFF);  
-        }
-        return result;
     }
 }

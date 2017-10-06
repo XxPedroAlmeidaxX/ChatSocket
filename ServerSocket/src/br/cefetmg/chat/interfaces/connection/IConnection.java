@@ -4,8 +4,7 @@ import br.cefetmg.chat.exception.ConnectionException;
 
 public interface IConnection {
     public void disconnect() throws ConnectionException;
-    public void sendDados(Object obj) throws ConnectionException;
-    public Object receiveDados() throws ConnectionException;
-    public void sendMensagens(Object obj) throws ConnectionException;
-    public Long getIp();
+    public void sendData(Object obj) throws ConnectionException;
+    public Object receiveData() throws ConnectionException;
+    public void update(Object obj) throws ConnectionException;
 }
