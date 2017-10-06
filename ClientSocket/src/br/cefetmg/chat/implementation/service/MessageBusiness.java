@@ -9,8 +9,6 @@ import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class MessageBusiness implements IMessageBusiness{
     private IConnection c;

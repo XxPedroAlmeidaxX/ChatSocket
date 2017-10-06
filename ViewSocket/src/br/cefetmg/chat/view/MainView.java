@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.cefetmg.chat.view;
 
 import br.cefetmg.chat.domain.Message;
@@ -17,34 +12,23 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javax.swing.event.HyperlinkEvent;
 
-/**
- *
- * @author Aluno
- */
 public class MainView extends Application {
     
     private Stage primaryStage;
