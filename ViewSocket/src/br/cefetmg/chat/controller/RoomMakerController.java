@@ -1,6 +1,7 @@
-package br.cefetmg.chat.view;
+package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.Room;
+import br.cefetmg.chat.view.MainView;
 import java.util.ArrayList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
