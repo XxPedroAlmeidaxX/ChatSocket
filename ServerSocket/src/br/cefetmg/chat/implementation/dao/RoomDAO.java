@@ -60,7 +60,7 @@ public class RoomDAO implements IRoomDAO{
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
             }
-            sql = "SELECT ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.ipUser=b.ipUser WHERE a.ipUser = ?";
+            sql = "SELECT idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
@@ -68,6 +68,7 @@ public class RoomDAO implements IRoomDAO{
             User u;
             while(rs.next()){
                 u = new User();
+                u.setIdUser(rs.getLong("idUser"));
                 u.setIpUser(rs.getLong("ipUser"));
                 u.setNameUser(rs.getString("nameUser"));
                 users.add(u);
@@ -134,7 +135,7 @@ public class RoomDAO implements IRoomDAO{
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
-                sql = "SELECT ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.ipUser=b.ipUser WHERE a.ipUser = ?";
+                sql = "SELECT ipUser, idUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setLong(1, r.getIdRoom());
                 ResultSet rsA = pstmt.executeQuery();
@@ -142,6 +143,7 @@ public class RoomDAO implements IRoomDAO{
                 User u;
                 while(rsA.next()){
                     u = new User();
+                    u.setIdUser(rsA.getLong("idUser"));
                     u.setIpUser(rsA.getLong("ipUser"));
                     u.setNameUser(rsA.getString("nameUser"));
                     users.add(u);
