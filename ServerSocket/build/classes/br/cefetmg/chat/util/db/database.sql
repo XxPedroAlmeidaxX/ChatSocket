@@ -11,7 +11,7 @@ Database: PostgreSQL 9.5
 -- Table Message
 
 CREATE TABLE Message(
- idMessage Integer NOT NULL,
+ idMessage Serial NOT NULL,
  textMessage Text NOT NULL,
  stateMessage Boolean NOT NULL,
  targetMessage Integer,
@@ -42,13 +42,14 @@ ALTER TABLE Message ADD CONSTRAINT Key1 PRIMARY KEY (idMessage)
 
 CREATE TABLE Users(
  ipUser Integer NOT NULL,
- nameUser Text NOT NULL
+ nameUser Text NOT NULL,
+ idUser Serial NOT NULL
 )
 ;
 
 -- Add keys for table User
 
-ALTER TABLE Users ADD CONSTRAINT Key2 PRIMARY KEY (ipUser,nameUser)
+ALTER TABLE Users ADD CONSTRAINT Key2 PRIMARY KEY (idUser)
 ;
 
 -- Table Room
@@ -70,21 +71,20 @@ ALTER TABLE Room ADD CONSTRAINT Key3 PRIMARY KEY (idRoom)
 
 CREATE TABLE UsersRoom(
  idRoom Integer NOT NULL,
- idUser Integer NOT NULL,
- nameUser Text NOT NULL
+ idUser Integer NOT NULL
 )
 ;
 
 -- Add keys for table User-Room
 
-ALTER TABLE UsersRoom ADD CONSTRAINT Key4 PRIMARY KEY (idRoom,idUser,nameUser)
+ALTER TABLE UsersRoom ADD CONSTRAINT Key4 PRIMARY KEY (idRoom,idUser)
 ;
 -- Create relationships section ------------------------------------------------- 
 
-ALTER TABLE Message ADD FOREIGN KEY (targetMessage, nameUser) REFERENCES Users (ipUser, nameUser) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE Message ADD FOREIGN KEY (targetMessage) REFERENCES Users (idUser) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
-ALTER TABLE Message ADD FOREIGN KEY (senderUser, nameTarget) REFERENCES Users (ipUser, nameUser) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE Message ADD FOREIGN KEY (senderUser) REFERENCES Users (idUser) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
 ALTER TABLE Message ADD FOREIGN KEY (room) REFERENCES Room (idRoom) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -93,5 +93,5 @@ ALTER TABLE Message ADD FOREIGN KEY (room) REFERENCES Room (idRoom) ON DELETE NO
 ALTER TABLE UsersRoom ADD FOREIGN KEY (idRoom) REFERENCES Room (idRoom) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;
 
-ALTER TABLE UsersRoom ADD FOREIGN KEY (idUser, nameUser) REFERENCES Users (ipUser, nameUser) ON DELETE NO ACTION ON UPDATE NO ACTION
+ALTER TABLE UsersRoom ADD FOREIGN KEY (idUser) REFERENCES Users (idUser) ON DELETE NO ACTION ON UPDATE NO ACTION
 ;

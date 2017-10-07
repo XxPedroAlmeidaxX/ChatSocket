@@ -13,6 +13,7 @@ import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.view.MainView;
+import br.cefetmg.chat.view.MainView;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -37,17 +38,11 @@ public class landPageController implements Initializable{
     private void entrar(){
         try {
             Long ip = main.conn.getIp();
-            System.out.println(ip);
             IUserBusiness user = new UserBusiness();
-            User u = user.getUserByIpAndName(ip, userName.getText());
-            if(u.getIpUser()==null){
-                u.setNameUser(userName.getText());
-                u.setIpUser(ip);
-                user.insertUser(u);
-            }else{
-                main.setLogado(u);
-                main.showHome();
-            }
+            String nome = userName.getText();
+            User u = user.logarUser(nome, ip);
+            main.setLogado(u);
+            main.showHome();
         } catch (BusinessException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }

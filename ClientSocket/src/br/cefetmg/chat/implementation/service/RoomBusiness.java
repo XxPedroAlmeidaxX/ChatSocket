@@ -2,6 +2,7 @@ package br.cefetmg.chat.implementation.service;
 
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import br.cefetmg.chat.domain.Room;
+import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.ConnectionManager;
@@ -112,4 +113,46 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException(ex.getMessage());
         }
     }   
+
+    @Override
+    public Room insertUserRoom(User u, Long id) throws BusinessException {
+        if(u==null){
+            throw new BusinessException("Usuario não pode ser nulo");
+        }
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(u.getNameUser()==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        if(id==null){
+            throw new BusinessException("Id não pode ser nulo");
+        }
+        try{
+            c.sendDados("Room-insertUserRoom");
+            c.sendDados(u);
+            c.sendDados(id);
+            return (Room)c.receiveDados();
+        }catch(ConnectionException ex){
+            throw new BusinessException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public Room removeUserRoom(Long idUser, Long idRoom) throws BusinessException {
+        if(idUser==null){
+            throw new BusinessException("Id do usuario não pode ser nulo");
+        }
+        if(idRoom==null){
+            throw new BusinessException("Id da sala não pode ser nulo");
+        }
+        try{
+            c.sendDados("Room-removeUserRoom");
+            c.sendDados(idUser);
+            c.sendDados(idRoom);
+            return (Room)c.receiveDados();
+        }catch(ConnectionException ex){
+            throw new BusinessException(ex.getMessage());
+        }
+    }
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="605.0" prefWidth="900.0" style="-fx-background-color: #f5f5f0;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.view.RoomMakerController">
+<AnchorPane id="AnchorPane" prefHeight="605.0" prefWidth="900.0" style="-fx-background-color: #f5f5f0;" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.controller.RoomMakerController">
    <children>
       <AnchorPane layoutX="122.0" layoutY="84.0" prefHeight="473.0" prefWidth="656.0" style="-fx-background-color: #FFFFFF;">
          <children>

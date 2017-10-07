@@ -15,6 +15,7 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import br.cefetmg.chat.view.MainView;
+import br.cefetmg.chat.view.MainView;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

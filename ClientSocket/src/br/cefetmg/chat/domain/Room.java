@@ -1,8 +1,9 @@
 package br.cefetmg.chat.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Room {
+public class Room implements Serializable{
     private Long idRoom;
     private String nameRoom;
     private String password;

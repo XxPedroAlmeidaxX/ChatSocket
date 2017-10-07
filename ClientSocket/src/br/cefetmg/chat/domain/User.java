@@ -1,6 +1,8 @@
 package br.cefetmg.chat.domain;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     private Long ipUser;
     private String nameUser;
     private Long idUser;

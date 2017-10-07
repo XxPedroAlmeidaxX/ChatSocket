@@ -118,4 +118,23 @@ public class UserBusiness implements IUserBusiness{
         }
         return u;
     }
+
+    @Override
+    public User logarUser(String name, Long ip) throws BusinessException {
+        if(ip==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(name==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        try{
+            c.sendDados("User-Logar");
+            c.sendDados(name);
+            c.sendDados(ip);
+            User u = (User)c.receiveDados();
+            return u;
+        }catch(ConnectionException ex){
+            throw new BusinessException(ex.getMessage());
+        }
+    }
 }

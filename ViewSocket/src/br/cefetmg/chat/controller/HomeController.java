@@ -13,6 +13,7 @@ import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.view.MainView;
+import br.cefetmg.chat.view.MainView;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;

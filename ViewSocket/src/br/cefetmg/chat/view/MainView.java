@@ -1,8 +1,8 @@
 package br.cefetmg.chat.view;
 
+import br.cefetmg.chat.controller.landPageController;
 import br.cefetmg.chat.controller.HomeController;
 import br.cefetmg.chat.controller.RoomMakerController;
-import br.cefetmg.chat.controller.landPageController;
 import br.cefetmg.chat.controller.NewMessagesThread;
 import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
@@ -40,7 +40,7 @@ public class MainView extends Application {
     private User logado;
     private List<Room> salas;
     public IConnection conn;
-    
+    private Room currentRoom;
     
     @Override
     public void start(Stage primaryStage) {
@@ -52,7 +52,7 @@ public class MainView extends Application {
         } catch (ConnectionException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
-        showHome();
+        showLogin();
     }
     
     public void showHome(){
@@ -111,55 +111,60 @@ public class MainView extends Application {
     }
     
     public void loadRoom(Room r) throws BusinessException{
-         FlowPane mensagens = (FlowPane)rootLayout.lookup("#mensagensContainer");
-         IMessageBusiness busi = new MessageBusiness();
-         List<Message> mensagensList = busi.getMessagesByRoom(r);
-         ObservableList filhasMensagens = mensagens.getChildren();
-         mensagens.setVgap(10);
-         filhasMensagens.remove(0, filhasMensagens.size());
-         for(Message m:mensagensList){
-             Label lMsg = new Label();
-             lMsg.setId("mensagem"+m.getIdMessage());
-             lMsg.setText(m.getTextMessage());
-             lMsg.setAlignment(Pos.BOTTOM_LEFT);
-             lMsg.setMinWidth(mensagens.getWidth());
-             if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
-                 lMsg.setStyle("-fx-background-color: #e0e0e0");
-                 lMsg.setTextFill(Paint.valueOf("black")); 
-             }else{
-                 lMsg.setStyle("-fx-background-color: #42e8f4");
-                 lMsg.setTextFill(Paint.valueOf("white")); 
-             }
-             Label lUsuario = new Label();
-             if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
-                 lUsuario.setStyle("-fx-background-color: #e0e0e0");
-                 lUsuario.setTextFill(Paint.valueOf("black")); 
-             }else{
-                 lUsuario.setStyle("-fx-background-color: #42e8f4");
-                 lUsuario.setTextFill(Paint.valueOf("white")); 
-             }
-             lUsuario.setAlignment(Pos.BOTTOM_LEFT);
-             lUsuario.setMinWidth(mensagens.getWidth());
-             lUsuario.setId("usMsg-"+m.getUser().getIpUser()+"-"+m.getUser().getNameUser());
-             lUsuario.setText(m.getUser().getNameUser());
-             lUsuario.setFont(Font.font ("System", 10));
-             filhasMensagens.add(lMsg);
-             filhasMensagens.add(lUsuario);
-         }
-         FlowPane logados = (FlowPane)rootLayout.lookup("#logadosContainer");
-         ObservableList filhasLogados = logados.getChildren();
-         logados.setVgap(15);
-         filhasLogados.remove(0, filhasMensagens.size());
-         for(User u : r.getUsuarios()){
-             if(u.getIpUser()!=logado.getIpUser() && !u.getNameUser().equals(logado.getNameUser())){
-                 Label l = new Label();
-                 l.setId("usLog-"+u.getIpUser()+"-"+u.getNameUser());
-                 l.setText(u.getNameUser());
-                 l.setMinWidth(logados.getWidth());
-                 l.setStyle("-fx-background-color: #660000");
-                 filhasLogados.add(l);
-             }
-         }
+        IMessageBusiness busi = new MessageBusiness(); 
+        IRoomBusiness roomB = new RoomBusiness();
+        if(currentRoom!=null){
+             roomB.removeUserRoom(logado.getIdUser(), currentRoom.getIdRoom());
+        }
+        roomB.insertUserRoom(logado, r.getIdRoom());
+        FlowPane mensagens = (FlowPane)rootLayout.lookup("#mensagensContainer");
+        List<Message> mensagensList = busi.getMessagesByRoom(r);
+        ObservableList filhasMensagens = mensagens.getChildren();
+        mensagens.setVgap(10);
+        filhasMensagens.remove(0, filhasMensagens.size());
+        for(Message m:mensagensList){
+            Label lMsg = new Label();
+            lMsg.setId("mensagem"+m.getIdMessage());
+            lMsg.setText(m.getTextMessage());
+            lMsg.setAlignment(Pos.BOTTOM_LEFT);
+            lMsg.setMinWidth(mensagens.getWidth());
+            if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
+                lMsg.setStyle("-fx-background-color: #e0e0e0");
+                lMsg.setTextFill(Paint.valueOf("black")); 
+            }else{
+                lMsg.setStyle("-fx-background-color: #42e8f4");
+                lMsg.setTextFill(Paint.valueOf("white")); 
+            }
+            Label lUsuario = new Label();
+            if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
+                lUsuario.setStyle("-fx-background-color: #e0e0e0");
+                lUsuario.setTextFill(Paint.valueOf("black")); 
+            }else{
+                lUsuario.setStyle("-fx-background-color: #42e8f4");
+                lUsuario.setTextFill(Paint.valueOf("white")); 
+            }
+            lUsuario.setAlignment(Pos.BOTTOM_LEFT);
+            lUsuario.setMinWidth(mensagens.getWidth());
+            lUsuario.setId("usMsg-"+m.getUser().getIpUser()+"-"+m.getUser().getNameUser());
+            lUsuario.setText(m.getUser().getNameUser());
+            lUsuario.setFont(Font.font ("System", 10));
+            filhasMensagens.add(lMsg);
+            filhasMensagens.add(lUsuario);
+        }
+        FlowPane logados = (FlowPane)rootLayout.lookup("#logadosContainer");
+        ObservableList filhasLogados = logados.getChildren();
+        logados.setVgap(15);
+        filhasLogados.remove(0, filhasMensagens.size());
+        for(User u : r.getUsuarios()){
+            if(u.getIpUser()!=logado.getIpUser() && !u.getNameUser().equals(logado.getNameUser())){
+                Label l = new Label();
+                l.setId("usLog-"+u.getIpUser()+"-"+u.getNameUser());
+                l.setText(u.getNameUser());
+                l.setMinWidth(logados.getWidth());
+                l.setStyle("-fx-background-color: #660000");
+                filhasLogados.add(l);
+            }
+        }
     }
 
     public void showRoomMaker() {

@@ -73,4 +73,29 @@ public class RoomBusiness implements IRoomBusiness{
     public List<Room> getAllRoom() throws BusinessException, PersistenceException {
         return dao.getAllRoom();
     }   
+
+    @Override
+    public Room insertUserRoom(User u, Long id) throws BusinessException, PersistenceException {
+        if(u==null){
+            throw new BusinessException("Usuario não pode ser nulo");
+        }
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(u.getNameUser()==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        if(id==null){
+            throw new BusinessException("Id não pode ser nulo");
+        }
+        return dao.insertUserRoom(u, id);
+    }
+
+    @Override
+    public Room removeUserRoom(Long idUser) throws BusinessException, PersistenceException {
+        if(idUser==null){
+            throw new BusinessException("Id do usuario não pode ser nulo");
+        }
+        return dao.removeUserRoom(idUser);
+    }
 }
