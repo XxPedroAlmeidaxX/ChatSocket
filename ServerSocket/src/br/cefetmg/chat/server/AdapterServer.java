@@ -3,7 +3,9 @@ package br.cefetmg.chat.server;
 import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
+import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
+import br.cefetmg.chat.exception.PersistenceException;
 import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.implementation.dao.MessageDAO;
 import br.cefetmg.chat.implementation.dao.RoomDAO;
@@ -11,6 +13,8 @@ import br.cefetmg.chat.implementation.dao.UserDAO;
 import br.cefetmg.chat.implementation.service.MessageBusiness;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.implementation.service.UserBusiness;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AdapterServer implements Runnable{
     
@@ -150,7 +154,11 @@ public class AdapterServer implements Runnable{
                 }
                 
             } catch(Exception ex) {
-                roomB.removeUserRoom(cliente.getIdUser());
+                try {
+                    roomB.removeUserRoom(cliente.getIdUser());
+                } catch (BusinessException | PersistenceException ex1) {
+                    throw new RuntimeException(ex1.getMessage());
+                }
                 System.out.println("Usuário deslogado");
             }
         }
