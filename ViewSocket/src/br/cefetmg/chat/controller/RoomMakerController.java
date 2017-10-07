@@ -1,9 +1,15 @@
 package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.Room;
+import br.cefetmg.chat.exception.BusinessException;
+import br.cefetmg.chat.implementation.service.RoomBusiness;
+import br.cefetmg.chat.interfaces.service.IRoomBusiness;
+import br.cefetmg.chat.view.MainView;
 import br.cefetmg.chat.view.MainView;
 import br.cefetmg.chat.view.MainView;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -33,12 +39,18 @@ public class RoomMakerController {
 
     @FXML
     private void criar() {
-        Room r = new Room();
-        r.setIdRoom(Long.MIN_VALUE);
-        r.setNameRoom(txtNome.getText());
-        r.setStateRoom(chkPrivado.isSelected());
-        r.setPassword(pswSenha.getText());
-        r.setUsuarios(new ArrayList<>());
-        mv.showHome();
+        try {
+            Room r = new Room();
+            r.setNameRoom(txtNome.getText());
+            r.setStateRoom(chkPrivado.isSelected());
+            r.setPassword(pswSenha.getText());
+            r.setIdRoom(new Long(0));
+            IRoomBusiness business = new RoomBusiness(mv.conn); 
+            r = business.insertRoom(r);
+            mv.showHome();
+            mv.loadRoom(r);
+        } catch (BusinessException ex) {
+            System.out.println("Erro: "+ex.getMessage());
+        }
     }
 }

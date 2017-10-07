@@ -7,24 +7,18 @@ import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
 
 public class Connection implements IConnection{
     private Socket pDados;
-    private Socket pMensagens;
+    private Socket pUpdate;
     private ObjectOutputStream outDados;
     private ObjectInputStream inDados;
-    private ObjectOutputStream outMensagens;
-    private ObjectInputStream inMensagens;
+    private ObjectInputStream update;
     
     public Connection(String ip, int porta) throws ConnectionException {
         try {
             pDados = new Socket(ip, porta);  
-            outDados = new ObjectOutputStream(pDados.getOutputStream());
-            inDados = new ObjectInputStream (pDados.getInputStream());
-            pMensagens = new Socket(ip, porta);
-            outMensagens = new ObjectOutputStream(pMensagens.getOutputStream());
-            inMensagens = new ObjectInputStream (pMensagens.getInputStream());
+            pUpdate = new Socket(ip, porta);
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);
         }
@@ -35,7 +29,7 @@ public class Connection implements IConnection{
     public void disconnect() throws ConnectionException {
         try {
             pDados.close();
-            pMensagens.close();
+            pUpdate.close();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao desconectar do Servidor: " + ex);
         }          
@@ -44,6 +38,7 @@ public class Connection implements IConnection{
     @Override
     public void sendDados(Object obj) throws ConnectionException {
         try {            
+            outDados = new ObjectOutputStream(pDados.getOutputStream());
             outDados.writeObject(obj);
             outDados.flush();
         }
@@ -55,6 +50,7 @@ public class Connection implements IConnection{
     @Override
     public Object receiveDados() throws ConnectionException {
         try {
+            inDados = new ObjectInputStream (pDados.getInputStream());
             return inDados.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {
@@ -63,9 +59,10 @@ public class Connection implements IConnection{
     }
     
     @Override
-    public Object receiveMensagens() throws ConnectionException {
+    public Object receiveUpdates() throws ConnectionException {
         try {
-            return inMensagens.readObject();
+            update = new ObjectInputStream (pUpdate.getInputStream());
+            return update.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Servidor: " + ex);

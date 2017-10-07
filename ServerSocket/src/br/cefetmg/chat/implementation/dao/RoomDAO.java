@@ -60,7 +60,7 @@ public class RoomDAO implements IRoomDAO{
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
             }
-            sql = "SELECT idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+            sql = "SELECT a.idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
@@ -193,7 +193,10 @@ public class RoomDAO implements IRoomDAO{
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, idUser);
             pstmt.executeUpdate();
-            Room r = this.getRoomById(idRoom);
+            Room r = null;
+            if(idRoom!=null){
+                r = this.getRoomById(idRoom);
+            }
             pstmt.close();
             connection.close();
             return r;

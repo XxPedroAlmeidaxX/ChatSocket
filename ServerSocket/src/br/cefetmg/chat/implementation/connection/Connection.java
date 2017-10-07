@@ -17,16 +17,13 @@ public class Connection implements IConnection{
     private Socket pUpdate;
     private static ServerSocket s;
     private ObjectOutputStream outData;
-    private ObjectInputStream inData;
     private ObjectOutputStream update;
+    private ObjectInputStream inData;
     
     public Connection() throws ConnectionException {
         try {
             pData = s.accept();
-            outData = new ObjectOutputStream(pData.getOutputStream());
-            inData = new ObjectInputStream (pData.getInputStream());
             pUpdate = s.accept();
-            update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -44,7 +41,8 @@ public class Connection implements IConnection{
 
     @Override
     public void sendData(Object obj) throws ConnectionException {
-        try {            
+        try {    
+            outData = new ObjectOutputStream(pData.getOutputStream());
             outData.writeObject(obj);
             outData.flush();
         }
@@ -56,7 +54,10 @@ public class Connection implements IConnection{
     @Override
     public Object receiveData() throws ConnectionException {
         try {
-            return inData.readObject();
+            inData = new ObjectInputStream (pData.getInputStream());
+            Object d = inData.readObject();
+            return d;
+            
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
@@ -66,6 +67,7 @@ public class Connection implements IConnection{
     @Override
     public void update(Object obj) throws ConnectionException {
         try {            
+            update = new ObjectOutputStream(pUpdate.getOutputStream());
             update.writeObject(obj);
             update.flush();
         }
@@ -86,7 +88,7 @@ public class Connection implements IConnection{
         return pData;
     }
 
-    public Socket getpUpdate() {
+    public Socket getUpdate() {
         return pUpdate;
     }   
     

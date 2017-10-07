@@ -4,18 +4,14 @@ import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.ConnectionManager;
+import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 
 public class UserBusiness implements IUserBusiness{
     private IConnection c;
     
-    public UserBusiness(){
-        try {
-            c = ConnectionManager.getInstance().getConnection();
-        } catch (ConnectionException ex) {
-            throw new RuntimeException(ex.getMessage());
-        }
+    public UserBusiness(Connection c){
+        this.c = c;
     }
     
     @Override

@@ -6,16 +6,12 @@
 package br.cefetmg.chat.server;
 
 import br.cefetmg.chat.domain.Message;
-import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
-import br.cefetmg.chat.implementation.service.RoomBusiness;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -41,9 +37,9 @@ public class Notificator {
             for(User u:m.getRoom().getUsuarios()){
                 if(u.getIdUser()!=m.getUser().getIdUser()){
                     Socket s = tabelaUsuarios.get(u);
-                    ObjectOutputStream update = new ObjectOutputStream(s.getOutputStream());
-                    update.writeObject("msg");
-                    update.flush();
+                    ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
+                    o.writeObject("msg");
+                    o.flush();
                 }
             }
         } catch (IOException ex) {
@@ -55,10 +51,9 @@ public class Notificator {
         try {
             for(Map.Entry<User, Socket> entrada : tabelaUsuarios.entrySet()){
                 Socket s = entrada.getValue();
-                ObjectOutputStream update;
-                update = new ObjectOutputStream(s.getOutputStream());
-                update.writeObject("sala");
-                update.flush();
+                ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
+                o.writeObject("sala");
+                o.flush();
             }
         }catch (IOException ex) {
             System.out.println("Erro: "+ex.getMessage());
@@ -69,10 +64,9 @@ public class Notificator {
         try {
             for(Map.Entry<User, Socket> entrada : tabelaUsuarios.entrySet()){
                 Socket s = entrada.getValue();
-                ObjectOutputStream update;
-                update = new ObjectOutputStream(s.getOutputStream());
-                update.writeObject("usuarios");
-                update.flush();
+                ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
+                o.writeObject("usuarios");
+                o.flush();
             }
         }catch (IOException ex) {
             System.out.println("Erro: "+ex.getMessage());

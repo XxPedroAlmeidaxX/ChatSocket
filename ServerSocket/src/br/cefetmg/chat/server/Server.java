@@ -14,7 +14,8 @@ public class Server {
         
         while(true) {
             try {
-                new Thread(new AdapterServer(new Connection())).start();
+                Connection c = new Connection();
+                new Thread(new AdapterServer(c)).start();
             } catch (ConnectionException ex) {
                 System.out.println("\nFalha em uma das conexões: " + ex);
             }

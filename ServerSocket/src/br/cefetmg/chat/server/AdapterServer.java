@@ -59,7 +59,7 @@ public class AdapterServer implements Runnable{
                                     cliente = usB.insertUser(us);
                                     con.sendData(cliente);
                                 }
-                                Notificator.addTabela(cliente, con.getpUpdate());
+                                Notificator.addTabela(cliente, con.getUpdate());
                                 break;
                             case "Insert":
                                 u = (User)con.receiveData();
@@ -167,7 +167,7 @@ public class AdapterServer implements Runnable{
                     throw new RuntimeException(ex1.getMessage());
                 }
                 Notificator.removeTabela(cliente);
-                System.out.println("Usuário deslogado");
+                throw new RuntimeException(ex);
             }
         }
     }

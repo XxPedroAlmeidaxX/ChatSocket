@@ -7,12 +7,8 @@ package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
-import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.implementation.service.UserBusiness;
-import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
-import br.cefetmg.chat.view.MainView;
 import br.cefetmg.chat.view.MainView;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -38,7 +34,7 @@ public class landPageController implements Initializable{
     private void entrar(){
         try {
             Long ip = main.conn.getIp();
-            IUserBusiness user = new UserBusiness();
+            IUserBusiness user = new UserBusiness(main.conn);
             String nome = userName.getText();
             User u = user.logarUser(nome, ip);
             main.setLogado(u);

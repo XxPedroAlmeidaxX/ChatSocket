@@ -9,10 +9,9 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.ConnectionManager;
+import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.implementation.service.MessageBusiness;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
-import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import java.io.IOException;
@@ -26,6 +25,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -39,7 +39,7 @@ public class MainView extends Application {
     private Pane rootLayout;
     private User logado;
     private List<Room> salas;
-    public IConnection conn;
+    public Connection conn;
     private Room currentRoom;
     
     @Override
@@ -47,7 +47,7 @@ public class MainView extends Application {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Logar Chat");
         try {
-            conn = ConnectionManager.getInstance().getConnection();
+            conn = new Connection("localhost", 2223);
             new Thread(new NewMessagesThread(conn, this)).start();
         } catch (ConnectionException ex) {
             System.out.println("Erro: " + ex.getMessage());
@@ -57,7 +57,7 @@ public class MainView extends Application {
     
     public void showHome(){
         try {
-            IRoomBusiness roomB = new RoomBusiness();
+            IRoomBusiness roomB = new RoomBusiness(conn);
             salas = roomB.getAllRoom();
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainView.class.getResource("Home.fxml"));
@@ -84,14 +84,14 @@ public class MainView extends Application {
                         try {
                             loadRoom(roomB.getRoomById(id));
                         } catch (BusinessException ex) {
-                            System.out.println("Erro: " + ex.getMessage());
+                            throw new RuntimeException(ex);
                         }
                     }
                 });
                 filhas.add(b);
             }
         } catch (IOException | BusinessException e) {
-            System.out.println("Erro: " + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
     
@@ -111,8 +111,8 @@ public class MainView extends Application {
     }
     
     public void loadRoom(Room r) throws BusinessException{
-        IMessageBusiness busi = new MessageBusiness(); 
-        IRoomBusiness roomB = new RoomBusiness();
+        IMessageBusiness busi = new MessageBusiness(conn); 
+        IRoomBusiness roomB = new RoomBusiness(conn);
         if(currentRoom!=null){
              roomB.removeUserRoom(logado.getIdUser(), currentRoom.getIdRoom());
         }
@@ -171,7 +171,7 @@ public class MainView extends Application {
         try {
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainView.class.getResource("RoomMaker.fxml"));
-            rootLayout = (VBox) loader.load();
+            rootLayout = (AnchorPane) loader.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             RoomMakerController rmc = loader.getController();
