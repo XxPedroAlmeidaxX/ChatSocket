@@ -13,8 +13,6 @@ import br.cefetmg.chat.implementation.dao.UserDAO;
 import br.cefetmg.chat.implementation.service.MessageBusiness;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.implementation.service.UserBusiness;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class AdapterServer implements Runnable{
     
@@ -61,6 +59,8 @@ public class AdapterServer implements Runnable{
                                     cliente = usB.insertUser(us);
                                     con.sendData(cliente);
                                 }
+                                Notificator.addTabela(cliente, con.getpUpdate());
+                                break;
                             case "Insert":
                                 u = (User)con.receiveData();
                                 con.sendData(usB.insertUser(u));
@@ -90,6 +90,7 @@ public class AdapterServer implements Runnable{
                             case "Insert":
                                 r = (Room)con.receiveData();
                                 con.sendData(roomB.insertRoom(r));
+                                Notificator.notifyRoom();
                                 break;
                             case "Get":
                                 id = (Long)con.receiveData();
@@ -98,6 +99,7 @@ public class AdapterServer implements Runnable{
                             case "Delete":
                                 id = (Long)con.receiveData();
                                 con.sendData(roomB.deleteRoomById(id));
+                                Notificator.notifyRoom();
                                 break;
                             case "Update":
                                 id = (Long)con.receiveData();
@@ -111,11 +113,17 @@ public class AdapterServer implements Runnable{
                                 u = (User)con.receiveData();
                                 id = (Long)con.receiveData();
                                 con.sendData(roomB.insertUserRoom(u, id));
+                                Notificator.notifyUserRoom();
                                 break;
                             case "removeUserRoom":
                                 Long idUser = (Long)con.receiveData();
                                 Long idRoom = (Long)con.receiveData();
-                                con.sendData(roomB.removeUserRoom(idUser, idRoom));
+                                Room roomAlterada = roomB.removeUserRoom(idUser);
+                                con.sendData(roomAlterada);
+                                if(roomAlterada.getUsuarios().isEmpty()){
+                                    roomB.deleteRoomById(roomAlterada.getIdRoom());
+                                }
+                                Notificator.notifyUserRoom();
                                 break;
                              
                         }
@@ -125,6 +133,7 @@ public class AdapterServer implements Runnable{
                             case "Insert":
                                 m = (Message)con.receiveData();
                                 con.sendData(msgB.insertMessage(m));
+                                Notificator.notifyMessage(m);
                                 break;
                             case "Get":
                                 id = (Long)con.receiveData();
@@ -149,16 +158,15 @@ public class AdapterServer implements Runnable{
                                 break;
                         }
                         break;
-                        
-
                 }
-                
-            } catch(Exception ex) {
+            } catch(ConnectionException | BusinessException | PersistenceException ex) {
                 try {
                     roomB.removeUserRoom(cliente.getIdUser());
+                    Notificator.notifyUserRoom();
                 } catch (BusinessException | PersistenceException ex1) {
                     throw new RuntimeException(ex1.getMessage());
                 }
+                Notificator.removeTabela(cliente);
                 System.out.println("Usuário deslogado");
             }
         }

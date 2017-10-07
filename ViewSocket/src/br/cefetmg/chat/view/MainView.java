@@ -216,6 +216,14 @@ public class MainView extends Application {
     public void setSalas(List<Room> salas) {
         this.salas = salas;
     }
+
+    public Room getCurrentRoom() {
+        return currentRoom;
+    }
+
+    public void setCurrentRoom(Room currentRoom) {
+        this.currentRoom = currentRoom;
+    }
     
     
 }

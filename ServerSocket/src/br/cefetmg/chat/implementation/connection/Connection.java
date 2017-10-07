@@ -25,7 +25,6 @@ public class Connection implements IConnection{
             pData = s.accept();
             outData = new ObjectOutputStream(pData.getOutputStream());
             inData = new ObjectInputStream (pData.getInputStream());
- 
             pUpdate = s.accept();
             update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
@@ -82,4 +81,13 @@ public class Connection implements IConnection{
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
     }
+
+    public Socket getpData() {
+        return pData;
+    }
+
+    public Socket getpUpdate() {
+        return pUpdate;
+    }   
+    
 }

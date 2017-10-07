@@ -189,11 +189,11 @@ public class RoomDAO implements IRoomDAO{
             if (rs.next()) {
                 idRoom = rs.getLong("idRoom");
             }
-            Room r = this.getRoomById(idRoom);
             sql = "DELETE FROM UsersRoom WHERE idUser = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, idUser);
             pstmt.executeUpdate();
+            Room r = this.getRoomById(idRoom);
             pstmt.close();
             connection.close();
             return r;
