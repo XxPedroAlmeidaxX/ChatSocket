@@ -58,7 +58,7 @@ public class AdapterServer implements Runnable{
                         switch(sOperation[1]) {
                             case "Logar":
                                 //Recebe nome e ip
-                                name = (String)con.receiveData();
+                                name = con.receiveData();
                                 ip = Long.parseLong(con.receiveData());
                                 
                                 //Se o usuário existe, o retorna
