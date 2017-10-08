@@ -60,11 +60,11 @@ public class RoomDAO implements IRoomDAO{
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
             }
-            sql = "SELECT idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+            sql = "SELECT a.idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
-            List<User> users = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             User u;
             while(rs.next()){
                 u = new User();
@@ -120,7 +120,7 @@ public class RoomDAO implements IRoomDAO{
     }
 
     @Override
-    public synchronized List<Room> getAllRoom() throws PersistenceException {
+    public synchronized ArrayList<Room> getAllRoom() throws PersistenceException {
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
@@ -128,18 +128,18 @@ public class RoomDAO implements IRoomDAO{
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             Room r;
-            List<Room> allRoom = new ArrayList<>();
+            ArrayList<Room> allRoom = new ArrayList<>();
             while(rs.next()) {
                 r = new Room();
                 r.setIdRoom(rs.getLong("idRoom"));
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
-                sql = "SELECT ipUser, idUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+                sql = "SELECT ipUser, a.idUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setLong(1, r.getIdRoom());
                 ResultSet rsA = pstmt.executeQuery();
-                List<User> users = new ArrayList<>();
+                ArrayList<User> users = new ArrayList<>();
                 User u;
                 while(rsA.next()){
                     u = new User();
@@ -156,6 +156,51 @@ public class RoomDAO implements IRoomDAO{
             connection.close();
             return allRoom;
         } catch (ClassNotFoundException | SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Room insertUserRoom(User u, Long id) throws PersistenceException {
+        try {
+            Connection connection = ConnectionManager.getInstance().getConnection();
+            String sql = "INSERT INTO UsersRoom (idUser, idRoom) VALUES(?, ?)";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, u.getIdUser());
+            pstmt.setLong(2, id);
+            pstmt.executeUpdate();
+            pstmt.close();
+            connection.close();
+            return getRoomById(id);
+        } catch (PersistenceException | ClassNotFoundException | SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Room removeUserRoom(Long idUser) throws PersistenceException {
+         try {
+            Connection connection = ConnectionManager.getInstance().getConnection();
+            String sql = "SELECT idRoom FROM UsersRoom WHERE idUser = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, idUser);
+            ResultSet rs = pstmt.executeQuery();
+            Long idRoom=null;
+            if (rs.next()) {
+                idRoom = rs.getLong("idRoom");
+            }
+            sql = "DELETE FROM UsersRoom WHERE idUser = ?";
+            pstmt = connection.prepareStatement(sql);
+            pstmt.setLong(1, idUser);
+            pstmt.executeUpdate();
+            Room r = null;
+            if(idRoom!=null){
+                r = this.getRoomById(idRoom);
+            }
+            pstmt.close();
+            connection.close();
+            return r;
+        } catch (PersistenceException | ClassNotFoundException | SQLException e) {
             throw new PersistenceException(e.getMessage());
         }
     }

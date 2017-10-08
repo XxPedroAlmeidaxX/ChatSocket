@@ -92,7 +92,7 @@ public class UserDAO implements IUserDAO{
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
-            String sql = "SELECT idUser, ipUser, nameUser FROM Users WHERE ipUser = ?, nameUser = ?";
+            String sql = "SELECT idUser, ipUser, nameUser FROM Users WHERE ipUser = ? AND nameUser = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, ip);
             pstmt.setString(2, name);

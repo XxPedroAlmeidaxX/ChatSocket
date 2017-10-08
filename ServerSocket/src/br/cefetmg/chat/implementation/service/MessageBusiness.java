@@ -8,7 +8,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MessageBusiness implements IMessageBusiness{
     private final IMessageDAO dao;
@@ -83,7 +83,7 @@ public class MessageBusiness implements IMessageBusiness{
     }
 
     @Override
-    public List<Message> getMessagesByUser(User u) throws BusinessException, PersistenceException {
+    public ArrayList<Message> getMessagesByUser(User u) throws BusinessException, PersistenceException {
         if(u==null){
             throw new BusinessException("Usuário não pode ser nulo");
         }
@@ -94,7 +94,7 @@ public class MessageBusiness implements IMessageBusiness{
     }
 
     @Override
-    public List<Message> getMessagesByRoom(Room r) throws BusinessException, PersistenceException {
+    public ArrayList<Message> getMessagesByRoom(Room r) throws BusinessException, PersistenceException {
         if(r==null){
             throw new BusinessException("Sala não pode ser nula");
         }

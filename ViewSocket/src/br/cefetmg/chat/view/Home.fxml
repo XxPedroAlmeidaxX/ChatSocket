@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.view.HomeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.controller.HomeController">
    <children>
       <StackPane prefHeight="605.0" prefWidth="900.0">
          <children>
@@ -47,7 +47,7 @@
                               <Font size="28.0" />
                            </font>
                         </Button>
-                        <Label alignment="CENTER" layoutX="1.0" layoutY="6.0" prefHeight="29.0" prefWidth="260.0" style="-fx-border-color: #FFFFFF; border: ;" text="Salas" />
+                        <Label alignment="CENTER" layoutX="1.0" layoutY="6.0" prefHeight="29.0" prefWidth="260.0" style="-fx-border-color: #FFFFFF;" text="Salas" />
                      </children>
                      <effect>
                         <DropShadow height="14.95" radius="9.969999999999999" spread="0.01" width="26.93" />

@@ -15,17 +15,20 @@ public class Connection implements IConnection{
     //Canal para atualização das mensagens do cliente
     //São dois canais para evitar conflitos
     private Socket pUpdate;
+    //Socket unico do servidor
     private static ServerSocket s;
+    //Canal de saida de dados
     private ObjectOutputStream outData;
-    private ObjectInputStream inData;
+    //Canal de saida de updates
     private ObjectOutputStream update;
+    //Canal de entrada de dados
+    private ObjectInputStream inData;
     
     public Connection() throws ConnectionException {
         try {
             pData = s.accept();
             outData = new ObjectOutputStream(pData.getOutputStream());
-            inData = new ObjectInputStream (pData.getInputStream());
- 
+            inData = new ObjectInputStream(pData.getInputStream());
             pUpdate = s.accept();
             update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
@@ -45,7 +48,7 @@ public class Connection implements IConnection{
 
     @Override
     public void sendData(Object obj) throws ConnectionException {
-        try {            
+        try {    
             outData.writeObject(obj);
             outData.flush();
         }
@@ -57,7 +60,9 @@ public class Connection implements IConnection{
     @Override
     public Object receiveData() throws ConnectionException {
         try {
-            return inData.readObject();
+            Object d = inData.readObject();
+            return d;
+            
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
@@ -82,4 +87,13 @@ public class Connection implements IConnection{
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
     }
+
+    public Socket getpData() {
+        return pData;
+    }
+
+    public ObjectOutputStream getUpdate() {
+        return update;
+    }   
+    
 }

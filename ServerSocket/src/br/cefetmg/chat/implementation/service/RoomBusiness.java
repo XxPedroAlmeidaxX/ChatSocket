@@ -7,7 +7,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class RoomBusiness implements IRoomBusiness{
     private final IRoomDAO dao;
@@ -70,7 +70,32 @@ public class RoomBusiness implements IRoomBusiness{
     }
     
     @Override
-    public List<Room> getAllRoom() throws BusinessException, PersistenceException {
+    public ArrayList<Room> getAllRoom() throws BusinessException, PersistenceException {
         return dao.getAllRoom();
     }   
+
+    @Override
+    public Room insertUserRoom(User u, Long id) throws BusinessException, PersistenceException {
+        if(u==null){
+            throw new BusinessException("Usuario não pode ser nulo");
+        }
+        if(u.getIpUser()==null){
+            throw new BusinessException("Ip do usuário não pode ser nulo");
+        }
+        if(u.getNameUser()==null){
+            throw new BusinessException("Nome do usuário não pode ser nulo");
+        }
+        if(id==null){
+            throw new BusinessException("Id não pode ser nulo");
+        }
+        return dao.insertUserRoom(u, id);
+    }
+
+    @Override
+    public Room removeUserRoom(Long idUser) throws BusinessException, PersistenceException {
+        if(idUser==null){
+            throw new BusinessException("Id do usuario não pode ser nulo");
+        }
+        return dao.removeUserRoom(idUser);
+    }
 }

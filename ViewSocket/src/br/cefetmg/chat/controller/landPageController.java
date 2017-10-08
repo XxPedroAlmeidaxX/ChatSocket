@@ -7,10 +7,7 @@ package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
-import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.ConnectionManager;
 import br.cefetmg.chat.implementation.service.UserBusiness;
-import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.view.MainView;
 import java.net.URL;
@@ -19,14 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-/**
- *
- * @author Adalbs
- */
 public class landPageController implements Initializable{
     @FXML
     private TextField userName;
     
+    //Classe principal do JavaFX
     private MainView main;
     
     public void setMainView(MainView main){
@@ -36,18 +30,17 @@ public class landPageController implements Initializable{
     @FXML
     private void entrar(){
         try {
+            //Obtem o ip do cliente
             Long ip = main.conn.getIp();
-            System.out.println(ip);
-            IUserBusiness user = new UserBusiness();
-            User u = user.getUserByIpAndName(ip, userName.getText());
-            if(u.getIpUser()==null){
-                u.setNameUser(userName.getText());
-                u.setIpUser(ip);
-                user.insertUser(u);
-            }else{
-                main.setLogado(u);
-                main.showHome();
-            }
+            IUserBusiness user = new UserBusiness(main.conn);
+            //Obtem o nome do cliente
+            String nome = userName.getText();
+            //Obtem o usuário do cliente, criando-o caso não exista
+            User u = user.logarUser(nome, ip);
+            //Define o usuário logado
+            main.setLogado(u);
+            //Exibe a tela principal
+            main.showHome();
         } catch (BusinessException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }

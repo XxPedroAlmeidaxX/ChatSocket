@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.view.HomeController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.cefetmg.chat.controller.HomeController">
    <children>
       <StackPane prefHeight="605.0" prefWidth="900.0">
          <children>
@@ -24,13 +25,9 @@
                   <AnchorPane fx:id="paneUsersinRoom" layoutX="15.0" layoutY="301.0" prefHeight="287.0" prefWidth="260.0">
                      <children>
                         <ScrollPane layoutY="38.0" prefHeight="251.0" prefWidth="260.0" style="-fx-border-color: #FFFFFF;">
-                          <content>
-                            <AnchorPane fx:id="paneAddUsers" minHeight="0.0" minWidth="0.0" prefHeight="247.0" prefWidth="256.0" style="-fx-background-color: #FFFFFF; -fx-border-color: #FFFFFF;">
-                                 <effect>
-                                    <DropShadow height="88.95" radius="46.94" spread="0.55" width="100.81" />
-                                 </effect>
-                              </AnchorPane>
-                          </content>
+                           <content>
+                              <FlowPane fx:id="logadosContainer" prefHeight="246.0" prefWidth="254.0" />
+                           </content>
                         </ScrollPane>
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutY="-2.0" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #FFFFFF;" text="Usuarios Logados" textAlignment="CENTER" />
                      </children>
@@ -50,7 +47,7 @@
                               <Font size="28.0" />
                            </font>
                         </Button>
-                        <Label alignment="CENTER" layoutX="1.0" layoutY="6.0" prefHeight="29.0" prefWidth="260.0" style="-fx-border-color: #FFFFFF; border: ;" text="Salas" />
+                        <Label alignment="CENTER" layoutX="1.0" layoutY="6.0" prefHeight="29.0" prefWidth="260.0" style="-fx-border-color: #FFFFFF;" text="Salas" />
                      </children>
                      <effect>
                         <DropShadow height="14.95" radius="9.969999999999999" spread="0.01" width="26.93" />
@@ -63,13 +60,9 @@
                      </effect>
                   </Button>
                   <ScrollPane layoutX="316.0" layoutY="14.0" prefHeight="459.0" prefWidth="553.0">
-                    <content>
-                      <AnchorPane fx:id="paneAddConversas" minHeight="0.0" minWidth="0.0" prefHeight="456.0" prefWidth="551.0" style="-fx-background-color: #FFFFFF;">
-                           <effect>
-                              <DropShadow height="154.43" radius="53.735" width="62.51" />
-                           </effect>
-                        </AnchorPane>
-                    </content>
+                     <content>
+                        <FlowPane fx:id="mensagensContainer" prefHeight="457.0" prefWidth="550.0" />
+                     </content>
                   </ScrollPane>
                </children>
             </AnchorPane>
