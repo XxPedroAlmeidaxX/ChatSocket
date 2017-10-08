@@ -41,7 +41,7 @@ public class AdapterServer implements Runnable{
                 String operation = "";
                 //Separa a classe da operação do seu tipo
                 String[] sOperation = new String[2];
-                operation = (String)con.receiveData();
+                operation = con.receiveData();
                 sOperation = operation.split("-");
                 
                 //Variaveis utilizadas para guardar os dados recebidos
