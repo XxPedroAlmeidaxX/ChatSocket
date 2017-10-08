@@ -49,7 +49,7 @@ public class RoomBusiness implements IRoomBusiness{
         Room r = null;
         try {
             c.sendData("Room-Get");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             r = Handler.toRoom(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
@@ -65,7 +65,7 @@ public class RoomBusiness implements IRoomBusiness{
         Room r = null;
         try {
             c.sendData("Room-Delete");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             r = Handler.toRoom(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
@@ -92,7 +92,7 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try{
             c.sendData("Room-Update");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             c.sendData(Handler.toJson(r));
             r = Handler.toRoom(c.receiveData());
         }catch(ConnectionException ex){
@@ -128,7 +128,7 @@ public class RoomBusiness implements IRoomBusiness{
         try{
             c.sendData("Room-insertUserRoom");
             c.sendData(Handler.toJson(u));
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             return Handler.toRoom(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());

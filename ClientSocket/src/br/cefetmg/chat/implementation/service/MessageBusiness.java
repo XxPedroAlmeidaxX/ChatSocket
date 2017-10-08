@@ -56,7 +56,7 @@ public class MessageBusiness implements IMessageBusiness{
         Message m = null;
         try{
             c.sendData("Message-Get");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
@@ -72,7 +72,7 @@ public class MessageBusiness implements IMessageBusiness{
         Message m = null;
         try{
             c.sendData("Message-Delete");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
@@ -105,7 +105,7 @@ public class MessageBusiness implements IMessageBusiness{
         }
         try{
             c.sendData("Message-Update");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             c.sendData(Handler.toJson(m));
             m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){

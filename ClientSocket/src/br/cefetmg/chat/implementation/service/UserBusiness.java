@@ -44,7 +44,7 @@ public class UserBusiness implements IUserBusiness{
         User u = null;
         try{
             c.sendData("User-GetId");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             u = Handler.toUser(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
@@ -63,7 +63,7 @@ public class UserBusiness implements IUserBusiness{
         User u = null;
         try{
             c.sendData("User-Delete");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             u = Handler.toUser(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
@@ -87,7 +87,7 @@ public class UserBusiness implements IUserBusiness{
         }
         try{
             c.sendData("User-Update");
-            c.sendData(Handler.toJson(id));
+            c.sendData(id.toString());
             c.sendData(Handler.toJson(u));
             u = Handler.toUser(c.receiveData());
         }catch(ConnectionException ex){
