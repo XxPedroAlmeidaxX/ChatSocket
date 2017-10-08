@@ -26,7 +26,7 @@ public class Connection implements IConnection{
             pDados = new Socket(ip, porta);  
             outDados = new ObjectOutputStream(pDados.getOutputStream());
             inDados = new ObjectInputStream (pDados.getInputStream());
-            pUpdate = new Socket(ip, porta);
+            pUpdate = new Socket(ip, porta+1);
             update = new ObjectInputStream (pUpdate.getInputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);

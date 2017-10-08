@@ -16,7 +16,8 @@ public class Connection implements IConnection{
     //São dois canais para evitar conflitos
     private Socket pUpdate;
     //Socket unico do servidor
-    private static ServerSocket s;
+    private static ServerSocket sData;
+    private static ServerSocket sUpdate;
     //Canal de saida de dados
     private ObjectOutputStream outData;
     //Canal de saida de updates
@@ -26,10 +27,10 @@ public class Connection implements IConnection{
     
     public Connection() throws ConnectionException {
         try {
-            pData = s.accept();
+            pData = sData.accept();
             outData = new ObjectOutputStream(pData.getOutputStream());
             inData = new ObjectInputStream(pData.getInputStream());
-            pUpdate = s.accept();
+            pUpdate = sUpdate.accept();
             update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
@@ -82,7 +83,8 @@ public class Connection implements IConnection{
     
     public static void setServer(int port) throws ConnectionException {
         try {
-            s = new ServerSocket(port);
+            sData = new ServerSocket(port);
+            sUpdate = new ServerSocket(port+1);
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
