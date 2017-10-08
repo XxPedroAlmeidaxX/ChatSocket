@@ -189,7 +189,7 @@ public class AdapterServer implements Runnable{
                     //Notifica da saída do cliente
                     Notificator.notifyUserRoom();
                 } catch (BusinessException | PersistenceException | NullPointerException ex1) {
-                    throw new RuntimeException(ex1.getMessage());
+                    throw new RuntimeException(ex1);
                 }
                 //Remove o cliente da tabela
                 Notificator.removeTabela(cliente);

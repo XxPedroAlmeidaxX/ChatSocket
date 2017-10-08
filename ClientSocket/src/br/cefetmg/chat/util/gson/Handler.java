@@ -4,6 +4,7 @@ import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 
 public class Handler {
@@ -25,10 +26,10 @@ public class Handler {
     }
     
     public static ArrayList<Message> toMessageAray(String json) {
-        return (new Gson().fromJson(json, ArrayList.class)); 
+        return (new Gson().fromJson(json, new TypeToken<ArrayList<Message>>(){}.getType())); 
     }
     
     public static ArrayList<Room> toRoomAray(String json) {
-        return (new Gson().fromJson(json, ArrayList.class)); 
+        return (new Gson().fromJson(json, new TypeToken<ArrayList<Room>>(){}.getType())); 
     }
 }
