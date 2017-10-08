@@ -18,10 +18,6 @@ public class ConnectionTest {
         try {
             Connection.setServer(2223);
             Connection con = new Connection();
-            tUser3 = (User) con.receiveData();
-            System.out.println(tUser3.getIdUser());
-            con.sendData(tRoom);
-            con.update(tRoom);
         } catch(ConnectionException ex) {
             System.out.println("Erro: " + ex);
         } 

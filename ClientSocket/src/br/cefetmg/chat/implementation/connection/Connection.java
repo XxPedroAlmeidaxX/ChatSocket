@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
-import com.google.gson.Gson;
 import java.net.InetSocketAddress;
 
 public class Connection implements IConnection{
@@ -21,10 +20,6 @@ public class Connection implements IConnection{
     private ObjectInputStream inData;
     //Canal de entrada de dados de atualização
     private ObjectInputStream update;
-    //Objeto para fazer a conversão dos dados para Json
-    private Gson gson;
-    //Objeto para receber a String em Json
-    private String json;
     
     public Connection(String ip, int porta) throws ConnectionException {
         try {
@@ -33,7 +28,6 @@ public class Connection implements IConnection{
             inData = new ObjectInputStream (pData.getInputStream());
             pUpdate = new Socket(ip, porta+1);
             update = new ObjectInputStream (pUpdate.getInputStream());
-            gson = new Gson();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);
         }    
@@ -50,9 +44,8 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public void sendData(Object obj) throws ConnectionException {
+    public void sendData(String json) throws ConnectionException {
         try {    
-            json = gson.toJson(obj);
             outData.writeObject(json);
             outData.flush();
         }
@@ -62,10 +55,9 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public Object receiveData() throws ConnectionException {
+    public String receiveData() throws ConnectionException {
         try {
-            json = (String) inData.readObject();
-            return gson.fromJson(json, Object.class);
+            return (String) inData.readObject();    
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Servidor: " + ex);
@@ -73,10 +65,9 @@ public class Connection implements IConnection{
     }
     
     @Override
-    public Object receiveUpdates() throws ConnectionException {
+    public String receiveUpdates() throws ConnectionException {
         try {           
-            json = (String) update.readObject();
-            return gson.fromJson(json, Object.class); 
+            return (String) update.readObject();   
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Servidor: " + ex);

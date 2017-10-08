@@ -4,7 +4,7 @@ import br.cefetmg.chat.exception.ConnectionException;
 
 public interface IConnection {
     public void disconnect() throws ConnectionException;
-    public void sendData(Object obj) throws ConnectionException;
-    public Object receiveData() throws ConnectionException;
-    public void update(Object obj) throws ConnectionException;
+    public void sendData(String json) throws ConnectionException;
+    public String receiveData() throws ConnectionException;
+    public void update(String json) throws ConnectionException;
 }

@@ -17,12 +17,6 @@ public class ConnectionTest {
         //Realização dos testes
         try {
             Connection con = new Connection("localhost", 2223);
-            con.sendData(tUser1);
-            tRoom = (Room) con.receiveData();
-            System.out.println(tRoom.getNameRoom());
-            tRoom.setNameRoom("not-updated");
-            tRoom = (Room) con.receiveUpdates();
-            System.out.println(tRoom.getNameRoom());
         } catch(ConnectionException ex) {
             System.out.println("Erro: " + ex);
         } 
