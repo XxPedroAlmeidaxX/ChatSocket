@@ -8,10 +8,11 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
 
 public class MessageBusiness implements IMessageBusiness{
-    private IConnection c;
+    private final IConnection c;
     
     public MessageBusiness(Connection c){
         this.c = c;
@@ -39,8 +40,8 @@ public class MessageBusiness implements IMessageBusiness{
         }
         try {
             c.sendData("Message-Insert");
-            c.sendData(m);
-            m = (Message) c.receiveData();
+            c.sendData(Handler.toJson(m));
+            m = Handler.toMessage(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -55,8 +56,8 @@ public class MessageBusiness implements IMessageBusiness{
         Message m = null;
         try{
             c.sendData("Message-Get");
-            c.sendData(id);
-            m = (Message) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -71,8 +72,8 @@ public class MessageBusiness implements IMessageBusiness{
         Message m = null;
         try{
             c.sendData("Message-Delete");
-            c.sendData(id);
-            m = (Message) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -104,9 +105,9 @@ public class MessageBusiness implements IMessageBusiness{
         }
         try{
             c.sendData("Message-Update");
-            c.sendData(id);
-            c.sendData(m);
-            m = (Message) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            c.sendData(Handler.toJson(m));
+            m = Handler.toMessage(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -124,8 +125,8 @@ public class MessageBusiness implements IMessageBusiness{
         ArrayList<Message> m = null;
         try{
             c.sendData("Message-ByUser");
-            c.sendData(u);
-            m = (ArrayList<Message>) c.receiveData();
+            c.sendData(Handler.toJson(u));
+            m = Handler.toMessageAray(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -143,8 +144,8 @@ public class MessageBusiness implements IMessageBusiness{
         ArrayList<Message> m = null;
         try{
             c.sendData("Message-ByRoom");
-            c.sendData(r);
-            m = (ArrayList<Message>) c.receiveData();
+            c.sendData(Handler.toJson(r));
+            m = Handler.toMessageAray(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

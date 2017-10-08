@@ -7,10 +7,11 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
 
 public class RoomBusiness implements IRoomBusiness{
-    private IConnection c;
+    private final IConnection c;
     
     public RoomBusiness(Connection c){
         this.c = c;
@@ -32,8 +33,8 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try {
             c.sendData("Room-Insert");
-            c.sendData(r);
-            r = (Room) c.receiveData();
+            c.sendData(Handler.toJson(r));
+            r = Handler.toRoom(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -48,8 +49,8 @@ public class RoomBusiness implements IRoomBusiness{
         Room r = null;
         try {
             c.sendData("Room-Get");
-            c.sendData(id);
-            r = (Room) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            r = Handler.toRoom(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -64,8 +65,8 @@ public class RoomBusiness implements IRoomBusiness{
         Room r = null;
         try {
             c.sendData("Room-Delete");
-            c.sendData(id);
-            r = (Room) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            r = Handler.toRoom(c.receiveData());
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -91,9 +92,9 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try{
             c.sendData("Room-Update");
-            c.sendData(id);
-            c.sendData(r);
-            r = (Room) c.receiveData();
+            c.sendData(Handler.toJson(id));
+            c.sendData(Handler.toJson(r));
+            r = Handler.toRoom(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -104,7 +105,7 @@ public class RoomBusiness implements IRoomBusiness{
     public ArrayList<Room> getAllRoom() throws BusinessException {
         try{
             c.sendData("Room-all");
-            return (ArrayList<Room>)c.receiveData();
+            return Handler.toRoomAray(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -126,9 +127,9 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try{
             c.sendData("Room-insertUserRoom");
-            c.sendData(u);
-            c.sendData(id);
-            return (Room)c.receiveData();
+            c.sendData(Handler.toJson(u));
+            c.sendData(Handler.toJson(id));
+            return Handler.toRoom(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -144,9 +145,9 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try{
             c.sendData("Room-removeUserRoom");
-            c.sendData(idUser);
-            c.sendData(idRoom);
-            return (Room)c.receiveData();
+            c.sendData(Handler.toJson(idUser));
+            c.sendData(Handler.toJson(idRoom));
+            return Handler.toRoom(c.receiveData());
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

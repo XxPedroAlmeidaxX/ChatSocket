@@ -3,6 +3,7 @@ package br.cefetmg.chat.implementation.connection;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.ConnectionException;
+import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
 
 public class ConnectionTest {
@@ -18,6 +19,7 @@ public class ConnectionTest {
         try {
             Connection.setServer(2223);
             Connection con = new Connection();
+            con.sendData(Handler.toJson(tUser1));
         } catch(ConnectionException ex) {
             System.out.println("Erro: " + ex);
         } 
