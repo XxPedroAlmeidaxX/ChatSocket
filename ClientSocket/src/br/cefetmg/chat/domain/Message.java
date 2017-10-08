@@ -3,11 +3,17 @@ package br.cefetmg.chat.domain;
 import java.io.Serializable;
 
 public class Message implements Serializable{
+    //Id da mensagem
     private Long idMessage;
+    //Autor da mensagem
     private User user;
+    //Sala em que a mensagem foi enviada
     private Room room;
+    //Texto da mensagem
     private String textMessage;
+    //Definição se a mensagem é direcionada ou não
     private Boolean stateMessage;
+    //Alvo da mensagem caso seja direcionada
     private User targetMessage;
 
     public Message() {}

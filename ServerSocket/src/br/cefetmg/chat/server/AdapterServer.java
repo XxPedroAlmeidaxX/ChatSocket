@@ -16,11 +16,14 @@ import br.cefetmg.chat.implementation.service.UserBusiness;
 
 public class AdapterServer implements Runnable{
     
+    //Conexão do servidor com cliente
     private final Connection con;
+    //Cliente conectado
     private User cliente;
+    //Instancias das classes de serviço
     private MessageBusiness msgB;
     private UserBusiness usB;
-    RoomBusiness roomB;
+    private RoomBusiness roomB;
     
     public AdapterServer(Connection c) throws ConnectionException{
         con = c;
@@ -35,31 +38,42 @@ public class AdapterServer implements Runnable{
             try{
                 //Recebe do cliente a operação a ser executada
                 String operation = "";
+                //Separa a classe da operação do seu tipo
                 String[] sOperation = new String[2];
                 operation = (String)con.receiveData();
                 sOperation = operation.split("-");
+                
+                //Variaveis utilizadas para guardar os dados recebidos
                 Long id, ip;
                 User u;
                 String name;
                 Room r;
                 Message m;
+                
+                //Seleciona as possibilidades de classes
                 switch(sOperation[0]) {
                     case "User":
+                        //Seleciona as possibilidades de operações
                         switch(sOperation[1]) {
                             case "Logar":
+                                //Recebe nome e ip
                                 name = (String)con.receiveData();
                                 ip = (Long) con.receiveData();
+                                
+                                //Se o usuário existe, o retorna
                                 if(usB.getUserByIpAndName(ip, name).getIdUser()!=null){
                                     cliente = usB.getUserByIpAndName(ip, name);
                                     con.sendData(cliente);
                                 }else{
+                                    //Senão cria um novo usuário e o retorna
                                     User us = new User();
                                     us.setIpUser(ip);
                                     us.setNameUser(name);
                                     cliente = usB.insertUser(us);
                                     con.sendData(cliente);
                                 }
-                                Notificator.addTabela(cliente, con.getUpdate());
+                                //Adiciona usuário na tabela de clientes ativos
+                                Notificator.addTabela(cliente, con);
                                 break;
                             case "Insert":
                                 u = (User)con.receiveData();
@@ -86,10 +100,12 @@ public class AdapterServer implements Runnable{
                         }
                         break;
                     case "Room":
+                        //Seleciona as possibilidades de operações
                         switch(sOperation[1]) {
                             case "Insert":
                                 r = (Room)con.receiveData();
                                 con.sendData(roomB.insertRoom(r));
+                                //Notifica clientes da criação da nova sala
                                 Notificator.notifyRoom();
                                 break;
                             case "Get":
@@ -113,22 +129,28 @@ public class AdapterServer implements Runnable{
                                 u = (User)con.receiveData();
                                 id = (Long)con.receiveData();
                                 con.sendData(roomB.insertUserRoom(u, id));
+                                //Notifica clientes da entrada de um usuário na sala
                                 Notificator.notifyUserRoom();
                                 break;
                             case "removeUserRoom":
                                 Long idUser = (Long)con.receiveData();
                                 Long idRoom = (Long)con.receiveData();
+                                //Remove usuário da sala
                                 Room roomAlterada = roomB.removeUserRoom(idUser);
                                 con.sendData(roomAlterada);
+                                //Se a sala está vazia
                                 if(roomAlterada.getUsuarios().isEmpty()){
+                                    //Remove a sala
                                     roomB.deleteRoomById(roomAlterada.getIdRoom());
                                 }
+                                //Notifica usuários da remoção de usuário ou deleção da sala
                                 Notificator.notifyUserRoom();
                                 break;
                              
                         }
                         break;
                     case "Message":
+                        //Seleciona as possibilidades de operações
                         switch(sOperation[1]) {
                             case "Insert":
                                 m = (Message)con.receiveData();
@@ -161,11 +183,14 @@ public class AdapterServer implements Runnable{
                 }
             } catch(ConnectionException | BusinessException | PersistenceException ex) {
                 try {
+                    //Caso a conexão falhe, remove o cliente da sala
                     roomB.removeUserRoom(cliente.getIdUser());
+                    //Notifica da saída do cliente
                     Notificator.notifyUserRoom();
-                } catch (BusinessException | PersistenceException ex1) {
+                } catch (BusinessException | PersistenceException | NullPointerException ex1) {
                     throw new RuntimeException(ex1.getMessage());
                 }
+                //Remove o cliente da tabela
                 Notificator.removeTabela(cliente);
                 throw new RuntimeException(ex);
             }

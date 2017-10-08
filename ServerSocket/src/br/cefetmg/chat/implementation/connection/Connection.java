@@ -15,15 +15,22 @@ public class Connection implements IConnection{
     //Canal para atualização das mensagens do cliente
     //São dois canais para evitar conflitos
     private Socket pUpdate;
+    //Socket unico do servidor
     private static ServerSocket s;
+    //Canal de saida de dados
     private ObjectOutputStream outData;
+    //Canal de saida de updates
     private ObjectOutputStream update;
+    //Canal de entrada de dados
     private ObjectInputStream inData;
     
     public Connection() throws ConnectionException {
         try {
             pData = s.accept();
+            outData = new ObjectOutputStream(pData.getOutputStream());
+            inData = new ObjectInputStream(pData.getInputStream());
             pUpdate = s.accept();
+            update = new ObjectOutputStream(pUpdate.getOutputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -42,7 +49,6 @@ public class Connection implements IConnection{
     @Override
     public void sendData(Object obj) throws ConnectionException {
         try {    
-            outData = new ObjectOutputStream(pData.getOutputStream());
             outData.writeObject(obj);
             outData.flush();
         }
@@ -54,7 +60,6 @@ public class Connection implements IConnection{
     @Override
     public Object receiveData() throws ConnectionException {
         try {
-            inData = new ObjectInputStream (pData.getInputStream());
             Object d = inData.readObject();
             return d;
             
@@ -67,7 +72,6 @@ public class Connection implements IConnection{
     @Override
     public void update(Object obj) throws ConnectionException {
         try {            
-            update = new ObjectOutputStream(pUpdate.getOutputStream());
             update.writeObject(obj);
             update.flush();
         }
@@ -88,8 +92,8 @@ public class Connection implements IConnection{
         return pData;
     }
 
-    public Socket getUpdate() {
-        return pUpdate;
+    public ObjectOutputStream getUpdate() {
+        return update;
     }   
     
 }

@@ -7,69 +7,90 @@ package br.cefetmg.chat.server;
 
 import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.User;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.HashMap;
+import br.cefetmg.chat.exception.ConnectionException;
+import br.cefetmg.chat.implementation.connection.Connection;
+import java.util.IdentityHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author umcan
  */
 public class Notificator {
-    private static final Map<User, Socket> tabelaUsuarios = new HashMap<>();
+    
+    //Tabela de usuários
+    private static final Map<User, Connection> tabelaUsuarios = new IdentityHashMap<>();
 
-    public static Map<User, Socket> getTabelaUsuarios() {
+    public static Map<User, Connection> getTabelaUsuarios() {
         return tabelaUsuarios;
     }
     
+    //Remove usuário da tabela
     public static void removeTabela(User u){
         tabelaUsuarios.remove(u);
     }
     
-    public static void addTabela(User u, Socket s){
+    //Adiciona usuário na tabela
+    public static void addTabela(User u, Connection s){
         tabelaUsuarios.put(u, s);
     }
     
     public static void notifyMessage(Message m){
-        try {
+        //Se a mensagem é privada
+        if(m.getStateMessage()){
+            //Obtem o alvo
+            Connection s = tabelaUsuarios.get(m.getTargetMessage());
+            //Envia a atualização para o alvo
+            try {
+                s.update("msg");
+            } catch (ConnectionException ex) {
+                Logger.getLogger(Notificator.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            //Para cada usuário da sala
             for(User u:m.getRoom().getUsuarios()){
+                //Se o usuário não é o remetente da mensagem
                 if(u.getIdUser()!=m.getUser().getIdUser()){
-                    Socket s = tabelaUsuarios.get(u);
-                    ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
-                    o.writeObject("msg");
-                    o.flush();
+                    //Obtem a conexão do usuário
+                    Connection s = tabelaUsuarios.get(u);
+                    //Envia a atualização
+                    try {
+                        s.update("msg");
+                    } catch (ConnectionException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
-        } catch (IOException ex) {
-            System.out.println("Erro: "+ex.getMessage());
         }
     }
     
     public static void notifyRoom(){
-        try {
-            for(Map.Entry<User, Socket> entrada : tabelaUsuarios.entrySet()){
-                Socket s = entrada.getValue();
-                ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
-                o.writeObject("sala");
-                o.flush();
+        //Para cada usuário, já que todos veem informações da sala
+        for(Map.Entry<User, Connection> entrada : tabelaUsuarios.entrySet()){
+            //Obtem a conexão
+            Connection s = entrada.getValue();
+            //Envia a atualização
+            try {
+                s.update("sala");
+            } catch (ConnectionException ex) {
+                throw new RuntimeException(ex);
             }
-        }catch (IOException ex) {
-            System.out.println("Erro: "+ex.getMessage());
         }
     }
     
     public static void notifyUserRoom(){
-        try {
-            for(Map.Entry<User, Socket> entrada : tabelaUsuarios.entrySet()){
-                Socket s = entrada.getValue();
-                ObjectOutputStream o = new ObjectOutputStream(s.getOutputStream());
-                o.writeObject("usuarios");
-                o.flush();
+        //Para cada usuário, já que todos veem ao menos o numero de usuários de uma sala
+        for(Map.Entry<User, Connection> entrada : tabelaUsuarios.entrySet()){
+            //Obtem a conexão
+            Connection s = entrada.getValue();
+            //Envia a atualização
+            try {
+                s.update("usuarios");
+            } catch (ConnectionException ex) {
+                throw new RuntimeException(ex);
             }
-        }catch (IOException ex) {
-            System.out.println("Erro: "+ex.getMessage());
         }
     }
     

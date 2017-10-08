@@ -14,7 +14,9 @@ public class Server {
         
         while(true) {
             try {
+                //Cria nova conexão entre servidor e cliente
                 Connection c = new Connection();
+                //Inicia a thread para atender o cliente
                 new Thread(new AdapterServer(c)).start();
             } catch (ConnectionException ex) {
                 System.out.println("\nFalha em uma das conexões: " + ex);

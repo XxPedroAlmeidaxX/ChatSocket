@@ -3,8 +3,11 @@ package br.cefetmg.chat.domain;
 import java.io.Serializable;
 
 public class User implements Serializable{
+    //Endereço de ip do usuário
     private Long ipUser;
+    //Nome do usuário
     private String nameUser;
+    //Id do usuário
     private Long idUser;
 
     public User(Long ipUser, String nameUser, Long idUser) {

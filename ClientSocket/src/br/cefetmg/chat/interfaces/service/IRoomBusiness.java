@@ -3,7 +3,7 @@ package br.cefetmg.chat.interfaces.service;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
-import java.util.List;
+import java.util.ArrayList;
 
 public interface IRoomBusiness {
     public Room insertRoom(Room r) throws BusinessException;
@@ -12,5 +12,5 @@ public interface IRoomBusiness {
     public Room getRoomById(Long id) throws BusinessException;
     public Room deleteRoomById(Long id) throws BusinessException;
     public Room updateRoomById(Long id, Room r) throws BusinessException;
-    public List<Room> getAllRoom() throws BusinessException;
+    public ArrayList<Room> getAllRoom() throws BusinessException;
 }

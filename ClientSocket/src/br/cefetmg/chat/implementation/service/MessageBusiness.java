@@ -8,7 +8,7 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
-import java.util.List;
+import java.util.ArrayList;
 
 public class MessageBusiness implements IMessageBusiness{
     private IConnection c;
@@ -114,18 +114,18 @@ public class MessageBusiness implements IMessageBusiness{
     }
 
     @Override
-    public List<Message> getMessagesByUser(User u) throws BusinessException {
+    public ArrayList<Message> getMessagesByUser(User u) throws BusinessException {
         if(u==null){
             throw new BusinessException("Usuário não pode ser nulo");
         }
         if(u.getIpUser()==null){
             throw new BusinessException("Ip do usuário não pode ser nulo");
         }
-        List<Message> m = null;
+        ArrayList<Message> m = null;
         try{
             c.sendDados("Message-ByUser");
             c.sendDados(u);
-            m = (List<Message>) c.receiveDados();
+            m = (ArrayList<Message>) c.receiveDados();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -133,18 +133,18 @@ public class MessageBusiness implements IMessageBusiness{
     }
 
     @Override
-    public List<Message> getMessagesByRoom(Room r) throws BusinessException {
+    public ArrayList<Message> getMessagesByRoom(Room r) throws BusinessException {
         if(r==null){
             throw new BusinessException("Sala não pode ser nula");
         }
         if(r.getIdRoom()==null){
             throw new BusinessException("Id da sala não pode ser nulo");
         }
-        List<Message> m = null;
+        ArrayList<Message> m = null;
         try{
             c.sendDados("Message-ByRoom");
             c.sendDados(r);
-            m = (List<Message>) c.receiveDados();
+            m = (ArrayList<Message>) c.receiveDados();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

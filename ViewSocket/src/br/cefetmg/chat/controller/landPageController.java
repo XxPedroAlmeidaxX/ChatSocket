@@ -16,14 +16,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
-/**
- *
- * @author Adalbs
- */
 public class landPageController implements Initializable{
     @FXML
     private TextField userName;
     
+    //Classe principal do JavaFX
     private MainView main;
     
     public void setMainView(MainView main){
@@ -33,11 +30,16 @@ public class landPageController implements Initializable{
     @FXML
     private void entrar(){
         try {
+            //Obtem o ip do cliente
             Long ip = main.conn.getIp();
             IUserBusiness user = new UserBusiness(main.conn);
+            //Obtem o nome do cliente
             String nome = userName.getText();
+            //Obtem o usuário do cliente, criando-o caso não exista
             User u = user.logarUser(nome, ip);
+            //Define o usuário logado
             main.setLogado(u);
+            //Exibe a tela principal
             main.showHome();
         } catch (BusinessException ex) {
             System.out.println("Erro: " + ex.getMessage());

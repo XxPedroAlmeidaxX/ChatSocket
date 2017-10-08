@@ -7,7 +7,7 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
-import java.util.List;
+import java.util.ArrayList;
 
 public class RoomBusiness implements IRoomBusiness{
     private IConnection c;
@@ -101,10 +101,10 @@ public class RoomBusiness implements IRoomBusiness{
     }
     
     @Override
-    public List<Room> getAllRoom() throws BusinessException {
+    public ArrayList<Room> getAllRoom() throws BusinessException {
         try{
             c.sendDados("Room-all");
-            return (List<Room>)c.receiveDados();
+            return (ArrayList<Room>)c.receiveDados();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

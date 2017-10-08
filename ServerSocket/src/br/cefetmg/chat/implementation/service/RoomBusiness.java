@@ -7,7 +7,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
-import java.util.List;
+import java.util.ArrayList;
 
 public class RoomBusiness implements IRoomBusiness{
     private final IRoomDAO dao;
@@ -70,7 +70,7 @@ public class RoomBusiness implements IRoomBusiness{
     }
     
     @Override
-    public List<Room> getAllRoom() throws BusinessException, PersistenceException {
+    public ArrayList<Room> getAllRoom() throws BusinessException, PersistenceException {
         return dao.getAllRoom();
     }   
 

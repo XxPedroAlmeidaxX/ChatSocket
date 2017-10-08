@@ -136,7 +136,7 @@ public class MessageDAO implements IMessageDAO{
     }
 
     @Override
-    public synchronized List<Message> getMessagesByUser(User u) throws PersistenceException {
+    public synchronized ArrayList<Message> getMessagesByUser(User u) throws PersistenceException {
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
@@ -156,7 +156,7 @@ public class MessageDAO implements IMessageDAO{
             User target;
             User sender;
             Message m;
-            List<Message> msgs = new ArrayList<>();
+            ArrayList<Message> msgs = new ArrayList<>();
             while(rs.next()) {
                 m = new Message();
                 sender = new User();
@@ -188,7 +188,7 @@ public class MessageDAO implements IMessageDAO{
     }
 
     @Override
-    public synchronized List<Message> getMessagesByRoom(Room r) throws PersistenceException {
+    public synchronized ArrayList<Message> getMessagesByRoom(Room r) throws PersistenceException {
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
@@ -206,7 +206,7 @@ public class MessageDAO implements IMessageDAO{
             User target;
             User sender;
             Message m;
-            List<Message> msgs = new ArrayList<>();
+            ArrayList<Message> msgs = new ArrayList<>();
             while(rs.next()) {
                 m = new Message();
                 sender = new User();

@@ -1,16 +1,21 @@
 package br.cefetmg.chat.domain;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 
 public class Room implements Serializable{
+    //Id da sala
     private Long idRoom;
+    //Nome da sala
     private String nameRoom;
+    //Senha caso seja privada
     private String password;
+    //Definição de se a sala é privada ou não
     private Boolean stateRoom;
-    private List<User> usuarios;
+    //Usuários logados na sala
+    private ArrayList<User> usuarios;
     
-    public Room(Long idRoom, String nameRoom, Boolean stateRoom, String password, List<User> usuarios) {
+    public Room(Long idRoom, String nameRoom, Boolean stateRoom, String password, ArrayList<User> usuarios) {
         this.idRoom = idRoom;
         this.nameRoom = nameRoom;
         this.stateRoom = stateRoom;
@@ -52,11 +57,11 @@ public class Room implements Serializable{
         this.password = password;
     }   
 
-    public List<User> getUsuarios() {
+    public ArrayList<User> getUsuarios() {
         return usuarios;
     }
 
-    public void setUsuarios(List<User> usuarios) {
+    public void setUsuarios(ArrayList<User> usuarios) {
         this.usuarios = usuarios;
     }
 }

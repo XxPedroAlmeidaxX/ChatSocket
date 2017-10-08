@@ -9,16 +9,25 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import java.net.InetSocketAddress;
 
 public class Connection implements IConnection{
+    //Canal para troca de dados entre o cliente e o servidor
     private Socket pDados;
+    //Canal para atualização das mensagens do cliente
+    //São dois canais para evitar conflitos
     private Socket pUpdate;
+    //Canal de saída de dados do cliente
     private ObjectOutputStream outDados;
+    //Canal de entrada de dados do cliente
     private ObjectInputStream inDados;
+    //Canal de entrada de dados de atualização
     private ObjectInputStream update;
     
     public Connection(String ip, int porta) throws ConnectionException {
         try {
             pDados = new Socket(ip, porta);  
+            outDados = new ObjectOutputStream(pDados.getOutputStream());
+            inDados = new ObjectInputStream (pDados.getInputStream());
             pUpdate = new Socket(ip, porta);
+            update = new ObjectInputStream (pUpdate.getInputStream());
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Servidor: " + ex);
         }
@@ -37,8 +46,7 @@ public class Connection implements IConnection{
 
     @Override
     public void sendDados(Object obj) throws ConnectionException {
-        try {            
-            outDados = new ObjectOutputStream(pDados.getOutputStream());
+        try {    
             outDados.writeObject(obj);
             outDados.flush();
         }
@@ -50,7 +58,6 @@ public class Connection implements IConnection{
     @Override
     public Object receiveDados() throws ConnectionException {
         try {
-            inDados = new ObjectInputStream (pDados.getInputStream());
             return inDados.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {
@@ -61,7 +68,6 @@ public class Connection implements IConnection{
     @Override
     public Object receiveUpdates() throws ConnectionException {
         try {
-            update = new ObjectInputStream (pUpdate.getInputStream());
             return update.readObject();
         }
         catch (IOException | ClassNotFoundException ex) {

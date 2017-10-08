@@ -10,22 +10,16 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.view.MainView;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
 
-/**
- * FXML Controller class
- *
- * @author Adalbs
- */
 public class HomeController implements Initializable {
 
     @FXML
     private TextArea txtMsg;
     
+    //Classe principal do JavaFX
     private MainView main;
     
     public void setMainView(MainView main){
@@ -34,6 +28,7 @@ public class HomeController implements Initializable {
     
     @FXML
     private void enviarMsg(){
+        //Cria a nova mensagem
         MessageBusiness msgB = new MessageBusiness(main.conn);
         Message m = new Message();
         m.setIdMessage(new Long(0));
@@ -41,6 +36,17 @@ public class HomeController implements Initializable {
         m.setStateMessage(Boolean.FALSE);
         m.setTextMessage(txtMsg.getText());
         m.setUser(main.getLogado());
+        //Se tem um alvo
+        if(main.getAlvoSelec()!=null){
+            //A mensagem é direcionada
+            m.setStateMessage(true);
+            m.setTargetMessage(main.getAlvoSelec());
+        }else{
+            //A mensagem não é direcionada
+            m.setStateMessage(false);
+        }
+        
+        //Insere a mensagem
         try {
             msgB.insertMessage(m);
         } catch (BusinessException ex) {
@@ -50,6 +56,7 @@ public class HomeController implements Initializable {
     
     @FXML
     private void criarSala(){
+        //Exibe a tela de criar sala
         main.showRoomMaker();
     }
 

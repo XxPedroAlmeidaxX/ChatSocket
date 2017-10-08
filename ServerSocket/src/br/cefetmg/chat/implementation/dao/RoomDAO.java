@@ -64,7 +64,7 @@ public class RoomDAO implements IRoomDAO{
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
-            List<User> users = new ArrayList<>();
+            ArrayList<User> users = new ArrayList<>();
             User u;
             while(rs.next()){
                 u = new User();
@@ -120,7 +120,7 @@ public class RoomDAO implements IRoomDAO{
     }
 
     @Override
-    public synchronized List<Room> getAllRoom() throws PersistenceException {
+    public synchronized ArrayList<Room> getAllRoom() throws PersistenceException {
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
 
@@ -128,7 +128,7 @@ public class RoomDAO implements IRoomDAO{
             PreparedStatement pstmt = connection.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
             Room r;
-            List<Room> allRoom = new ArrayList<>();
+            ArrayList<Room> allRoom = new ArrayList<>();
             while(rs.next()) {
                 r = new Room();
                 r.setIdRoom(rs.getLong("idRoom"));
@@ -139,7 +139,7 @@ public class RoomDAO implements IRoomDAO{
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setLong(1, r.getIdRoom());
                 ResultSet rsA = pstmt.executeQuery();
-                List<User> users = new ArrayList<>();
+                ArrayList<User> users = new ArrayList<>();
                 User u;
                 while(rsA.next()){
                     u = new User();

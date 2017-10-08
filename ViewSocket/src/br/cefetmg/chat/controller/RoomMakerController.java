@@ -5,18 +5,14 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import br.cefetmg.chat.view.MainView;
-import br.cefetmg.chat.view.MainView;
-import br.cefetmg.chat.view.MainView;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class RoomMakerController {
-
+    
+    //Classe principal do JavaFX
     private MainView mv;
 
     public void setMainView(MainView mv) {
@@ -40,6 +36,7 @@ public class RoomMakerController {
     @FXML
     private void criar() {
         try {
+            //Cria a nova sala
             Room r = new Room();
             r.setNameRoom(txtNome.getText());
             r.setStateRoom(chkPrivado.isSelected());
@@ -47,6 +44,8 @@ public class RoomMakerController {
             r.setIdRoom(new Long(0));
             IRoomBusiness business = new RoomBusiness(mv.conn); 
             r = business.insertRoom(r);
+            
+            //Exibe a tela principal e carrega a sala
             mv.showHome();
             mv.loadRoom(r);
         } catch (BusinessException ex) {
