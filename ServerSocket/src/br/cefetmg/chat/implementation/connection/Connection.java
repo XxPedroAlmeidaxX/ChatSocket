@@ -7,9 +7,9 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import com.google.gson.Gson;
 
-public class Connection implements IConnection{
-    
+public class Connection implements IConnection{ 
     //Canal para troca de dados entre o cliente e o servidor
     private Socket pData;
     //Canal para atualização das mensagens do cliente
@@ -24,6 +24,10 @@ public class Connection implements IConnection{
     private ObjectOutputStream update;
     //Canal de entrada de dados
     private ObjectInputStream inData;
+    //Objeto para fazer a conversão dos dados para Json
+    private Gson gson;
+    //Objeto para receber a String em Json
+    private String json;    
     
     public Connection() throws ConnectionException {
         try {
@@ -32,6 +36,7 @@ public class Connection implements IConnection{
             inData = new ObjectInputStream(pData.getInputStream());
             pUpdate = sUpdate.accept();
             update = new ObjectOutputStream(pUpdate.getOutputStream());
+            gson = new Gson();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -50,7 +55,8 @@ public class Connection implements IConnection{
     @Override
     public void sendData(Object obj) throws ConnectionException {
         try {    
-            outData.writeObject(obj);
+            json = gson.toJson(obj);
+            outData.writeObject(json);
             outData.flush();
         }
         catch (IOException ex) {
@@ -61,9 +67,8 @@ public class Connection implements IConnection{
     @Override
     public Object receiveData() throws ConnectionException {
         try {
-            Object d = inData.readObject();
-            return d;
-            
+            json = (String) inData.readObject();
+            return gson.fromJson(json, Object.class);  
         }
         catch (IOException | ClassNotFoundException ex) {
             throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
@@ -73,7 +78,8 @@ public class Connection implements IConnection{
     @Override
     public void update(Object obj) throws ConnectionException {
         try {            
-            update.writeObject(obj);
+            json = gson.toJson(obj);
+            update.writeObject(json);
             update.flush();
         }
         catch (IOException ex) {
@@ -96,6 +102,5 @@ public class Connection implements IConnection{
 
     public ObjectOutputStream getUpdate() {
         return update;
-    }   
-    
+    }      
 }

@@ -26,9 +26,9 @@ public class UserBusiness implements IUserBusiness{
             throw new BusinessException("Nome do usuário não pode ser nulo");
         }
         try{
-            c.sendDados("User-Insert");
-            c.sendDados(u);
-            u = (User) c.receiveDados();
+            c.sendData("User-Insert");
+            c.sendData(u);
+            u = (User) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -42,9 +42,9 @@ public class UserBusiness implements IUserBusiness{
         }
         User u = null;
         try{
-            c.sendDados("User-GetId");
-            c.sendDados(id);
-            u = (User) c.receiveDados();
+            c.sendData("User-GetId");
+            c.sendData(id);
+            u = (User) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -61,9 +61,9 @@ public class UserBusiness implements IUserBusiness{
         }
         User u = null;
         try{
-            c.sendDados("User-Delete");
-            c.sendDados(id);
-            u = (User) c.receiveDados();
+            c.sendData("User-Delete");
+            c.sendData(id);
+            u = (User) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -85,10 +85,10 @@ public class UserBusiness implements IUserBusiness{
             throw new BusinessException("Nome do usuário não pode ser nulo");
         }
         try{
-            c.sendDados("User-Update");
-            c.sendDados(id);
-            c.sendDados(u);
-            u = (User) c.receiveDados();
+            c.sendData("User-Update");
+            c.sendData(id);
+            c.sendData(u);
+            u = (User) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -105,10 +105,10 @@ public class UserBusiness implements IUserBusiness{
         }
         User u = null;
         try{
-            c.sendDados("User-GetIpName");
-            c.sendDados(ip);
-            c.sendDados(name);
-            u = (User) c.receiveDados();
+            c.sendData("User-GetIpName");
+            c.sendData(ip);
+            c.sendData(name);
+            u = (User) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -124,10 +124,10 @@ public class UserBusiness implements IUserBusiness{
             throw new BusinessException("Nome do usuário não pode ser nulo");
         }
         try{
-            c.sendDados("User-Logar");
-            c.sendDados(name);
-            c.sendDados(ip);
-            User u = (User)c.receiveDados();
+            c.sendData("User-Logar");
+            c.sendData(name);
+            c.sendData(ip);
+            User u = (User)c.receiveData();
             return u;
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());

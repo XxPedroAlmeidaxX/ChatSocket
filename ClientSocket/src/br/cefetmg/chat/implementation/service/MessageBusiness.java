@@ -38,9 +38,9 @@ public class MessageBusiness implements IMessageBusiness{
             throw new BusinessException("Usuario da mensagem não pode ser nula");
         }
         try {
-            c.sendDados("Message-Insert");
-            c.sendDados(m);
-            m = (Message) c.receiveDados();
+            c.sendData("Message-Insert");
+            c.sendData(m);
+            m = (Message) c.receiveData();
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -54,9 +54,9 @@ public class MessageBusiness implements IMessageBusiness{
         }
         Message m = null;
         try{
-            c.sendDados("Message-Get");
-            c.sendDados(id);
-            m = (Message) c.receiveDados();
+            c.sendData("Message-Get");
+            c.sendData(id);
+            m = (Message) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -70,9 +70,9 @@ public class MessageBusiness implements IMessageBusiness{
         }
         Message m = null;
         try{
-            c.sendDados("Message-Delete");
-            c.sendDados(id);
-            m = (Message) c.receiveDados();
+            c.sendData("Message-Delete");
+            c.sendData(id);
+            m = (Message) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -103,10 +103,10 @@ public class MessageBusiness implements IMessageBusiness{
             throw new BusinessException("Usuario da mensagem não pode ser nula");
         }
         try{
-            c.sendDados("Message-Update");
-            c.sendDados(id);
-            c.sendDados(m);
-            m = (Message) c.receiveDados();
+            c.sendData("Message-Update");
+            c.sendData(id);
+            c.sendData(m);
+            m = (Message) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -123,9 +123,9 @@ public class MessageBusiness implements IMessageBusiness{
         }
         ArrayList<Message> m = null;
         try{
-            c.sendDados("Message-ByUser");
-            c.sendDados(u);
-            m = (ArrayList<Message>) c.receiveDados();
+            c.sendData("Message-ByUser");
+            c.sendData(u);
+            m = (ArrayList<Message>) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -142,9 +142,9 @@ public class MessageBusiness implements IMessageBusiness{
         }
         ArrayList<Message> m = null;
         try{
-            c.sendDados("Message-ByRoom");
-            c.sendDados(r);
-            m = (ArrayList<Message>) c.receiveDados();
+            c.sendData("Message-ByRoom");
+            c.sendData(r);
+            m = (ArrayList<Message>) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

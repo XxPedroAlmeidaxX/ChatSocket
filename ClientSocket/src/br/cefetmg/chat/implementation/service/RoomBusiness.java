@@ -31,9 +31,9 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Nome da sala não pode ser nulo");
         }
         try {
-            c.sendDados("Room-Insert");
-            c.sendDados(r);
-            r = (Room) c.receiveDados();
+            c.sendData("Room-Insert");
+            c.sendData(r);
+            r = (Room) c.receiveData();
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -47,9 +47,9 @@ public class RoomBusiness implements IRoomBusiness{
         }
         Room r = null;
         try {
-            c.sendDados("Room-Get");
-            c.sendDados(id);
-            r = (Room) c.receiveDados();
+            c.sendData("Room-Get");
+            c.sendData(id);
+            r = (Room) c.receiveData();
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -63,9 +63,9 @@ public class RoomBusiness implements IRoomBusiness{
         }
         Room r = null;
         try {
-            c.sendDados("Room-Delete");
-            c.sendDados(id);
-            r = (Room) c.receiveDados();
+            c.sendData("Room-Delete");
+            c.sendData(id);
+            r = (Room) c.receiveData();
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -90,10 +90,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Nome da sala não pode ser nulo");
         }
         try{
-            c.sendDados("Room-Update");
-            c.sendDados(id);
-            c.sendDados(r);
-            r = (Room) c.receiveDados();
+            c.sendData("Room-Update");
+            c.sendData(id);
+            c.sendData(r);
+            r = (Room) c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -103,8 +103,8 @@ public class RoomBusiness implements IRoomBusiness{
     @Override
     public ArrayList<Room> getAllRoom() throws BusinessException {
         try{
-            c.sendDados("Room-all");
-            return (ArrayList<Room>)c.receiveDados();
+            c.sendData("Room-all");
+            return (ArrayList<Room>)c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -125,10 +125,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Id não pode ser nulo");
         }
         try{
-            c.sendDados("Room-insertUserRoom");
-            c.sendDados(u);
-            c.sendDados(id);
-            return (Room)c.receiveDados();
+            c.sendData("Room-insertUserRoom");
+            c.sendData(u);
+            c.sendData(id);
+            return (Room)c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -143,10 +143,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Id da sala não pode ser nulo");
         }
         try{
-            c.sendDados("Room-removeUserRoom");
-            c.sendDados(idUser);
-            c.sendDados(idRoom);
-            return (Room)c.receiveDados();
+            c.sendData("Room-removeUserRoom");
+            c.sendData(idUser);
+            c.sendData(idRoom);
+            return (Room)c.receiveData();
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

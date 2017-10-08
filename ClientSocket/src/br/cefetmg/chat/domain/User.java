@@ -41,5 +41,4 @@ public class User implements Serializable{
     public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
-    
 }
