@@ -10,6 +10,11 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class MessageBusiness implements IMessageBusiness{
     private final IMessageDAO dao;
     

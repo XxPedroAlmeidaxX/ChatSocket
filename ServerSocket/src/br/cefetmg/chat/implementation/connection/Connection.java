@@ -8,6 +8,11 @@ import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class Connection implements IConnection{ 
     //Canal para troca de dados entre o cliente e o servidor
     private Socket pData;
@@ -47,7 +52,7 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public void sendData(String json) throws ConnectionException {
+    public synchronized void sendData(String json) throws ConnectionException {
         try {    
             outData.writeObject(json);
             outData.flush();
@@ -58,7 +63,7 @@ public class Connection implements IConnection{
     }
 
     @Override
-    public String receiveData() throws ConnectionException {
+    public synchronized String receiveData() throws ConnectionException {
         try {
             return (String) inData.readObject();
         }
@@ -68,7 +73,7 @@ public class Connection implements IConnection{
     }
     
     @Override
-    public void update(String json) throws ConnectionException {
+    public synchronized void update(String json) throws ConnectionException {
         try {            
             update.writeObject(json);
             update.flush();

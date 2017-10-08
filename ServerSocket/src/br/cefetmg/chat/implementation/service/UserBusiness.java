@@ -7,6 +7,11 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class UserBusiness implements IUserBusiness{
     private final IUserDAO dao;
     

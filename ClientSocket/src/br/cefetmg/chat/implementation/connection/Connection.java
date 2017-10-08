@@ -8,6 +8,11 @@ import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import java.net.InetSocketAddress;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class Connection implements IConnection{
     //Canal para troca de dados entre o cliente e o servidor
     private Socket pData;

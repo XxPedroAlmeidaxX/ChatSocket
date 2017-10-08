@@ -9,6 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class UserDAO implements IUserDAO{
 
     @Override

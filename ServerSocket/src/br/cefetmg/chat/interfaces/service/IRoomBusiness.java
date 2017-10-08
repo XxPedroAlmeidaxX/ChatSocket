@@ -6,6 +6,11 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public interface IRoomBusiness {
     public Room insertRoom(Room r) throws BusinessException, PersistenceException;
     public Room insertUserRoom(User u, Long id) throws BusinessException, PersistenceException;

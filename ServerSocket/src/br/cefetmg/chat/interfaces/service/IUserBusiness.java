@@ -4,6 +4,11 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public interface IUserBusiness {
     public User insertUser(User u) throws BusinessException, PersistenceException;
     public User getUserById(Long id) throws BusinessException, PersistenceException;

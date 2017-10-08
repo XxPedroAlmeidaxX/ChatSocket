@@ -10,6 +10,11 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida & Pedro Otávio
+ */
+
 public class RoomMakerController {
     
     //Classe principal do JavaFX

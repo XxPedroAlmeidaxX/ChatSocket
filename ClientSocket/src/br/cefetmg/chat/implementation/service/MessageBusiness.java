@@ -11,6 +11,11 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class MessageBusiness implements IMessageBusiness{
     private final IConnection c;
     

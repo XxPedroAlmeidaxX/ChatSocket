@@ -3,6 +3,11 @@ package br.cefetmg.chat.util.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public class ConnectionManager {
   
     private static ConnectionManager conexao;

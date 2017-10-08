@@ -2,6 +2,12 @@ package br.cefetmg.chat.domain;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
+
 public class Message implements Serializable{
     //Id da mensagem
     private Long idMessage;

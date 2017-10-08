@@ -6,6 +6,11 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public class PostgresqlConnection implements ConnectionFactory {
 
     private final static String dbDriver = "org.postgresql.Driver";

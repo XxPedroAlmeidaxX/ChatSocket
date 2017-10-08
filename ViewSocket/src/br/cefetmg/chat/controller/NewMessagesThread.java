@@ -12,8 +12,8 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.view.MainView;
 
 /**
- *
- * @author aluno
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
  */
 public class NewMessagesThread implements Runnable{
     

@@ -15,6 +15,11 @@ import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.implementation.service.UserBusiness;
 import br.cefetmg.chat.util.gson.Handler;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class AdapterServer implements Runnable{
     
     //Conexão do servidor com cliente

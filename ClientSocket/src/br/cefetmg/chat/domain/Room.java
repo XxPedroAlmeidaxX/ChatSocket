@@ -3,6 +3,11 @@ package br.cefetmg.chat.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class Room implements Serializable{
     //Id da sala
     private Long idRoom;

@@ -39,6 +39,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class MainView extends Application {
     //Stage da view
     private Stage primaryStage;

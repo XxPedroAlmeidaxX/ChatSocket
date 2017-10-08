@@ -6,6 +6,11 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public interface IMessageBusiness {
     public Message insertMessage(Message m) throws BusinessException;
     public Message getMessageById(Long id) throws BusinessException;

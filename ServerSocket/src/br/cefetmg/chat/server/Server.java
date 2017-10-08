@@ -3,6 +3,11 @@ package br.cefetmg.chat.server;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class Server {
     public static void main(String[] args) {
         try {

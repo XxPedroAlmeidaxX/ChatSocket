@@ -6,6 +6,11 @@ import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Pedro Almeida
+ */
+
 public class ConnectionTest {
     public static void  main(String args[]) {
         //Declaração de variáveis teste

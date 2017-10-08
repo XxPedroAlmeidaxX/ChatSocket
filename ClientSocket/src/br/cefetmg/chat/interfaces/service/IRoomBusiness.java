@@ -5,6 +5,11 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public interface IRoomBusiness {
     public Room insertRoom(Room r) throws BusinessException;
     public Room insertUserRoom(User u, Long id) throws BusinessException;

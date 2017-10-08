@@ -6,6 +6,11 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.PersistenceException;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Vitor Rodarte
+ */
+
 public interface IMessageDAO {
     public Message insertMessage(Message m) throws PersistenceException;
     public Message getMessageById(Long id) throws PersistenceException;

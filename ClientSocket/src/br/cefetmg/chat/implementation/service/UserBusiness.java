@@ -8,6 +8,10 @@ import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.util.gson.Handler;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
 public class UserBusiness implements IUserBusiness{
     private final IConnection c;
     

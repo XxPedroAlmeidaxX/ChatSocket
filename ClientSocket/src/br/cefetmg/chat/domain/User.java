@@ -2,6 +2,11 @@ package br.cefetmg.chat.domain;
 
 import java.io.Serializable;
 
+/**
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
+ */
+
 public class User implements Serializable{
     //Endereço de ip do usuário
     private Long ipUser;

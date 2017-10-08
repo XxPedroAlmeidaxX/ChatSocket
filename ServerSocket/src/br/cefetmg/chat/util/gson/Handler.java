@@ -5,6 +5,12 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import com.google.gson.Gson;
 
+/**
+ * 
+ * @author Pedro Almeida
+ */
+
+//Classe para a manipulação de JSON, já que o envio direto de objetos estava causando erros
 public class Handler {
     
     public static String toJson(Object obj) {

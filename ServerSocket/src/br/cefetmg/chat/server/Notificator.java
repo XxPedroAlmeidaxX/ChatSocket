@@ -9,19 +9,19 @@ import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.implementation.connection.Connection;
-import java.util.IdentityHashMap;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
- * @author umcan
+ * 
+ * @author Vitor Rodarte & Pedro Almeida
  */
 public class Notificator {
     
     //Tabela de usuários
-    private static final Map<User, Connection> tabelaUsuarios = new IdentityHashMap<>();
+    private static final Map<User, Connection> tabelaUsuarios = new HashMap<>();
 
     public static Map<User, Connection> getTabelaUsuarios() {
         return tabelaUsuarios;
