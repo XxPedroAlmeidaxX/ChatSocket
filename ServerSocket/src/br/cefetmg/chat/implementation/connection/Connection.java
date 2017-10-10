@@ -26,7 +26,7 @@ public class Connection implements IConnection{
     private ObjectInputStream inData; 
     //ArrayList para buffer
     private ArrayList<String> bufferData;
-    
+    //Locks para o funcionamento de Threads
     private final ReentrantLock lockSend = new ReentrantLock();
     private final ReentrantLock lockReceive = new ReentrantLock();
     
@@ -52,7 +52,7 @@ public class Connection implements IConnection{
 
     @Override
     public void sendData(String json, String idt) throws ConnectionException {
-        System.out.println("Inicio envio dados");
+        //Adiciona o identificador de Dado ou Update ao Json enviado
         json = idt + json;
         lockSend.lock();
         try{
@@ -60,20 +60,20 @@ public class Connection implements IConnection{
         }finally{
             lockSend.unlock();
         }
-        System.out.println("Enviou dados: " + json);
     }
 
     @Override
     public String receiveData() throws ConnectionException {
-        System.out.println("Inicio dados");
         String data;
+        //Bloqueia o acesso de outras threads, liberando apenas ao receber os dados
         lockReceive.lock();
         try{
+            //Se tiver dado no buffer, o obtem
             if(!bufferData.isEmpty()){
                 return bufferData.remove(0);
             }
             data = (String) readData();
-            System.out.println("Recebeu dados: " + data.substring(1) );
+            //Identifica o tipo de dado recebido
             if(data.charAt(0)=='D'){
                 return data.substring(1);
             }else{

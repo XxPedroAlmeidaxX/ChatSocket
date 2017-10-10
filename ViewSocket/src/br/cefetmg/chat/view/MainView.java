@@ -17,8 +17,6 @@ import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -228,7 +226,7 @@ public class MainView extends Application {
             filhasMensagens.remove(0, filhasMensagens.size());
         //Para cada mensagem da sala
         for(Message m:mensagensList){
-            //Se a mensagem não for privada, ou o usuário logado for o alvo da mensagem privada
+            //Se a mensagem não for privada, o usuário logado for o alvo da mensagem privada ou o usuário for o remetente
             if(!m.getStateMessage() || m.getTargetMessage().getIdUser()==logado.getIdUser() || m.getUser().getIdUser()==logado.getIdUser()){
                 FlowPane fl = new FlowPane();
                 //Exibe a mensagem

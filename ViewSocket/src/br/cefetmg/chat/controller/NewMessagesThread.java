@@ -8,8 +8,12 @@ package br.cefetmg.chat.controller;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
+import br.cefetmg.chat.implementation.connection.Connection;
+import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.view.MainView;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 
 /**
@@ -54,6 +58,9 @@ public class NewMessagesThread implements Runnable{
                     //Alteração nos usuários
                     case "usuarios":
                         //Recarrega a home, e a sala caso o usuário esteja em uma, executando na thread da aplicação do JavaFX
+                        RoomBusiness b = new RoomBusiness((Connection) c);
+                        if(p.getCurrentRoom()!=null)
+                            p.setCurrentRoom(b.getRoomById(p.getCurrentRoom().getIdRoom()));
                         Room r = p.getCurrentRoom();
                         Platform.runLater(() ->p.showHome());
                         if(r!=null)
@@ -67,7 +74,7 @@ public class NewMessagesThread implements Runnable{
                             });
                         break;
                 }
-            } catch (ConnectionException ex) {
+            } catch (ConnectionException | BusinessException ex) {
                throw new RuntimeException(ex);
             }
         }

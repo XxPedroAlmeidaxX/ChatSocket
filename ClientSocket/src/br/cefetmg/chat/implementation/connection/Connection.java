@@ -25,7 +25,7 @@ public class Connection implements IConnection{
     //ArrayLists para guardar mensagens bufferizadas
     private ArrayList<String> bufferData;
     private ArrayList<String> bufferUpdate;
-    
+    //Locks para o funcionamento de threads
     private final ReentrantLock lockSend = new ReentrantLock(true);
     private final ReentrantLock lockReceive = new ReentrantLock(true);
     
@@ -52,6 +52,7 @@ public class Connection implements IConnection{
 
     @Override
     public void sendData(String json) throws ConnectionException {
+        //Adiciona o identificador do dado
         json = "D" + json;
         lockSend.lock();
         try{
@@ -63,8 +64,10 @@ public class Connection implements IConnection{
     
     @Override
     public String receiveData(String idt) throws ConnectionException {
+        
         String data;
         lockReceive.lock();
+        //Verifica os buffers dos dados
         if(idt.equals("D")){
             if(!bufferData.isEmpty()){
                 do{
@@ -80,7 +83,9 @@ public class Connection implements IConnection{
                 return bufferUpdate.remove(0);
             }
         }
+        //Caso não tenha no buffer, le os dados
         data = (String) readData();
+        //De acordo com o tipo de dado
         if("D".equals(idt)){
             if(data.charAt(0)=='D'){
                 do{
