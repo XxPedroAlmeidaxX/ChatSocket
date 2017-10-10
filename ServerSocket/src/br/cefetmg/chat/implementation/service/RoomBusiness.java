@@ -101,6 +101,10 @@ public class RoomBusiness implements IRoomBusiness{
         if(idUser==null){
             throw new BusinessException("Id do usuario não pode ser nulo");
         }
-        return dao.removeUserRoom(idUser);
+        Room r = dao.removeUserRoom(idUser);
+        if(r.getUsuarios().isEmpty()){
+            this.deleteRoomById(r.getIdRoom());
+        }
+        return r;
     }
 }

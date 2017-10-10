@@ -145,11 +145,6 @@ public class AdapterServer implements Runnable{
                                 //Remove usuário da sala
                                 Room roomAlterada = roomB.removeUserRoom(idUser);
                                 con.sendData(Handler.toJson(roomAlterada), "D");
-                                //Se a sala está vazia
-                                if(roomAlterada.getUsuarios().isEmpty()){
-                                    //Remove a sala
-                                    roomB.deleteRoomById(roomAlterada.getIdRoom());
-                                }
                                 //Notifica usuários da remoção de usuário ou deleção da sala
                                 Notificator.notifyUserRoom();
                                 break;
@@ -193,6 +188,7 @@ public class AdapterServer implements Runnable{
                 try {
                     //Caso a conexão falhe, remove o cliente da sala
                     roomB.removeUserRoom(cliente.getIdUser());
+                    
                     //Notifica da saída do cliente
                     Notificator.notifyUserRoom();
                 } catch (BusinessException | PersistenceException | NullPointerException ex1) {

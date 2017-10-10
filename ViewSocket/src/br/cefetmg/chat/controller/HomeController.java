@@ -57,6 +57,7 @@ public class HomeController implements Initializable {
         } catch (BusinessException ex) {
             System.out.println("Erro: " + ex.getMessage());
         }
+        txtMsg.setText("");
     }
     
     @FXML

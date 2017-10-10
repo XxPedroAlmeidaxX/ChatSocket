@@ -59,6 +59,7 @@ public class NewMessagesThread implements Runnable{
                         if(r!=null)
                             Platform.runLater(() -> {
                                 try {
+                                    System.out.println("Atualizou users");
                                     p.loadRoom(r);
                                 } catch (BusinessException ex) {
                                     System.out.println("Erro: " + ex);

@@ -56,7 +56,7 @@ public class MainView extends Application {
     //Conexão do cliente com o servidor
     public Connection conn;
     //Sala atual do usuário
-    private Room currentRoom;
+    private Room currentRoom = null;
     //Alvo atual selecionado para mensagens
     private User alvoSelec;
     
@@ -78,7 +78,6 @@ public class MainView extends Application {
     
     public void showHome(){
         try {
-            System.out.println("OI");
             IRoomBusiness roomB = new RoomBusiness(conn);
             //Carrega todas as salas existentes
             salas = roomB.getAllRoom();
@@ -101,7 +100,8 @@ public class MainView extends Application {
             //Pega a lista de filhas do painel
             ObservableList filhas = salasDisponiveis.getChildren();
             //Remove salas já carregadas
-            filhas.remove(0, filhas.size());
+            if(!filhas.isEmpty())
+                filhas.remove(0, filhas.size());
             //Para cada sala adiciona um botão
             for(Room r:salas){
                 Button b = new Button();
@@ -141,13 +141,16 @@ public class MainView extends Application {
                                 entrar.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent event) {
+                                        System.out.println(((TextField)dialogVbox.lookup("#senhaField")).getText());
                                         //Se a senha estiver correta
-                                        if(r.getPassword().equals(((TextField)dialogVbox.lookup("#senhaField")).getText())){
+                                        if(r.getPassword().trim().equals(((TextField)dialogVbox.lookup("#senhaField")).getText())){
                                             try {
+                                                System.out.println("Sala Privada");
                                                 //Carrega a sala
                                                 loadRoom(r);
+                                                dialog.close();
                                             } catch (BusinessException ex) {
-                                                Logger.getLogger(MainView.class.getName()).log(Level.SEVERE, null, ex);
+                                                System.out.println("Erro: " + ex);
                                             }
                                         }
                                     }
@@ -170,7 +173,6 @@ public class MainView extends Application {
                 //Adiciona o botão às filhas do painel
                 filhas.add(b);
             }
-            System.out.println("OI2");
         } catch (IOException | BusinessException e) {
             throw new RuntimeException(e);
         }
@@ -196,56 +198,67 @@ public class MainView extends Application {
     public void loadRoom(Room r) throws BusinessException{
         IMessageBusiness busi = new MessageBusiness(conn); 
         IRoomBusiness roomB = new RoomBusiness(conn);
-        //Se o usuário estava anteriormente em uma sala
+        Room oldCurrent;
+        //Se o usuário estava anteriormente em uma sala e a nova sala é diferente
         if(currentRoom!=null){
-            //Remove o usuário da sala
-            roomB.removeUserRoom(logado.getIdUser(), currentRoom.getIdRoom());
+            if(r.getIdRoom()!=currentRoom.getIdRoom()){
+                //Remove o usuário da sala
+                roomB.removeUserRoom(logado.getIdUser(), currentRoom.getIdRoom());
+            }
         }
+        oldCurrent = currentRoom;
         //Define a sala atual
         currentRoom = r;
-        //Insere o usuário na sala
-        roomB.insertUserRoom(logado, r.getIdRoom());
-        
+        //Se o usuário estava anteriormente em uma sala e a nova sala é diferente
+        if(oldCurrent!=null){
+            if(r.getIdRoom()!=oldCurrent.getIdRoom()){
+                //Insere o usuário da sala
+                roomB.insertUserRoom(logado, r.getIdRoom());
+            }
+        }else{
+            roomB.insertUserRoom(logado, r.getIdRoom());
+        }
         //Obtem o painel de mensagens
         FlowPane mensagens = (FlowPane)rootLayout.lookup("#mensagensContainer");
         ArrayList<Message> mensagensList = busi.getMessagesByRoom(r);
         ObservableList filhasMensagens = mensagens.getChildren();
         mensagens.setVgap(10);
         //Deleta as mensagens carregadas anteriormente
-        filhasMensagens.remove(0, filhasMensagens.size());
+        if(!filhasMensagens.isEmpty())
+            filhasMensagens.remove(0, filhasMensagens.size());
         //Para cada mensagem da sala
         for(Message m:mensagensList){
             //Se a mensagem não for privada, ou o usuário logado for o alvo da mensagem privada
-            if(!m.getStateMessage() || m.getTargetMessage().getIdUser()==logado.getIdUser()){
+            if(!m.getStateMessage() || m.getTargetMessage().getIdUser()==logado.getIdUser() || m.getUser().getIdUser()==logado.getIdUser()){
+                FlowPane fl = new FlowPane();
                 //Exibe a mensagem
                 Label lMsg = new Label();
                 lMsg.setId("mensagem"+m.getIdMessage());
                 lMsg.setText(m.getTextMessage());
                 lMsg.setAlignment(Pos.BOTTOM_LEFT);
                 lMsg.setMinWidth(mensagens.getWidth());
-                if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
-                    lMsg.setStyle("-fx-background-color: #e0e0e0");
+                if(m.getUser().getIdUser()==logado.getIdUser()){
+                    fl.setStyle("-fx-background-color: #e0e0e0");
                     lMsg.setTextFill(Paint.valueOf("black")); 
                 }else{
-                    lMsg.setStyle("-fx-background-color: #42e8f4");
+                    fl.setStyle("-fx-background-color: #42e8f4");
                     lMsg.setTextFill(Paint.valueOf("white")); 
                 }
                 Label lUsuario = new Label();
-                if(m.getUser().getIpUser()==logado.getIpUser() && m.getUser().getNameUser().equals(logado.getNameUser())){
-                    lUsuario.setStyle("-fx-background-color: #e0e0e0");
+                if(m.getUser().getIdUser()==logado.getIdUser()){
                     lUsuario.setTextFill(Paint.valueOf("black")); 
                 }else{
-                    lUsuario.setStyle("-fx-background-color: #42e8f4");
                     lUsuario.setTextFill(Paint.valueOf("white")); 
                 }
                 lUsuario.setAlignment(Pos.BOTTOM_LEFT);
                 lUsuario.setMinWidth(mensagens.getWidth());
-                lUsuario.setId("usMsg-"+m.getUser().getIpUser()+"-"+m.getUser().getNameUser());
+                lUsuario.setId("usMsg-"+m.getUser().getIdUser());
                 lUsuario.setText(m.getUser().getNameUser());
                 lUsuario.setFont(Font.font ("System", 10));
                 //Adiciona a mensagem
-                filhasMensagens.add(lMsg);
-                filhasMensagens.add(lUsuario);
+                fl.getChildren().add(lMsg);
+                fl.getChildren().add(lUsuario);
+                filhasMensagens.add(fl);
             }
         }
         
@@ -254,16 +267,18 @@ public class MainView extends Application {
         ObservableList filhasLogados = logados.getChildren();
         logados.setVgap(15);
         //Remove os usuário logados já carregados
-        filhasLogados.remove(0, filhasMensagens.size());
+        if(!filhasLogados.isEmpty())
+            filhasLogados.remove(0, filhasMensagens.size());
         //Para cada usuário da sala
         for(User u : r.getUsuarios()){
             //Se o usuário não for o usuário logado
-            if(u.getIpUser()!=logado.getIpUser() && !u.getNameUser().equals(logado.getNameUser())){
+            if(u.getIdUser()!=logado.getIdUser()){
                 Label l = new Label();
                 l.setId("usLog-"+u.getIdUser());
                 l.setText(u.getNameUser());
                 l.setMinWidth(logados.getWidth());
                 l.setStyle("-fx-background-color: #660000");
+                l.setTextFill(Paint.valueOf("white")); 
                 //Quando clica no usuário
                 l.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
@@ -272,6 +287,12 @@ public class MainView extends Application {
                         try{
                             //Se não se tem um alvo para mensagens ou o alvo é diferente do clicado
                             if(alvoSelec==null || !alvoSelec.getIdUser().equals(id)){
+                                //Se tiver um alvo selecionado, remove a cor
+                                if(alvoSelec!=null){
+                                    String idLabel = "usLog-"+alvoSelec.getIdUser();
+                                    Label log = (Label)logados.lookup("#" + idLabel);
+                                    log.setStyle("-fx-background-color: #660000");
+                                }
                                 //Torna o usuário clicado alvo
                                 UserBusiness usBus = new UserBusiness(conn);
                                 alvoSelec = usBus.getUserById(id);

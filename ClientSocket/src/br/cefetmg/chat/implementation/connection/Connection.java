@@ -9,8 +9,6 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * 
@@ -54,7 +52,6 @@ public class Connection implements IConnection{
 
     @Override
     public void sendData(String json) throws ConnectionException {
-        System.out.println("Inicio envio");
         json = "D" + json;
         lockSend.lock();
         try{
@@ -62,29 +59,29 @@ public class Connection implements IConnection{
         }finally{
             lockSend.unlock();
         }
-        System.out.println("Enviou dados: " + json);
     }
     
     @Override
     public String receiveData(String idt) throws ConnectionException {
         String data;
-        System.out.println("Lock - " + idt);
         lockReceive.lock();
-        System.out.println("Pass lock - " + idt);
         if(idt.equals("D")){
             if(!bufferData.isEmpty()){
-                System.out.println("Buffer data returned");
+                do{
+                    lockReceive.unlock();
+                }while(lockReceive.getHoldCount()>0);
                 return bufferData.remove(0);
             }
         }else{
             if(!bufferUpdate.isEmpty()){
+                do{
+                    lockReceive.unlock();
+                }while(lockReceive.getHoldCount()>0);
                 return bufferUpdate.remove(0);
             }
         }
-        System.out.println("Esperando " + idt);
         data = (String) readData();
         if("D".equals(idt)){
-            System.out.println("Recebeu: D - " + data);
             if(data.charAt(0)=='D'){
                 do{
                     lockReceive.unlock();
@@ -98,7 +95,6 @@ public class Connection implements IConnection{
                 return this.receiveData(idt);
             }
         }else{
-            System.out.println("Recebeu: U - " + data.substring(1));
             if(data.charAt(0)=='U'){
                 do{
                     lockReceive.unlock();
