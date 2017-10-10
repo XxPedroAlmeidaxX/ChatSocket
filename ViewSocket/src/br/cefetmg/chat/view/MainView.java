@@ -78,6 +78,7 @@ public class MainView extends Application {
     
     public void showHome(){
         try {
+            System.out.println("OI");
             IRoomBusiness roomB = new RoomBusiness(conn);
             //Carrega todas as salas existentes
             salas = roomB.getAllRoom();
@@ -169,6 +170,7 @@ public class MainView extends Application {
                 //Adiciona o botão às filhas do painel
                 filhas.add(b);
             }
+            System.out.println("OI2");
         } catch (IOException | BusinessException e) {
             throw new RuntimeException(e);
         }

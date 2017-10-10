@@ -31,9 +31,6 @@ public class MessageBusiness implements IMessageBusiness{
         if(m.getRoom()==null){
             throw new BusinessException("Sala da mensagem não pode ser nula");
         }
-        if(m.getTargetMessage()==null){
-            throw new BusinessException("Alvo da mensagem não pode ser nula");
-        }
         if(m.getStateMessage()==null){
             throw new BusinessException("Estado da mensagem não pode ser nula");
         }
@@ -46,7 +43,7 @@ public class MessageBusiness implements IMessageBusiness{
         try {
             c.sendData("Message-Insert");
             c.sendData(Handler.toJson(m));
-            m = Handler.toMessage(c.receiveData());
+            m = Handler.toMessage(c.receiveData("D"));
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -62,7 +59,7 @@ public class MessageBusiness implements IMessageBusiness{
         try{
             c.sendData("Message-Get");
             c.sendData(id.toString());
-            m = Handler.toMessage(c.receiveData());
+            m = Handler.toMessage(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -78,7 +75,7 @@ public class MessageBusiness implements IMessageBusiness{
         try{
             c.sendData("Message-Delete");
             c.sendData(id.toString());
-            m = Handler.toMessage(c.receiveData());
+            m = Handler.toMessage(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -96,9 +93,6 @@ public class MessageBusiness implements IMessageBusiness{
         if(m.getRoom()==null){
             throw new BusinessException("Sala da mensagem não pode ser nula");
         }
-        if(m.getTargetMessage()==null){
-            throw new BusinessException("Alvo da mensagem não pode ser nula");
-        }
         if(m.getStateMessage()==null){
             throw new BusinessException("Estado da mensagem não pode ser nula");
         }
@@ -112,7 +106,7 @@ public class MessageBusiness implements IMessageBusiness{
             c.sendData("Message-Update");
             c.sendData(id.toString());
             c.sendData(Handler.toJson(m));
-            m = Handler.toMessage(c.receiveData());
+            m = Handler.toMessage(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -131,7 +125,7 @@ public class MessageBusiness implements IMessageBusiness{
         try{
             c.sendData("Message-ByUser");
             c.sendData(Handler.toJson(u));
-            m = Handler.toMessageAray(c.receiveData());
+            m = Handler.toMessageAray(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -150,7 +144,7 @@ public class MessageBusiness implements IMessageBusiness{
         try{
             c.sendData("Message-ByRoom");
             c.sendData(Handler.toJson(r));
-            m = Handler.toMessageAray(c.receiveData());
+            m = Handler.toMessageAray(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

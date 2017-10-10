@@ -69,39 +69,40 @@ public class AdapterServer implements Runnable{
                                 //Se o usuário existe, o retorna
                                 if(usB.getUserByIpAndName(ip, name).getIdUser()!=null){
                                     cliente = usB.getUserByIpAndName(ip, name);
-                                    con.sendData(Handler.toJson(cliente));
+                                    con.sendData(Handler.toJson(cliente), "D");
                                 }else{
                                     //Senão cria um novo usuário e o retorna
                                     User us = new User();
                                     us.setIpUser(ip);
                                     us.setNameUser(name);
-                                    cliente = usB.insertUser(us);
-                                    con.sendData(Handler.toJson(cliente));
+                                    usB.insertUser(us);
+                                    cliente = usB.getUserByIpAndName(ip, name);
+                                    con.sendData(Handler.toJson(cliente), "D");
                                 }
                                 //Adiciona usuário na tabela de clientes ativos
                                 Notificator.addTabela(cliente, con);
                                 break;
                             case "Insert":
                                 u = Handler.toUser(con.receiveData());
-                                con.sendData(Handler.toJson(usB.insertUser(u)));
+                                con.sendData(Handler.toJson(usB.insertUser(u)), "D");
                                 break;
                             case "GetId":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(usB.getUserById(id)));
+                                con.sendData(Handler.toJson(usB.getUserById(id)), "D");
                                 break;
                             case "Delete":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(usB.deleteUserById(id)));
+                                con.sendData(Handler.toJson(usB.deleteUserById(id)), "D");
                                 break;
                             case "Update":
                                 id = Long.parseLong(con.receiveData());
                                 u = Handler.toUser(con.receiveData());
-                                con.sendData(Handler.toJson(usB.updateUserById(id, u)));
+                                con.sendData(Handler.toJson(usB.updateUserById(id, u)), "D");
                                 break;
                             case "GetIpName":
                                 ip = Long.parseLong(con.receiveData());
                                 name = (String)con.receiveData();
-                                con.sendData(Handler.toJson(usB.getUserByIpAndName(ip, name)));
+                                con.sendData(Handler.toJson(usB.getUserByIpAndName(ip, name)), "D");
                                 break;
                         }
                         break;
@@ -110,31 +111,31 @@ public class AdapterServer implements Runnable{
                         switch(sOperation[1]) {
                             case "Insert":
                                 r = Handler.toRoom(con.receiveData());
-                                con.sendData(Handler.toJson(roomB.insertRoom(r)));
+                                con.sendData(Handler.toJson(roomB.insertRoom(r)), "D");
                                 //Notifica clientes da criação da nova sala
                                 Notificator.notifyRoom();
                                 break;
                             case "Get":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(roomB.getRoomById(id)));
+                                con.sendData(Handler.toJson(roomB.getRoomById(id)), "D");
                                 break;
                             case "Delete":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(roomB.deleteRoomById(id)));
+                                con.sendData(Handler.toJson(roomB.deleteRoomById(id)), "D");
                                 Notificator.notifyRoom();
                                 break;
                             case "Update":
                                 id = Long.parseLong(con.receiveData());
                                 r = Handler.toRoom(con.receiveData());
-                                con.sendData(Handler.toJson(roomB.updateRoomById(id, r)));
+                                con.sendData(Handler.toJson(roomB.updateRoomById(id, r)), "D");
                                 break;
                             case "all":
-                                con.sendData(Handler.toJson(roomB.getAllRoom()));
+                                con.sendData(Handler.toJson(roomB.getAllRoom()), "D");
                                 break;
                             case "insertUserRoom":
                                 u = Handler.toUser(con.receiveData());
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(roomB.insertUserRoom(u, id)));
+                                con.sendData(Handler.toJson(roomB.insertUserRoom(u, id)), "D");
                                 //Notifica clientes da entrada de um usuário na sala
                                 Notificator.notifyUserRoom();
                                 break;
@@ -143,7 +144,7 @@ public class AdapterServer implements Runnable{
                                 Long idRoom = Long.parseLong(con.receiveData());
                                 //Remove usuário da sala
                                 Room roomAlterada = roomB.removeUserRoom(idUser);
-                                con.sendData(Handler.toJson(roomAlterada));
+                                con.sendData(Handler.toJson(roomAlterada), "D");
                                 //Se a sala está vazia
                                 if(roomAlterada.getUsuarios().isEmpty()){
                                     //Remove a sala
@@ -160,29 +161,30 @@ public class AdapterServer implements Runnable{
                         switch(sOperation[1]) {
                             case "Insert":
                                 m = Handler.toMessage(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.insertMessage(m)));
+                                m = msgB.insertMessage(m);
+                                con.sendData(Handler.toJson(m), "D");
                                 Notificator.notifyMessage(m);
                                 break;
                             case "Get":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.getMessageById(id)));
+                                con.sendData(Handler.toJson(msgB.getMessageById(id)), "D");
                                 break;
                             case "Delete":
                                 id = Long.parseLong(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.deleteMessageById(id)));
+                                con.sendData(Handler.toJson(msgB.deleteMessageById(id)), "D");
                                 break;
                             case "Update":
                                 id = Long.parseLong(con.receiveData());
                                 m = Handler.toMessage(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.updateMessageById(id, m)));
+                                con.sendData(Handler.toJson(msgB.updateMessageById(id, m)), "D");
                                 break;
                             case "ByRoom":
                                 r = Handler.toRoom(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.getMessagesByRoom(r)));
+                                con.sendData(Handler.toJson(msgB.getMessagesByRoom(r)), "D");
                                 break;
                             case "ByUser":
                                 u = Handler.toUser(con.receiveData());
-                                con.sendData(Handler.toJson(msgB.getMessagesByUser(u)));
+                                con.sendData(Handler.toJson(msgB.getMessagesByUser(u)), "D");
                                 break;
                         }
                         break;
@@ -194,7 +196,7 @@ public class AdapterServer implements Runnable{
                     //Notifica da saída do cliente
                     Notificator.notifyUserRoom();
                 } catch (BusinessException | PersistenceException | NullPointerException ex1) {
-                    throw new RuntimeException(ex1);
+                    throw new RuntimeException(ex);
                 }
                 //Remove o cliente da tabela
                 Notificator.removeTabela(cliente);

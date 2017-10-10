@@ -24,11 +24,14 @@ public class MessageDAO implements IMessageDAO{
     public synchronized Message insertMessage(Message m) throws PersistenceException {
         try {
             Connection connection = ConnectionManager.getInstance().getConnection();
-            String sql = "INSERT INTO Room (textMessage, stateMessage, targetMessage, senderUser, room) VALUES(?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Message (textMessage, stateMessage, targetMessage, senderUser, room) VALUES (?, ?, ?, ?, ?) ";
             PreparedStatement pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, m.getTextMessage());
             pstmt.setBoolean(2, m.getStateMessage());
-            pstmt.setLong(3, m.getTargetMessage().getIdUser());
+            if(m.getTargetMessage()!=null)
+                pstmt.setLong(3, m.getTargetMessage().getIdUser());
+            else
+                pstmt.setNull(3, java.sql.Types.INTEGER);
             pstmt.setLong(4, m.getUser().getIdUser());
             pstmt.setLong(5, m.getRoom().getIdRoom());
             int linhasAfetadas = pstmt.executeUpdate();
@@ -45,7 +48,7 @@ public class MessageDAO implements IMessageDAO{
             }
             pstmt.close();
             connection.close();
-            return m;
+            return this.getMessageById(m.getIdMessage());
         } catch (PersistenceException | ClassNotFoundException | SQLException e) {
             throw new PersistenceException(e.getMessage());
         }
@@ -57,11 +60,11 @@ public class MessageDAO implements IMessageDAO{
             Connection connection = ConnectionManager.getInstance().getConnection();
 
             String sql = "SELECT a.idMessage idMessage, a.textMessage textMessage, a.stateMessage stateMessage, "
-                    + " b.ipUser ipTarget, b.nameUser nameTarget, b.idUser idTarget "
-                    + " c.ipUser ipSender, c.nameUser nameSender, c.idUser idSender"
+                    + " b.ipUser ipTarget, b.nameUser nameTarget, b.idUser idTarget, "
+                    + " c.ipUser ipSender, c.nameUser nameSender, c.idUser idSender, "
                     + " d.idRoom idRoom, d.nameRoom nameRoom, d.stateRoom stateRoom, d.password roomPassword "
                     + " FROM Message a"
-                    + " JOIN Users b ON a.targetMessage=b.idUser "
+                    + " LEFT JOIN Users b ON a.targetMessage=b.idUser "
                     + " JOIN Users c ON a.senderUser=c.idUser "
                     + " JOIN Room d ON a.room=d.idRoom WHERE idMessage = ?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
@@ -76,6 +79,23 @@ public class MessageDAO implements IMessageDAO{
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("roomPassword"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
+                
+                sql = "SELECT a.idUser idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+                pstmt = connection.prepareStatement(sql);
+                pstmt.setLong(1, rs.getLong("idRoom"));
+                ResultSet rsUsers = pstmt.executeQuery();
+                ArrayList<User> users = new ArrayList<>();
+                User u;
+                while(rsUsers.next()){
+                    u = new User();
+                    u.setIdUser(rsUsers.getLong("idUser"));
+                    u.setIpUser(rsUsers.getLong("ipUser"));
+                    u.setNameUser(rsUsers.getString("nameUser"));
+                    users.add(u);
+                }
+                r.setUsuarios(users);
+                
+                
                 target.setIpUser(rs.getLong("ipTarget"));
                 target.setIdUser(rs.getLong("idTarget"));
                 target.setNameUser(rs.getString("nameTarget"));
@@ -124,7 +144,10 @@ public class MessageDAO implements IMessageDAO{
             pstmt.setLong(1, m.getIdMessage());
             pstmt.setString(2, m.getTextMessage());
             pstmt.setBoolean(3, m.getStateMessage());
-            pstmt.setLong(4, m.getTargetMessage().getIpUser());
+            if(m.getTargetMessage()!=null)
+                pstmt.setLong(4, m.getTargetMessage().getIdUser());
+            else
+                pstmt.setNull(4, java.sql.Types.INTEGER);
             pstmt.setLong(5, m.getUser().getIpUser());
             pstmt.setLong(6, m.getRoom().getIdRoom());
             pstmt.setString(7, m.getUser().getNameUser());
@@ -170,6 +193,22 @@ public class MessageDAO implements IMessageDAO{
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("roomPassword"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
+                
+                sql = "SELECT a.idUser idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+                pstmt = connection.prepareStatement(sql);
+                pstmt.setLong(1, r.getIdRoom());
+                ResultSet rsUsers = pstmt.executeQuery();
+                ArrayList<User> users = new ArrayList<>();
+                User us;
+                while(rsUsers.next()){
+                    us = new User();
+                    us.setIdUser(rsUsers.getLong("idUser"));
+                    us.setIpUser(rsUsers.getLong("ipUser"));
+                    us.setNameUser(rsUsers.getString("nameUser"));
+                    users.add(us);
+                }
+                r.setUsuarios(users);
+                
                 target.setIpUser(rs.getLong("ipTarget"));
                 target.setNameUser(rs.getString("nameTarget"));
                 sender.setIpUser(rs.getLong("ipSender"));
@@ -220,6 +259,22 @@ public class MessageDAO implements IMessageDAO{
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("roomPassword"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
+                
+                sql = "SELECT a.idUser idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+                pstmt = connection.prepareStatement(sql);
+                pstmt.setLong(1, r.getIdRoom());
+                ResultSet rsUsers = pstmt.executeQuery();
+                ArrayList<User> users = new ArrayList<>();
+                User u;
+                while(rsUsers.next()){
+                    u = new User();
+                    u.setIdUser(rsUsers.getLong("idUser"));
+                    u.setIpUser(rsUsers.getLong("ipUser"));
+                    u.setNameUser(rsUsers.getString("nameUser"));
+                    users.add(u);
+                }
+                r.setUsuarios(users);
+                
                 target.setIpUser(rs.getLong("ipTarget"));
                 target.setNameUser(rs.getString("nameTarget"));
                 sender.setIpUser(rs.getLong("ipSender"));

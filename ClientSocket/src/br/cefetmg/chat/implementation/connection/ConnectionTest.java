@@ -23,8 +23,13 @@ public class ConnectionTest {
         //Realização dos testes
         try {
             Connection con = new Connection("localhost", 2223);
-            tUser3 = Handler.toUser(con.receiveData());
-            System.out.println(tUser3.getIdUser());
+            String a1 = con.receiveData("D");
+            System.out.println(a1);
+            String a2 = con.receiveData("D");
+            System.out.println(a2);
+            String a3 = con.receiveData("U");
+            System.out.println(a3);
+            
         } catch(ConnectionException ex) {
             System.out.println("Erro: " + ex);
         } 

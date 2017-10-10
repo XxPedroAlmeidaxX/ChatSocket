@@ -39,7 +39,7 @@ public class RoomBusiness implements IRoomBusiness{
         try {
             c.sendData("Room-Insert");
             c.sendData(Handler.toJson(r));
-            r = Handler.toRoom(c.receiveData());
+            r = Handler.toRoom(c.receiveData("D"));
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -55,7 +55,7 @@ public class RoomBusiness implements IRoomBusiness{
         try {
             c.sendData("Room-Get");
             c.sendData(id.toString());
-            r = Handler.toRoom(c.receiveData());
+            r = Handler.toRoom(c.receiveData("D"));
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -71,7 +71,7 @@ public class RoomBusiness implements IRoomBusiness{
         try {
             c.sendData("Room-Delete");
             c.sendData(id.toString());
-            r = Handler.toRoom(c.receiveData());
+            r = Handler.toRoom(c.receiveData("D"));
         } catch (ConnectionException ex) {
             throw new BusinessException(ex.getMessage());
         }
@@ -99,7 +99,7 @@ public class RoomBusiness implements IRoomBusiness{
             c.sendData("Room-Update");
             c.sendData(id.toString());
             c.sendData(Handler.toJson(r));
-            r = Handler.toRoom(c.receiveData());
+            r = Handler.toRoom(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -110,7 +110,7 @@ public class RoomBusiness implements IRoomBusiness{
     public ArrayList<Room> getAllRoom() throws BusinessException {
         try{
             c.sendData("Room-all");
-            return Handler.toRoomAray(c.receiveData());
+            return Handler.toRoomAray(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -134,7 +134,7 @@ public class RoomBusiness implements IRoomBusiness{
             c.sendData("Room-insertUserRoom");
             c.sendData(Handler.toJson(u));
             c.sendData(id.toString());
-            return Handler.toRoom(c.receiveData());
+            return Handler.toRoom(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -152,7 +152,7 @@ public class RoomBusiness implements IRoomBusiness{
             c.sendData("Room-removeUserRoom");
             c.sendData(Handler.toJson(idUser));
             c.sendData(Handler.toJson(idRoom));
-            return Handler.toRoom(c.receiveData());
+            return Handler.toRoom(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }

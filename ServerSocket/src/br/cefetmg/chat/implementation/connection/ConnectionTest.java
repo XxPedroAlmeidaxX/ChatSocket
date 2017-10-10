@@ -24,7 +24,9 @@ public class ConnectionTest {
         try {
             Connection.setServer(2223);
             Connection con = new Connection();
-            con.sendData(Handler.toJson(tUser1));
+            con.sendData(Handler.toJson(tUser1), "D");
+            con.sendData(Handler.toJson(tUser2), "U");
+            con.sendData(Handler.toJson(tUser3), "D");
         } catch(ConnectionException ex) {
             System.out.println("Erro: " + ex);
         } 

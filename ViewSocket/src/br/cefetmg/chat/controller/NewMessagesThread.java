@@ -10,6 +10,7 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.view.MainView;
+import javafx.application.Platform;
 
 /**
  * 
@@ -32,29 +33,41 @@ public class NewMessagesThread implements Runnable{
         while(true){
             try {
                 //Recebe mensagens de atualização
-                String update = (String)c.receiveUpdates();
+                String update = (String)c.receiveData("U");
                 switch(update){
                     //Nova mensagem
                     case "msg":
-                        //Recarrega a sala
-                        p.loadRoom(p.getCurrentRoom());
+                        //Recarrega a sala, executando na thread da aplicação do JavaFX
+                        Platform.runLater(() -> {
+                            try {
+                                p.loadRoom(p.getCurrentRoom());
+                            } catch (BusinessException ex) {
+                                System.out.println("Erro: " + ex);
+                            }
+                        });
                         break;
                     //Alterações nas salas
                     case "sala":
-                        //Recarrega a home
-                        p.showHome();
+                        //Recarrega a home, executando na thread da aplicação do JavaFX
+                        Platform.runLater(() -> p.showHome());
                         break;
                     //Alteração nos usuários
                     case "usuarios":
-                        //Recarrega a home, e a sala caso o usuário esteja em uma
+                        //Recarrega a home, e a sala caso o usuário esteja em uma, executando na thread da aplicação do JavaFX
                         Room r = p.getCurrentRoom();
-                        p.showHome();
+                        Platform.runLater(() ->p.showHome());
                         if(r!=null)
-                            p.loadRoom(r);
+                            Platform.runLater(() -> {
+                                try {
+                                    p.loadRoom(r);
+                                } catch (BusinessException ex) {
+                                    System.out.println("Erro: " + ex);
+                                }
+                            });
                         break;
                 }
-            } catch (ConnectionException | BusinessException ex) {
-               throw new RuntimeException("Erro: " +ex.getMessage());
+            } catch (ConnectionException ex) {
+               throw new RuntimeException(ex);
             }
         }
     }

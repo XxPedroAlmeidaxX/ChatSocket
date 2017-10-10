@@ -33,7 +33,7 @@ public class UserBusiness implements IUserBusiness{
         try{
             c.sendData("User-Insert");
             c.sendData(Handler.toJson(u));
-            u = Handler.toUser(c.receiveData());
+            u = Handler.toUser(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -49,7 +49,7 @@ public class UserBusiness implements IUserBusiness{
         try{
             c.sendData("User-GetId");
             c.sendData(id.toString());
-            u = Handler.toUser(c.receiveData());
+            u = Handler.toUser(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -68,7 +68,7 @@ public class UserBusiness implements IUserBusiness{
         try{
             c.sendData("User-Delete");
             c.sendData(id.toString());
-            u = Handler.toUser(c.receiveData());
+            u = Handler.toUser(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -93,7 +93,7 @@ public class UserBusiness implements IUserBusiness{
             c.sendData("User-Update");
             c.sendData(id.toString());
             c.sendData(Handler.toJson(u));
-            u = Handler.toUser(c.receiveData());
+            u = Handler.toUser(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -113,7 +113,7 @@ public class UserBusiness implements IUserBusiness{
             c.sendData("User-GetIpName");
             c.sendData(Handler.toJson(ip));
             c.sendData(name);
-            u = Handler.toUser(c.receiveData());
+            u = Handler.toUser(c.receiveData("D"));
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());
         }
@@ -132,7 +132,7 @@ public class UserBusiness implements IUserBusiness{
             c.sendData("User-Logar");
             c.sendData(name);
             c.sendData(Handler.toJson(ip));
-            User u = Handler.toUser(c.receiveData());
+            User u = Handler.toUser(c.receiveData("D"));
             return u;
         }catch(ConnectionException ex){
             throw new BusinessException(ex.getMessage());

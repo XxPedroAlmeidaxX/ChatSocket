@@ -7,6 +7,8 @@ import java.io.ObjectOutputStream;
 import java.io.IOException;
 import br.cefetmg.chat.exception.ConnectionException;
 import br.cefetmg.chat.interfaces.connection.IConnection;
+import java.util.ArrayList;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 
@@ -15,27 +17,25 @@ import br.cefetmg.chat.interfaces.connection.IConnection;
 
 public class Connection implements IConnection{ 
     //Canal para troca de dados entre o cliente e o servidor
-    private Socket pData;
-    //Canal para atualização das mensagens do cliente
-    //São dois canais para evitar conflitos
-    private Socket pUpdate;
+    private Socket canal;
     //Socket unico do servidor
-    private static ServerSocket sData;
-    private static ServerSocket sUpdate;
+    private static ServerSocket server;
     //Canal de saida de dados
     private ObjectOutputStream outData;
-    //Canal de saida de updates
-    private ObjectOutputStream update;
     //Canal de entrada de dados
     private ObjectInputStream inData; 
+    //ArrayList para buffer
+    private ArrayList<String> bufferData;
+    
+    private final ReentrantLock lockSend = new ReentrantLock();
+    private final ReentrantLock lockReceive = new ReentrantLock();
     
     public Connection() throws ConnectionException {
         try {
-            pData = sData.accept();
-            outData = new ObjectOutputStream(pData.getOutputStream());
-            inData = new ObjectInputStream(pData.getInputStream());
-            pUpdate = sUpdate.accept();
-            update = new ObjectOutputStream(pUpdate.getOutputStream());
+            canal = server.accept();
+            outData = new ObjectOutputStream(canal.getOutputStream());
+            inData = new ObjectInputStream(canal.getInputStream());
+            bufferData = new ArrayList<>();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao criar conexão com o Cliente: " + ex);
         }
@@ -44,59 +44,70 @@ public class Connection implements IConnection{
     @Override
     public void disconnect() throws ConnectionException {
         try {
-            pData.close();
-            pUpdate.close();
+            canal.close();
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao desconectar do Cliente: " + ex);
         }          
     }
 
     @Override
-    public synchronized void sendData(String json) throws ConnectionException {
-        try {    
-            outData.writeObject(json);
-            outData.flush();
+    public void sendData(String json, String idt) throws ConnectionException {
+        System.out.println("Inicio envio dados");
+        json = idt + json;
+        lockSend.lock();
+        try{
+            writeData(json);
+        }finally{
+            lockSend.unlock();
         }
-        catch (IOException ex) {
-            throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
-        }
+        System.out.println("Enviou dados: " + json);
     }
 
     @Override
-    public synchronized String receiveData() throws ConnectionException {
-        try {
-            return (String) inData.readObject();
-        }
-        catch (IOException | ClassNotFoundException ex) {
-            throw new ConnectionException("\nErro ao receber do Cliente: " + ex);
-        } 
-    }
-    
-    @Override
-    public synchronized void update(String json) throws ConnectionException {
-        try {            
-            update.writeObject(json);
-            update.flush();
-        }
-        catch (IOException ex) {
-            throw new ConnectionException("\nErro ao enviar para o Cliente: " + ex);
+    public String receiveData() throws ConnectionException {
+        System.out.println("Inicio dados");
+        String data;
+        lockReceive.lock();
+        try{
+            if(!bufferData.isEmpty()){
+                return bufferData.remove(0);
+            }
+            data = (String) readData();
+            System.out.println("Recebeu dados: " + data.substring(1) );
+            if(data.charAt(0)=='D'){
+                return data.substring(1);
+            }else{
+                return this.receiveData();
+            }
+        }finally{
+            lockReceive.unlock();
         }
     }
     
     public static void setServer(int port) throws ConnectionException {
         try {
-            sData = new ServerSocket(port);
-            sUpdate = new ServerSocket(port+1);
+            server = new ServerSocket(port);
         } catch (IOException ex) {
             throw new ConnectionException("\nErro ao definir Socket do servidor: " + ex);
         }
-    }
-
-    public Socket getpData() {
-        return pData;
-    }
-
-    public ObjectOutputStream getUpdate() {
-        return update;
     }      
+    
+    @Override
+    public Object readData() throws ConnectionException {
+        try {
+            return inData.readObject();
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new ConnectionException(ex.getMessage());
+        }
+    }
+
+    @Override
+    public void writeData(Object o) throws ConnectionException {
+        try {
+            outData.writeObject(o);
+            outData.flush();
+        } catch (IOException ex) {
+            throw new ConnectionException(ex.getMessage());
+        }
+    }
 }

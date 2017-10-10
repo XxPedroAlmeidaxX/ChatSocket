@@ -30,9 +30,6 @@ public class MessageBusiness implements IMessageBusiness{
         if(m.getRoom()==null){
             throw new BusinessException("Sala da mensagem não pode ser nula");
         }
-        if(m.getTargetMessage()==null){
-            throw new BusinessException("Alvo da mensagem não pode ser nula");
-        }
         if(m.getStateMessage()==null){
             throw new BusinessException("Estado da mensagem não pode ser nula");
         }
@@ -71,9 +68,6 @@ public class MessageBusiness implements IMessageBusiness{
         }
         if(m.getRoom()==null){
             throw new BusinessException("Sala da mensagem não pode ser nula");
-        }
-        if(m.getTargetMessage()==null){
-            throw new BusinessException("Alvo da mensagem não pode ser nula");
         }
         if(m.getStateMessage()==null){
             throw new BusinessException("Estado da mensagem não pode ser nula");

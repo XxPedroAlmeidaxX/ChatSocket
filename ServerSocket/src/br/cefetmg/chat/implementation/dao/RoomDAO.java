@@ -42,7 +42,7 @@ public class RoomDAO implements IRoomDAO{
             }
             pstmt.close();
             connection.close();
-            return r;
+            return this.getRoomById(r.getIdRoom());
         } catch (PersistenceException | ClassNotFoundException | SQLException e) {
             throw new PersistenceException(e.getMessage());
         }
@@ -64,7 +64,7 @@ public class RoomDAO implements IRoomDAO{
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
             }
-            sql = "SELECT a.idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+            sql = "SELECT a.idUser idUser, ipUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
             pstmt = connection.prepareStatement(sql);
             pstmt.setLong(1, id);
             rs = pstmt.executeQuery();
@@ -139,7 +139,7 @@ public class RoomDAO implements IRoomDAO{
                 r.setNameRoom(rs.getString("nameRoom"));
                 r.setPassword(rs.getString("password"));
                 r.setStateRoom(rs.getBoolean("stateRoom"));
-                sql = "SELECT ipUser, a.idUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
+                sql = "SELECT ipUser, a.idUser idUser, nameUser FROM UsersRoom a JOIN Users b ON a.idUser=b.idUser WHERE a.idRoom = ?";
                 pstmt = connection.prepareStatement(sql);
                 pstmt.setLong(1, r.getIdRoom());
                 ResultSet rsA = pstmt.executeQuery();
