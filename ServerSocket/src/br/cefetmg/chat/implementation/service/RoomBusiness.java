@@ -22,7 +22,7 @@ public class RoomBusiness implements IRoomBusiness{
     }
     
     @Override
-    public Room insertRoom(Room r) throws BusinessException, PersistenceException {
+    public Room insertRoom(Room r) throws BusinessException {
         if(r==null){
             throw new BusinessException("Sala não pode ser nula");
         }
@@ -35,27 +35,39 @@ public class RoomBusiness implements IRoomBusiness{
         if(r.getNameRoom()==null){
             throw new BusinessException("Nome da sala não pode ser nulo");
         }
-        return dao.insertRoom(r);
+        try {
+            return dao.insertRoom(r);
+        }catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
 
     @Override
-    public Room getRoomById(Long id) throws BusinessException, PersistenceException {
+    public Room getRoomById(Long id) throws BusinessException {
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
-        return dao.getRoomById(id);
+        try {
+            return dao.getRoomById(id);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
 
     @Override
-    public Room deleteRoomById(Long id) throws BusinessException, PersistenceException {
+    public Room deleteRoomById(Long id) throws BusinessException {
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
-        return dao.deleteRoomById(id);
+        try {
+            return dao.deleteRoomById(id);
+        }catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
 
     @Override
-    public Room updateRoomById(Long id, Room r) throws BusinessException, PersistenceException {
+    public Room updateRoomById(Long id, Room r) throws BusinessException {
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
@@ -71,16 +83,24 @@ public class RoomBusiness implements IRoomBusiness{
         if(r.getNameRoom()==null){
             throw new BusinessException("Nome da sala não pode ser nulo");
         }
-        return dao.updateRoomById(id, r);
+        try {
+            return dao.updateRoomById(id, r);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
     
     @Override
-    public ArrayList<Room> getAllRoom() throws BusinessException, PersistenceException {
-        return dao.getAllRoom();
+    public ArrayList<Room> getAllRoom() throws BusinessException {
+        try {
+            return dao.getAllRoom();
+        }catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }   
 
     @Override
-    public Room insertUserRoom(User u, Long id) throws BusinessException, PersistenceException {
+    public Room insertUserRoom(User u, Long id) throws BusinessException {
         if(u==null){
             throw new BusinessException("Usuario não pode ser nulo");
         }
@@ -93,18 +113,28 @@ public class RoomBusiness implements IRoomBusiness{
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
-        return dao.insertUserRoom(u, id);
+        try {
+            return dao.insertUserRoom(u, id);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
-
+    
     @Override
-    public Room removeUserRoom(Long idUser) throws BusinessException, PersistenceException {
+    public Room removeUserRoom(Long idUser, Long idRoom) throws BusinessException {
         if(idUser==null){
             throw new BusinessException("Id do usuario não pode ser nulo");
         }
-        Room r = dao.removeUserRoom(idUser);
+        Room r;
+        try {
+            r = dao.removeUserRoom(idUser);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
         if(r.getUsuarios().isEmpty()){
             this.deleteRoomById(r.getIdRoom());
         }
+        
         return r;
     }
 }

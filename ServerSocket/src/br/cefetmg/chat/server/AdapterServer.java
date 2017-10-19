@@ -65,20 +65,8 @@ public class AdapterServer implements Runnable{
                                 //Recebe nome e ip
                                 name = con.receiveData();
                                 ip = Long.parseLong(con.receiveData());
-                                
-                                //Se o usuário existe, o retorna
-                                if(usB.getUserByIpAndName(ip, name).getIdUser()!=null){
-                                    cliente = usB.getUserByIpAndName(ip, name);
-                                    con.sendData(Handler.toJson(cliente), "D");
-                                }else{
-                                    //Senão cria um novo usuário e o retorna
-                                    User us = new User();
-                                    us.setIpUser(ip);
-                                    us.setNameUser(name);
-                                    usB.insertUser(us);
-                                    cliente = usB.getUserByIpAndName(ip, name);
-                                    con.sendData(Handler.toJson(cliente), "D");
-                                }
+                                //Loga usuário, criando caso não exista
+                                con.sendData(Handler.toJson(usB.logarUser(name, ip)), "D");
                                 //Adiciona usuário na tabela de clientes ativos
                                 Notificator.addTabela(cliente, con);
                                 break;
@@ -142,8 +130,8 @@ public class AdapterServer implements Runnable{
                             case "removeUserRoom":
                                 Long idUser = Long.parseLong(con.receiveData());
                                 Long idRoom = Long.parseLong(con.receiveData());
-                                //Remove usuário da sala
-                                Room roomAlterada = roomB.removeUserRoom(idUser);
+                                //Remove usuário da sala, passando a sala nula pois é desnecessária
+                                Room roomAlterada = roomB.removeUserRoom(idUser, null);
                                 con.sendData(Handler.toJson(roomAlterada), "D");
                                 //Notifica usuários da remoção de usuário ou deleção da sala
                                 Notificator.notifyUserRoom();
@@ -184,14 +172,14 @@ public class AdapterServer implements Runnable{
                         }
                         break;
                 }
-            } catch(ConnectionException | BusinessException | PersistenceException ex) {
+            } catch(ConnectionException | BusinessException ex) {
                 try {
                     //Caso a conexão falhe, remove o cliente da sala
-                    roomB.removeUserRoom(cliente.getIdUser());
+                    roomB.removeUserRoom(cliente.getIdUser(), null);
                     
                     //Notifica da saída do cliente
                     Notificator.notifyUserRoom();
-                } catch (BusinessException | PersistenceException | NullPointerException ex1) {
+                } catch (BusinessException | NullPointerException ex1) {
                     throw new RuntimeException(ex);
                 }
                 //Remove o cliente da tabela

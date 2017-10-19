@@ -23,7 +23,7 @@ public class MessageBusiness implements IMessageBusiness{
     }
     
     @Override
-    public Message insertMessage(Message m) throws BusinessException, PersistenceException {
+    public Message insertMessage(Message m) throws BusinessException{
         if(m==null){
             throw new BusinessException("Mensagem não pode ser nula");
         }
@@ -39,27 +39,42 @@ public class MessageBusiness implements IMessageBusiness{
         if(m.getUser()==null){
             throw new BusinessException("Usuario da mensagem não pode ser nula");
         }
-        return dao.insertMessage(m);
+        try {
+            return dao.insertMessage(m);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
+        
     }
 
     @Override
-    public Message getMessageById(Long id) throws BusinessException, PersistenceException {
+    public Message getMessageById(Long id) throws BusinessException{
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
-        return dao.getMessageById(id);
+        try {
+            return dao.getMessageById(id);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
+        
     }
 
     @Override
-    public Message deleteMessageById(Long id) throws BusinessException, PersistenceException {
+    public Message deleteMessageById(Long id) throws BusinessException{
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
-        return dao.deleteMessageById(id);
+        try {
+            return dao.deleteMessageById(id);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
+        
     }
 
     @Override
-    public Message updateMessageById(Long id, Message m) throws BusinessException, PersistenceException {
+    public Message updateMessageById(Long id, Message m) throws BusinessException{
         if(id==null){
             throw new BusinessException("Id não pode ser nulo");
         }
@@ -78,28 +93,41 @@ public class MessageBusiness implements IMessageBusiness{
         if(m.getUser()==null){
             throw new BusinessException("Usuario da mensagem não pode ser nula");
         }
-        return dao.updateMessageById(id, m);
+        try {
+            return dao.updateMessageById(id, m);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
+        
     }
 
     @Override
-    public ArrayList<Message> getMessagesByUser(User u) throws BusinessException, PersistenceException {
+    public ArrayList<Message> getMessagesByUser(User u) throws BusinessException{
         if(u==null){
             throw new BusinessException("Usuário não pode ser nulo");
         }
         if(u.getIpUser()==null){
             throw new BusinessException("Ip do usuário não pode ser nulo");
         }
-        return dao.getMessagesByUser(u);
+        try {
+            return dao.getMessagesByUser(u);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
 
     @Override
-    public ArrayList<Message> getMessagesByRoom(Room r) throws BusinessException, PersistenceException {
+    public ArrayList<Message> getMessagesByRoom(Room r) throws BusinessException{
         if(r==null){
             throw new BusinessException("Sala não pode ser nula");
         }
         if(r.getIdRoom()==null){
             throw new BusinessException("Id da sala não pode ser nulo");
         }
-        return dao.getMessagesByRoom(r);
+        try {
+            return dao.getMessagesByRoom(r);
+        } catch (PersistenceException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }  
 }
