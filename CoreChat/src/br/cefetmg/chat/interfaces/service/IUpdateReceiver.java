@@ -13,7 +13,7 @@ import java.rmi.RemoteException;
  *
  * @author Aluno
  */
-public interface IMessageReceiver {
+public interface IUpdateReceiver {
     public void receiveMessage(Message m) throws BusinessException, RemoteException;
     public void receiveUpdate(String idt) throws BusinessException, RemoteException;
 }

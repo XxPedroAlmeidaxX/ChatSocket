@@ -1,12 +1,14 @@
 package br.cefetmg.chat.implementation.service;
 
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
-import br.cefetmg.chat.interfaces.dao.IUserDAO;
-import br.cefetmg.chat.implementation.dao.UserDAO;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
-import br.cefetmg.chat.util.gson.Handler;
+import br.cefetmg.chat.implementation.dao.UserDAO;
+import br.cefetmg.chat.interfaces.dao.IUserDAO;
+import br.cefetmg.chat.interfaces.service.IUpdateReceiver;
+import br.cefetmg.chat.server.Server;
+import java.rmi.RemoteException;
 
 /**
  * 
@@ -14,10 +16,12 @@ import br.cefetmg.chat.util.gson.Handler;
  */
 
 public class UserBusiness implements IUserBusiness{
-    private final IUserDAO dao=null;
+    private final UpdateSender up;
+    private final IUserDAO dao;
     
     public UserBusiness(){
-       
+       up = new UpdateSender();
+       dao = new UserDAO();
     }
     
     @Override
@@ -99,7 +103,7 @@ public class UserBusiness implements IUserBusiness{
     }
 
     @Override
-    public User logarUser(String user, Long ip) throws BusinessException {
+    public User logarUser(String user, Long ip, IUpdateReceiver update) throws BusinessException {
         User cliente;
         if(getUserByIpAndName(ip, user).getIdUser()==null){
             //Senão existir cria um novo usuário
@@ -109,6 +113,12 @@ public class UserBusiness implements IUserBusiness{
             insertUser(us);
         }
         cliente = getUserByIpAndName(ip, user);
+        Server.connected.add(update);
+        try {
+            up.receiveUpdate("usuario");
+        } catch (RemoteException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
         return cliente;
     }
 }

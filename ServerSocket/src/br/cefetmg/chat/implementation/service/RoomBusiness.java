@@ -7,6 +7,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -15,9 +16,12 @@ import java.util.ArrayList;
  */
 
 public class RoomBusiness implements IRoomBusiness{
-    private final IRoomDAO dao=null;
+    private final UpdateSender up;
+    private final IRoomDAO dao;
     
     public RoomBusiness(){
+       up = new UpdateSender();
+       dao = new RoomDAO();
     }
     
     @Override
@@ -35,8 +39,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Nome da sala não pode ser nulo");
         }
         try {
-            return dao.insertRoom(r);
-        }catch (PersistenceException ex) {
+            Room room = dao.insertRoom(r);
+            up.receiveUpdate("sala");
+            return room;
+        }catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }
     }
@@ -59,8 +65,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Id não pode ser nulo");
         }
         try {
-            return dao.deleteRoomById(id);
-        }catch (PersistenceException ex) {
+            Room room = dao.deleteRoomById(id);
+            up.receiveUpdate("sala");
+            return room;
+        }catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }
     }
@@ -113,8 +121,10 @@ public class RoomBusiness implements IRoomBusiness{
             throw new BusinessException("Id não pode ser nulo");
         }
         try {
-            return dao.insertUserRoom(u, id);
-        } catch (PersistenceException ex) {
+            Room room = dao.insertUserRoom(u, id);
+            up.receiveUpdate("usuario");
+            return room;
+        } catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }
     }
@@ -133,7 +143,11 @@ public class RoomBusiness implements IRoomBusiness{
         if(r.getUsuarios().isEmpty()){
             this.deleteRoomById(r.getIdRoom());
         }
-        
+        try {
+            up.receiveUpdate("usuario");
+        } catch (RemoteException ex) {
+            throw new BusinessException(ex.getMessage());
+        }
         return r;
     }
 }

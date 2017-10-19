@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/server/AdapterServer.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/server/Server.java</file>
+            <file>file:/C:/Users/umcan/Desktop/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/dao/RoomDAO.java</file>
+            <file>file:/C:/Users/umcan/Desktop/ChatSocket/ServerSocket/src/br/cefetmg/chat/server/AdapterServer.java</file>
+            <file>file:/C:/Users/umcan/Desktop/ChatSocket/ServerSocket/src/br/cefetmg/chat/util/db/database.sql</file>
         </group>
     </open-files>
 </project-private>

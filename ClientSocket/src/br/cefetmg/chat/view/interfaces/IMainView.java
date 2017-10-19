@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.cefetmg.chat.view;
+package br.cefetmg.chat.view.interfaces;
 
 import br.cefetmg.chat.domain.Room;
+import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 
 /**

@@ -2,9 +2,12 @@ package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.exception.BusinessException;
-import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
 import br.cefetmg.chat.view.MainView;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.PasswordField;
@@ -47,13 +50,13 @@ public class RoomMakerController {
             r.setStateRoom(chkPrivado.isSelected());
             r.setPassword(pswSenha.getText());
             r.setIdRoom(new Long(0));
-            IRoomBusiness business = new RoomBusiness(mv.conn); 
+            IRoomBusiness business = (IRoomBusiness) mv.getRegistry().lookup("RoomBusiness");
             r = business.insertRoom(r);
             
             //Exibe a tela principal e carrega a sala
             mv.showHome();
             mv.loadRoom(r);
-        } catch (BusinessException ex) {
+        } catch (BusinessException | RemoteException | NotBoundException ex) {
             System.out.println("Erro: "+ex.getMessage());
         }
     }

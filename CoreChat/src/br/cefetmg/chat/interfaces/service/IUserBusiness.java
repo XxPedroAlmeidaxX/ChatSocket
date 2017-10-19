@@ -16,5 +16,5 @@ public interface IUserBusiness extends Remote{
     public User getUserByIpAndName(Long ip, String name) throws BusinessException, RemoteException;
     public User deleteUserById(Long id) throws BusinessException, RemoteException;
     public User updateUserById(Long id, User u) throws BusinessException, RemoteException;
-    public User logarUser(String user, Long ip) throws BusinessException, RemoteException;
+    public User logarUser(String user, Long ip, IUpdateReceiver update) throws BusinessException, RemoteException;
 }

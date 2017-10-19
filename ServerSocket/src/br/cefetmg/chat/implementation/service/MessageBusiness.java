@@ -2,12 +2,13 @@ package br.cefetmg.chat.implementation.service;
 
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.dao.IMessageDAO;
-import br.cefetmg.chat.implementation.dao.MessageDAO;
 import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
+import br.cefetmg.chat.implementation.dao.MessageDAO;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -16,10 +17,12 @@ import java.util.ArrayList;
  */
 
 public class MessageBusiness implements IMessageBusiness{
-    private final IMessageDAO dao=null;
+    private final UpdateSender up;
+    private final IMessageDAO dao;
     
     public MessageBusiness(){
-        
+       up = new UpdateSender();
+       dao = new MessageDAO();
     }
     
     @Override
@@ -40,8 +43,9 @@ public class MessageBusiness implements IMessageBusiness{
             throw new BusinessException("Usuario da mensagem não pode ser nula");
         }
         try {
+            up.receiveMessage(m);
             return dao.insertMessage(m);
-        } catch (PersistenceException ex) {
+        } catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }
         
