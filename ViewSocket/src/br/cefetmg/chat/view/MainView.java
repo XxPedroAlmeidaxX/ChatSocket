@@ -9,7 +9,6 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.implementation.service.MessageBusiness;
 import br.cefetmg.chat.implementation.service.RoomBusiness;
 import br.cefetmg.chat.implementation.service.UserBusiness;
@@ -42,7 +41,7 @@ import javafx.stage.Stage;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class MainView extends Application {
+public class MainView extends Application implements IMainView{
     //Stage da view
     private Stage primaryStage;
     //Painel atual carregado na view

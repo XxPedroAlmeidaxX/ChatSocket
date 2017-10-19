@@ -16,10 +16,10 @@ import java.util.ArrayList;
  */
 
 public class MessageBusiness implements IMessageBusiness{
-    private final IMessageDAO dao;
+    private final IMessageDAO dao=null;
     
-    public MessageBusiness(MessageDAO dao){
-       this.dao=dao;
+    public MessageBusiness(){
+        
     }
     
     @Override

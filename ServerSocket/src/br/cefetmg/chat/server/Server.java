@@ -1,7 +1,12 @@
 package br.cefetmg.chat.server;
 
-import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.Connection;
+import br.cefetmg.chat.implementation.service.MessageBusiness;
+import br.cefetmg.chat.implementation.service.RoomBusiness;
+import br.cefetmg.chat.implementation.service.UserBusiness;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * 
@@ -9,23 +14,14 @@ import br.cefetmg.chat.implementation.connection.Connection;
  */
 
 public class Server {
-    public static void main(String[] args) {
+    public static void main(String[] args) { 
         try {
-            Connection.setServer(2223);
-        } catch (ConnectionException ex) {
-            System.out.println("\nErro ao definir a porta do servidor: " + ex);
-            System.exit(0);
+            Naming.rebind("MessageBusiness", UnicastRemoteObject.exportObject(new MessageBusiness(), 0));
+            Naming.rebind("RoomBusiness", UnicastRemoteObject.exportObject(new RoomBusiness(), 0));
+            Naming.rebind("UserBusiness", UnicastRemoteObject.exportObject(new UserBusiness(), 0));
+        } catch (RemoteException | MalformedURLException ex) {
+            System.out.println("Erro: " + ex.getMessage());
         }
         
-        while(true) {
-            try {
-                //Cria nova conexão entre servidor e cliente
-                Connection c = new Connection();
-                //Inicia a thread para atender o cliente
-                new Thread(new AdapterServer(c)).start();
-            } catch (ConnectionException ex) {
-                System.out.println("\nFalha em uma das conexões: " + ex);
-            }
-        }
     }    
 }

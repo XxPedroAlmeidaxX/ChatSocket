@@ -15,10 +15,9 @@ import java.util.ArrayList;
  */
 
 public class RoomBusiness implements IRoomBusiness{
-    private final IRoomDAO dao;
+    private final IRoomDAO dao=null;
     
-    public RoomBusiness(RoomDAO dao){
-        this.dao=dao;
+    public RoomBusiness(){
     }
     
     @Override

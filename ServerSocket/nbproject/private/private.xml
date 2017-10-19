@@ -4,12 +4,7 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/server/AdapterServer.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/service/RoomBusiness.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/service/MessageBusiness.java</file>
             <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/server/Server.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/dao/UserDAO.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/dao/MessageDAO.java</file>
-            <file>file:/C:/Users/Aluno/ChatSocket/ServerSocket/src/br/cefetmg/chat/implementation/service/UserBusiness.java</file>
         </group>
     </open-files>
 </project-private>

@@ -14,10 +14,10 @@ import br.cefetmg.chat.util.gson.Handler;
  */
 
 public class UserBusiness implements IUserBusiness{
-    private final IUserDAO dao;
+    private final IUserDAO dao=null;
     
-    public UserBusiness(UserDAO dao){
-        this.dao=dao;
+    public UserBusiness(){
+       
     }
     
     @Override

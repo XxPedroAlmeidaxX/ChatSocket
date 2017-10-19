@@ -5,7 +5,6 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.ConnectionException;
-import br.cefetmg.chat.implementation.connection.Connection;
 import br.cefetmg.chat.interfaces.connection.IConnection;
 import br.cefetmg.chat.util.gson.Handler;
 import java.util.ArrayList;
@@ -20,6 +19,10 @@ public class RoomBusiness implements IRoomBusiness{
     
     public RoomBusiness(Connection c){
         this.c = c;
+    }
+
+    RoomBusiness() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
