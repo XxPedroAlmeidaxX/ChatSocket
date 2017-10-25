@@ -105,6 +105,7 @@ public class UserBusiness implements IUserBusiness{
     @Override
     public User logarUser(String user, Long ip, IUpdateReceiver update) throws BusinessException {
         User cliente;
+        System.out.println("logar");
         if(getUserByIpAndName(ip, user).getIdUser()==null){
             //Senão existir cria um novo usuário
             User us = new User();
@@ -113,7 +114,7 @@ public class UserBusiness implements IUserBusiness{
             insertUser(us);
         }
         cliente = getUserByIpAndName(ip, user);
-        Server.connected.add(update);
+        Server.connected.put(cliente.getIdUser(), update);
         try {
             up.receiveUpdate("usuario");
         } catch (RemoteException ex) {

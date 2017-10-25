@@ -7,13 +7,14 @@ package br.cefetmg.chat.interfaces.service;
 
 import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.exception.BusinessException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 /**
  *
  * @author Aluno
  */
-public interface IUpdateReceiver {
+public interface IUpdateReceiver extends Remote{
     public void receiveMessage(Message m) throws BusinessException, RemoteException;
     public void receiveUpdate(String idt) throws BusinessException, RemoteException;
 }

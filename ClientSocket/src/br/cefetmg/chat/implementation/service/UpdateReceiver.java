@@ -9,7 +9,6 @@ import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
-import br.cefetmg.chat.view.interfaces.IMainView;
 import javafx.application.Platform;
 import br.cefetmg.chat.interfaces.service.IUpdateReceiver;
 import java.io.Serializable;
@@ -32,10 +31,10 @@ public class UpdateReceiver implements IUpdateReceiver, Serializable{
     @Override
     public void receiveMessage(Message m) throws BusinessException, RemoteException {
         //Recarrega a sala, executando na thread da aplicação do JavaFX
-        if(Objects.equals(m.getRoom().getIdRoom(), GambsTemp.main.getCurrentRoom().getIdRoom())){
+        if(Objects.equals(m.getRoom().getIdRoom(), MainStaticUpdate.main.getCurrentRoom().getIdRoom())){
             Platform.runLater(() -> {
                 try {
-                    GambsTemp.main.loadRoom(GambsTemp.main.getCurrentRoom());
+                    MainStaticUpdate.main.loadRoom(MainStaticUpdate.main.getCurrentRoom());
                 } catch (BusinessException ex) {
                     System.out.println("Erro: " + ex);
                 }
@@ -45,8 +44,9 @@ public class UpdateReceiver implements IUpdateReceiver, Serializable{
 
     @Override
     public void receiveUpdate(String idt) throws BusinessException, RemoteException {
+        System.out.println("UPDATE");
         if(idt.equals("sala")){
-            Platform.runLater(() -> GambsTemp.main.showHome());
+            Platform.runLater(() -> MainStaticUpdate.main.showHome());
         }else{
             //Usuario
             //Recarrega a home, e a sala caso o usuário esteja em uma, executando na thread da aplicação do JavaFX
@@ -56,15 +56,15 @@ public class UpdateReceiver implements IUpdateReceiver, Serializable{
             } catch (NotBoundException | MalformedURLException ex) {
                 throw new RemoteException(ex.getMessage());
             }
-            if(GambsTemp.main.getCurrentRoom()!=null)
-                GambsTemp.main.setCurrentRoom(b.getRoomById(GambsTemp.main.getCurrentRoom().getIdRoom()));
-                        Room r = GambsTemp.main.getCurrentRoom();
-                        Platform.runLater(() ->GambsTemp.main.showHome());
+            if(MainStaticUpdate.main.getCurrentRoom()!=null)
+                MainStaticUpdate.main.setCurrentRoom(b.getRoomById(MainStaticUpdate.main.getCurrentRoom().getIdRoom()));
+                        Room r = MainStaticUpdate.main.getCurrentRoom();
+                        Platform.runLater(() ->MainStaticUpdate.main.showHome());
                         if(r!=null)
                             Platform.runLater(() -> {
                                 try {
                                     System.out.println("Atualizou users");
-                                    GambsTemp.main.loadRoom(r);
+                                    MainStaticUpdate.main.loadRoom(r);
                                 } catch (BusinessException ex) {
                                     System.out.println("Erro: " + ex);
                                 }

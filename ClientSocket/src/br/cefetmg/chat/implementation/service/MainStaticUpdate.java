@@ -11,6 +11,6 @@ import br.cefetmg.chat.view.interfaces.IMainView;
  *
  * @author umcan
  */
-public class GambsTemp {
+public class MainStaticUpdate {
     public static IMainView main;
 }

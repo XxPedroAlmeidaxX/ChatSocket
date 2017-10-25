@@ -1,6 +1,5 @@
 package br.cefetmg.chat.view;
 
-import br.cefetmg.chat.implementation.service.GambsTemp;
 import br.cefetmg.chat.controller.landPageController;
 import br.cefetmg.chat.controller.HomeController;
 import br.cefetmg.chat.controller.RoomMakerController;
@@ -8,8 +7,11 @@ import br.cefetmg.chat.domain.Message;
 import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
+import br.cefetmg.chat.implementation.service.MainStaticUpdate;
+import br.cefetmg.chat.implementation.service.UpdateReceiver;
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.interfaces.service.IRoomBusiness;
+import br.cefetmg.chat.interfaces.service.IUpdateReceiver;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.view.interfaces.IMainView;
 import java.io.IOException;
@@ -18,6 +20,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -59,19 +62,23 @@ public class MainView extends Application implements IMainView, Serializable{
     private Room currentRoom = null;
     //Alvo atual selecionado para mensagens
     private User alvoSelec;
+    //Registro do RMI
     private Registry registry;
-    
+    //Classe para atualizações
+    private IUpdateReceiver update;
+   
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Chat");
         try {
-            registry = LocateRegistry.getRegistry(2222);
+            registry = LocateRegistry.getRegistry("localhost", 2222);
+            update = (IUpdateReceiver) UnicastRemoteObject.exportObject(new UpdateReceiver(), 0);
         } catch (RemoteException ex) {
             System.out.println("Erro ao conectar");
             System.exit(0);
         }
-        GambsTemp.main=this;
+        MainStaticUpdate.main=this;
         //Exibe a tela de login
         showLogin();
     }
@@ -407,6 +414,14 @@ public class MainView extends Application implements IMainView, Serializable{
 
     public void setRegistry(Registry registry) {
         this.registry = registry;
+    }
+
+    public IUpdateReceiver getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(UpdateReceiver update) {
+        this.update = update;
     }
     
 }
