@@ -74,6 +74,7 @@ public class MainView extends Application implements IMainView, Serializable{
         try {
             registry = LocateRegistry.getRegistry("localhost", 2222);
             update = (IUpdateReceiver) UnicastRemoteObject.exportObject(new UpdateReceiver(), 0);
+            registry.rebind("UpdateReceiver", update);
         } catch (RemoteException ex) {
             System.out.println("Erro ao conectar");
             System.exit(0);
@@ -85,6 +86,7 @@ public class MainView extends Application implements IMainView, Serializable{
     
     @Override
     public void showHome(){
+        
         try {
             IRoomBusiness roomB = (IRoomBusiness) registry.lookup("RoomBusiness");
             //Carrega todas as salas existentes

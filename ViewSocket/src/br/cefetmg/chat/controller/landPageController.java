@@ -7,6 +7,7 @@ package br.cefetmg.chat.controller;
 
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
+import br.cefetmg.chat.implementation.service.UpdateReceiver;
 import br.cefetmg.chat.interfaces.service.IUserBusiness;
 import br.cefetmg.chat.view.MainView;
 import java.io.BufferedReader;

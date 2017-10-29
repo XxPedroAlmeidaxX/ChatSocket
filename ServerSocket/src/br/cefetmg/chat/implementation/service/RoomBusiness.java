@@ -7,7 +7,9 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
+import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -15,11 +17,12 @@ import java.util.ArrayList;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class RoomBusiness implements IRoomBusiness{
+public class RoomBusiness extends UnicastRemoteObject implements IRoomBusiness, Serializable{
     private final UpdateSender up;
     private final IRoomDAO dao;
     
-    public RoomBusiness(){
+    public RoomBusiness() throws RemoteException{
+       super();
        up = new UpdateSender();
        dao = new RoomDAO();
     }
@@ -40,7 +43,7 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try {
             Room room = dao.insertRoom(r);
-            up.receiveUpdate("sala");
+            up.receiveUpdate("sala", this);
             return room;
         }catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
@@ -66,7 +69,7 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try {
             Room room = dao.deleteRoomById(id);
-            up.receiveUpdate("sala");
+            up.receiveUpdate("sala", this);
             return room;
         }catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
@@ -122,7 +125,7 @@ public class RoomBusiness implements IRoomBusiness{
         }
         try {
             Room room = dao.insertUserRoom(u, id);
-            up.receiveUpdate("usuario");
+            up.receiveUpdate("usuario", this);
             return room;
         } catch (PersistenceException | RemoteException ex) {
             throw new BusinessException(ex.getMessage());
@@ -144,7 +147,7 @@ public class RoomBusiness implements IRoomBusiness{
             this.deleteRoomById(r.getIdRoom());
         }
         try {
-            up.receiveUpdate("usuario");
+            up.receiveUpdate("usuario", this);
         } catch (RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }

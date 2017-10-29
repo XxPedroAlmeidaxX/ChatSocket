@@ -8,18 +8,21 @@ import br.cefetmg.chat.implementation.dao.UserDAO;
 import br.cefetmg.chat.interfaces.dao.IUserDAO;
 import br.cefetmg.chat.interfaces.service.IUpdateReceiver;
 import br.cefetmg.chat.server.Server;
+import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 /**
  * 
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class UserBusiness implements IUserBusiness{
+public class UserBusiness extends UnicastRemoteObject implements IUserBusiness, Serializable{
     private final UpdateSender up;
     private final IUserDAO dao;
     
-    public UserBusiness(){
+    public UserBusiness() throws RemoteException{
+       super();
        up = new UpdateSender();
        dao = new UserDAO();
     }
@@ -116,7 +119,7 @@ public class UserBusiness implements IUserBusiness{
         cliente = getUserByIpAndName(ip, user);
         Server.connected.put(cliente.getIdUser(), update);
         try {
-            up.receiveUpdate("usuario");
+            up.receiveUpdate("usuario", new RoomBusiness());
         } catch (RemoteException ex) {
             throw new BusinessException(ex.getMessage());
         }

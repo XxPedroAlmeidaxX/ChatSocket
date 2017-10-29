@@ -5,6 +5,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.PersistenceException;
 import br.cefetmg.chat.util.db.ConnectionManager;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class RoomDAO implements IRoomDAO{
+public class RoomDAO implements IRoomDAO, Serializable{
 
     @Override
     public synchronized Room insertRoom(Room r) throws PersistenceException {

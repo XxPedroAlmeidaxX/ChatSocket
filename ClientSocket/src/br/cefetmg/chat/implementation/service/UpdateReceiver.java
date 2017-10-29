@@ -43,19 +43,13 @@ public class UpdateReceiver implements IUpdateReceiver, Serializable{
     }
 
     @Override
-    public void receiveUpdate(String idt) throws BusinessException, RemoteException {
+    public void receiveUpdate(String idt, IRoomBusiness b) throws BusinessException, RemoteException {
         System.out.println("UPDATE");
         if(idt.equals("sala")){
             Platform.runLater(() -> MainStaticUpdate.main.showHome());
         }else{
             //Usuario
             //Recarrega a home, e a sala caso o usuário esteja em uma, executando na thread da aplicação do JavaFX
-            IRoomBusiness b=null;
-            try {
-                b = (IRoomBusiness) Naming.lookup("RoomBusiness");
-            } catch (NotBoundException | MalformedURLException ex) {
-                throw new RemoteException(ex.getMessage());
-            }
             if(MainStaticUpdate.main.getCurrentRoom()!=null)
                 MainStaticUpdate.main.setCurrentRoom(b.getRoomById(MainStaticUpdate.main.getCurrentRoom().getIdRoom()));
                         Room r = MainStaticUpdate.main.getCurrentRoom();

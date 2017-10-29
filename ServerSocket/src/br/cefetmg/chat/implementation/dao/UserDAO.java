@@ -4,6 +4,7 @@ import br.cefetmg.chat.interfaces.dao.IUserDAO;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.PersistenceException;
 import br.cefetmg.chat.util.db.ConnectionManager;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class UserDAO implements IUserDAO{
+public class UserDAO implements IUserDAO, Serializable{
 
     @Override
     public synchronized User insertUser(User u) throws PersistenceException {

@@ -8,7 +8,9 @@ import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.exception.PersistenceException;
 import br.cefetmg.chat.implementation.dao.MessageDAO;
+import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
@@ -16,11 +18,12 @@ import java.util.ArrayList;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class MessageBusiness implements IMessageBusiness{
+public class MessageBusiness extends UnicastRemoteObject implements IMessageBusiness, Serializable{
     private final UpdateSender up;
     private final IMessageDAO dao;
     
-    public MessageBusiness(){
+    public MessageBusiness() throws RemoteException{
+       super();
        up = new UpdateSender();
        dao = new MessageDAO();
     }

@@ -9,12 +9,9 @@ import br.cefetmg.chat.exception.BusinessException;
 import br.cefetmg.chat.interfaces.service.IMessageBusiness;
 import br.cefetmg.chat.view.MainView;
 import java.net.URL;
-import java.rmi.AccessException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextArea;
@@ -61,7 +58,7 @@ public class HomeController implements Initializable {
             try {
                 msgB.insertMessage(m);
             } catch (BusinessException ex) {
-                System.out.println("Erro: " + ex.getMessage());
+                throw new RuntimeException(ex);
             }
             txtMsg.setText("");
         }catch(RemoteException | NotBoundException ex){

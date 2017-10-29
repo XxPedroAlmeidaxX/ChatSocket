@@ -6,6 +6,7 @@ import br.cefetmg.chat.domain.Room;
 import br.cefetmg.chat.domain.User;
 import br.cefetmg.chat.exception.PersistenceException;
 import br.cefetmg.chat.util.db.ConnectionManager;
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
  * @author Vitor Rodarte & Pedro Almeida
  */
 
-public class MessageDAO implements IMessageDAO{
+public class MessageDAO implements IMessageDAO, Serializable{
 
     @Override
     public synchronized Message insertMessage(Message m) throws PersistenceException {

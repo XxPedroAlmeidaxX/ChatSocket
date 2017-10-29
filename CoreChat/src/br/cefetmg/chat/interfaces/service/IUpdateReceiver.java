@@ -16,5 +16,5 @@ import java.rmi.RemoteException;
  */
 public interface IUpdateReceiver extends Remote{
     public void receiveMessage(Message m) throws BusinessException, RemoteException;
-    public void receiveUpdate(String idt) throws BusinessException, RemoteException;
+    public void receiveUpdate(String idt, IRoomBusiness b) throws BusinessException, RemoteException;
 }
